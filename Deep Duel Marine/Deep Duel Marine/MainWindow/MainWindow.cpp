@@ -129,7 +129,6 @@ void MainWindow::SetWindowVisibility(bool isVisible) noexcept {
 }
 
 LRESULT WindowProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-	//Engine::Console::AddWarningMessage(std::to_string(msg).c_str());
 	switch (msg)
 	{
 	case WM_CLOSE:
