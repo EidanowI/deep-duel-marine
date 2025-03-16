@@ -59,7 +59,7 @@ void MainWindow::Initialize() noexcept {
 		nullptr
 	);
 
-	ShowWindow(s_hWnd, SW_SHOW);
+	ShowWindow(s_hWnd, SW_HIDE);
 }
 void MainWindow::Terminate() noexcept
 {
@@ -119,6 +119,14 @@ void MainWindow::FixateCursor(bool isFixed) noexcept {
 		ClipCursor(nullptr);
 	}
 }
+void MainWindow::SetWindowVisibility(bool isVisible) noexcept {
+	if (isVisible) {
+		ShowWindow(s_hWnd, SW_SHOW);
+	}
+	else {
+		ShowWindow(s_hWnd, SW_HIDE);
+	}
+}
 
 LRESULT WindowProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	//Engine::Console::AddWarningMessage(std::to_string(msg).c_str());
@@ -139,7 +147,7 @@ LRESULT WindowProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		a.bottom = 30;
 		a.right = rand()%400;
 		a.top = 60;
-		FillRect(hdc, &ps.rcPaint, brush);
+		//FillRect(hdc, &ps.rcPaint, brush);
 		FillRect(hdc, &a, brush_red);
 		DeleteObject(brush);
 		DeleteObject(brush_red);

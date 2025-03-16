@@ -45,6 +45,7 @@ public:
 
 	static void SetCursorVisibility(bool isVisible) noexcept;
 	static void FixateCursor(bool isFixed) noexcept;
+	static void SetWindowVisibility(bool isVisible) noexcept;
 
 private:
 	static unsigned short s_windowWidth;
