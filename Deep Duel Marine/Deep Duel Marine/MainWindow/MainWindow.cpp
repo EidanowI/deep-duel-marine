@@ -1,8 +1,12 @@
 ﻿#include "MainWindow.h"
 
+#include "../Dependencies/imGUI/imgui.h"
+#include "../Dependencies/imgui/imgui_impl_win32.h"
+#include "../Dependencies/imgui/imgui_impl_dx11.h"
 
 
-//extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 
 
@@ -60,9 +64,12 @@ void MainWindow::Initialize() noexcept {
 	);
 
 	ShowWindow(s_hWnd, SW_HIDE);
+	ImGui_ImplWin32_Init(s_hWnd);
 }
 void MainWindow::Terminate() noexcept
 {
+	ImGui_ImplWin32_Shutdown();
+
 	if (s_hWnd != nullptr) {
 		DestroyWindow(s_hWnd);
 		s_hWnd = nullptr;
@@ -129,6 +136,9 @@ void MainWindow::SetWindowVisibility(bool isVisible) noexcept {
 }
 
 LRESULT WindowProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
+		return true;
+
 	switch (msg)
 	{
 	case WM_CLOSE:
@@ -137,6 +147,7 @@ LRESULT WindowProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		break;
 	}
 	case WM_PAINT: {
+		break;
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint(MainWindow::s_hWnd, &ps);
 		HBRUSH brush = CreateSolidBrush(RGB(255, 255, 255));
@@ -146,7 +157,7 @@ LRESULT WindowProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		a.bottom = 30;
 		a.right = rand()%400;
 		a.top = 60;
-		//FillRect(hdc, &ps.rcPaint, brush);
+		FillRect(hdc, &ps.rcPaint, brush);
 		FillRect(hdc, &a, brush_red);
 		DeleteObject(brush);
 		DeleteObject(brush_red);

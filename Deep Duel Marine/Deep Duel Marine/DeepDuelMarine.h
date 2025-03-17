@@ -1,6 +1,7 @@
 #pragma once
 #include "MainWindow/MainWindow.h"
 #include "Renderer/Renderer.h"
+#include "ImGuiRender/ImGuiRender.h"
 
 bool G_isShould_close_window = false;
 
@@ -10,6 +11,7 @@ public:
 	DeepDuelMarine() noexcept = default;
 
 	void Run() noexcept {
+		ImGuiRenderer::Initialize();
 		MainWindow::Initialize();
 		Renderer::Initialize();
 
@@ -17,6 +19,7 @@ public:
 
 		Renderer::Terminate();
 		MainWindow::Terminate();
+		ImGuiRenderer::Terminate();
 	}
 
 private:
@@ -27,6 +30,9 @@ private:
 			if (proc.has_value()) return proc.value();
 			Renderer::ClearFrame();
 			InvalidateRect(MainWindow::GetHinstnce(), 0, 1);
+
+			ImGuiRenderer::NewFrame();
+			
 			Sleep(16);
 			Renderer::PresentFrame();
 		}

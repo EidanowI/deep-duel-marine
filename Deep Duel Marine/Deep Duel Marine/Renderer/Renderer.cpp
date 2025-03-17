@@ -1,5 +1,9 @@
 #include "Renderer.h"
 
+#include "../Dependencies/imGUI/imgui.h"
+#include "../Dependencies/imgui/imgui_impl_win32.h"
+#include "../Dependencies/imgui/imgui_impl_dx11.h"
+
 extern bool G_isShould_close_window;
 
 #pragma comment(lib, "d3d11.lib")
@@ -129,8 +133,12 @@ void Renderer::Initialize() noexcept {
 
 	SetupViewPort();
 	SetRenderViews();
+
+	ImGui_ImplDX11_Init(s_pDevice, s_pDeviceContext);
 }
 void Renderer::Terminate() noexcept {
+	ImGui_ImplDX11_Shutdown();
+
 	if (s_pDepthStencilView != nullptr) {
 		s_pDepthStencilView->Release();
 		s_pDepthStencilView = nullptr;
