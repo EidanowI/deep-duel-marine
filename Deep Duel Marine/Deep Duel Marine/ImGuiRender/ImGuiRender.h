@@ -10,5 +10,6 @@ public:
 	static void Initialize() noexcept;
 	static void Terminate() noexcept;
 
-	static void NewFrame() noexcept;
+	static void StartFrame() noexcept;
+	static void EndFrame() noexcept;
 };

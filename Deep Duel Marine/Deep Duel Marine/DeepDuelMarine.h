@@ -2,8 +2,32 @@
 #include "MainWindow/MainWindow.h"
 #include "Renderer/Renderer.h"
 #include "ImGuiRender/ImGuiRender.h"
+#include "GUI/GUI.h"
 
 bool G_isShould_close_window = false;
+
+
+
+class DisplayHub {
+public:
+	DisplayHub() noexcept {
+		m_pGui = new GUI();
+		///m_pScene ...
+	}
+	~DisplayHub() noexcept {
+		delete m_pGui;
+		///delete m_pScene;
+	}
+
+	void Display() noexcept {
+		m_pGui->Draw();
+		///m_pScene->Render();
+	}
+
+private:
+	GUI* m_pGui;
+	///TODO scene class
+};
 
 
 class DeepDuelMarine {
@@ -31,10 +55,16 @@ private:
 			Renderer::ClearFrame();
 			InvalidateRect(MainWindow::GetHinstnce(), 0, 1);
 
-			ImGuiRenderer::NewFrame();
+			ImGuiRenderer::StartFrame();
 			
-			Sleep(16);
+			m_displayHub.Display();
+
+			ImGuiRenderer::EndFrame();
+
 			Renderer::PresentFrame();
 		}
 	}
+
+private:
+	DisplayHub m_displayHub;
 };
