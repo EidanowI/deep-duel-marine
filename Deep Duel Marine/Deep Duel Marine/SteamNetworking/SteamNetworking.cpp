@@ -77,6 +77,11 @@ void SteamNetworkingManager::ClearLobbyStructData() noexcept {
 Lobby* SteamNetworkingManager::GetLobbyStruct() noexcept {
 	return &s_pGame_client->m_lobby;
 }
+
+LobbyBrowser* SteamNetworkingManager::GetLobbyBrowser() noexcept {
+	return s_pLobbyBrowser;
+}
+
 void SteamNetworkingManager::CreateLobby() noexcept {
 	s_pGame_client->CreateLobby();
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -151,6 +151,7 @@
     <ClCompile Include="MainWindow\MainWindow.cpp" />
     <ClCompile Include="Renderer\Renderer.cpp" />
     <ClCompile Include="SteamNetworking\GameClient.cpp" />
+    <ClCompile Include="SteamNetworking\LobbyBrowser.cpp" />
     <ClCompile Include="SteamNetworking\SteamNetworking.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -215,6 +216,7 @@
     <ClInclude Include="Renderer\Renderer.h" />
     <ClInclude Include="SteamNetworking\GameClient.h" />
     <ClInclude Include="SteamNetworking\Lobby.h" />
+    <ClInclude Include="SteamNetworking\LobbyBrowser.h" />
     <ClInclude Include="SteamNetworking\SteamNetworking.h" />
   </ItemGroup>
   <ItemGroup>

@@ -31,5 +31,7 @@ void GameClient::OnLobbyCreated(LobbyCreated_t* pCallback, bool bIOFailure) {
 		m_client_gameState = GAME_STATE_IN_LOBBY;
 
 		SteamMatchmaking()->SetLobbyData(pCallback->m_ulSteamIDLobby, "name", m_lobby.m_name);
+		SteamMatchmaking()->SetLobbyData(pCallback->m_ulSteamIDLobby, "isPrivate", m_lobby.m_isPublic ? "1" : "0");
+		SteamMatchmaking()->SetLobbyData(pCallback->m_ulSteamIDLobby, "isDDM", "1");
 	}
 }

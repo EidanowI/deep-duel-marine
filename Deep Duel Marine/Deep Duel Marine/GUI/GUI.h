@@ -1,4 +1,7 @@
 ﻿#pragma once
+#include <string>
+#include <algorithm>
+
 #include "../Dependencies/imGUI/imgui.h"
 #include "../Dependencies/imGUI/imgui_internal.h"
 //#include "../Dependencies/imGUI/"
@@ -6,8 +9,10 @@
 #include "../MainWindow/MainWindow.h"
 #include "../SteamNetworking/SteamNetworking.h"
 
-bool TestButton(const char* label, const ImVec2& size_arg, ImGuiButtonFlags flags, bool isActive);
 
+
+bool TestButton(const char* label, const ImVec2& size_arg, ImGuiButtonFlags flags, bool isActive);
+int InputFilterTextCalback(ImGuiInputTextCallbackData* data);
 
 extern bool G_isShould_close_window;
 Lobby G_lobby;
@@ -90,6 +95,7 @@ private:
 		if (ImGui::Button("Join a match", ImVec2(MainWindow::GetWindowWidth() / 4.2, MainWindow::GetWindowHeight() / 20))) {
 			if (SteamNetworkingManager::IsSteamConnected()) {
 				SteamNetworkingManager::ClearLobbyStructData();
+				SteamNetworkingManager::GetLobbyBrowser()->Refresh();
 				m_gui_state = LOBBY_BROWSER;
 			}
 		}
@@ -152,27 +158,34 @@ private:
 		ImGuiStyle& style = ImGui::GetStyle();
 		//style.WindowBorderSize = 0.0f;
 		style.ItemSpacing = ImVec2(25, MainWindow::GetWindowHeight() / 40);
-		static char name_filter[128] = "";
-		ImGui::InputTextWithHint("##", "Lobby name filter", name_filter, IM_ARRAYSIZE(name_filter));
+		ImGui::InputTextWithHint("##", "Lobby name filter", SteamNetworkingManager::GetLobbyBrowser()->GetFilterName(), 64, ImGuiInputTextFlags_CallbackEdit, InputFilterTextCalback);
 
 		ImGui::SameLine();
 
 		if (ImGui::Button("Refresh", ImVec2(120, 35))) {
-			//
+			SteamNetworkingManager::GetLobbyBrowser()->Refresh();
 		}
 
 		static int item_current_idx = 0;
 		if (ImGui::BeginListBox("##listbox 2", ImVec2(-FLT_MIN, 10 * ImGui::GetTextLineHeightWithSpacing())))
 		{
-			for (int n = 0; n < 10; n++)
+			for (int i = 0; i < SteamNetworkingManager::GetLobbyBrowser()->GetlobbyCount(); i++)
 			{
-				const bool is_selected = (item_current_idx == n);
-				if (ImGui::Selectable(("Lobby #" + std::to_string(n)).c_str(), is_selected))
-					item_current_idx = n;
+				
+				const bool is_selected = (item_current_idx == i);
+
+				std::string a = SteamNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_name;
+				if (ImGui::Selectable(SteamNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_name, is_selected))
+				{
+					item_current_idx = i;
+				}
 
 				// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
 				if (is_selected)
+				{
 					ImGui::SetItemDefaultFocus();
+				}
+					
 			}
 			ImGui::EndListBox();
 		}
@@ -273,6 +286,7 @@ bool TestButton(const char* label, const ImVec2& size_arg, ImGuiButtonFlags flag
 	bool pressed = ButtonBehavior(bb, id, &hovered, &held, flags);
 
 	// Render
+
 	const ImU32 col = GetColorU32((held && hovered) ? ImGuiCol_ButtonActive : hovered ? ImGuiCol_ButtonHovered : isActive ? ImGuiCol_ButtonActive : ImGuiCol_Button);
 	RenderNavHighlight(bb, id);
 	RenderFrame(bb.Min, bb.Max, col, true, style.FrameRounding);
@@ -287,4 +301,9 @@ bool TestButton(const char* label, const ImVec2& size_arg, ImGuiButtonFlags flag
 
 	IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags);
 	return pressed;
+}
+
+int InputFilterTextCalback(ImGuiInputTextCallbackData* data) {
+	SteamNetworkingManager::GetLobbyBrowser()->Refresh();
+	return 0;
 }

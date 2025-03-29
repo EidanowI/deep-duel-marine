@@ -7,6 +7,7 @@
 
 #include "Lobby.h"
 #include "GameClient.h"
+#include "LobbyBrowser.h"
 
 
 
@@ -20,6 +21,8 @@ public:
 
 	static void ClearLobbyStructData() noexcept;
 	static Lobby* GetLobbyStruct() noexcept;
+
+	static LobbyBrowser* GetLobbyBrowser() noexcept;
 
 	static void CreateLobby() noexcept;
 
