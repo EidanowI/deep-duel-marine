@@ -3,6 +3,7 @@
 #include "Renderer/Renderer.h"
 #include "ImGuiRender/ImGuiRender.h"
 #include "GUI/GUI.h"
+#include "SteamNetworking/SteamNetworking.h"
 
 bool G_isShould_close_window = false;
 
@@ -38,9 +39,11 @@ public:
 		ImGuiRenderer::Initialize();
 		MainWindow::Initialize();
 		Renderer::Initialize();
+		SteamNetworkingManager::TryToConnect();
 
 		MainLoop();
 
+		SteamNetworkingManager::Terminate();
 		Renderer::Terminate();
 		MainWindow::Terminate();
 		ImGuiRenderer::Terminate();
@@ -52,6 +55,9 @@ private:
 		while (!G_isShould_close_window) {
 			const std::optional<int> proc = MainWindow::ProcessMsg();
 			if (proc.has_value()) return proc.value();
+
+			SteamNetworkingManager::Update();
+
 			Renderer::ClearFrame();
 			InvalidateRect(MainWindow::GetHinstnce(), 0, 1);
 

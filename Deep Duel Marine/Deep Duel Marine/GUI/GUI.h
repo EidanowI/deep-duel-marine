@@ -1,16 +1,25 @@
 ﻿#pragma once
 #include "../Dependencies/imGUI/imgui.h"
+#include "../Dependencies/imGUI/imgui_internal.h"
+//#include "../Dependencies/imGUI/"
 
 #include "../MainWindow/MainWindow.h"
+#include "../SteamNetworking/SteamNetworking.h"
 
+bool TestButton(const char* label, const ImVec2& size_arg, ImGuiButtonFlags flags, bool isActive);
 
 
 extern bool G_isShould_close_window;
+Lobby G_lobby;
 
 
 enum GUI_STATE {
 	MAIN_MENU,
+
+	CREATE_LOBBY,
+
 	LOBBY_BROWSER,
+
 	IN_LOBBY,
 	SETTINGS,
 	QUIT_DIALOG
@@ -22,6 +31,9 @@ public:
 		{
 		case MAIN_MENU:
 			DrawMainMenu();
+			break;
+		case CREATE_LOBBY:
+			DrawCreateLobby();
 			break;
 		case LOBBY_BROWSER:
 			DrawLobbyBrowser();
@@ -37,20 +49,49 @@ public:
 		}
 	}
 
+	///void UpdateAvatars() noexcept;
+
 private:
 	void DrawMainMenu() noexcept {
+		static auto img = SteamNetworkingManager::LoadSelfAvatar();
+		ImGui::SetNextWindowBgAlpha(0.0f);
+		ImGui::SetNextWindowPos(ImVec2(0, 0));
+		ImGui::Begin("Profile info", 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
+		ImGuiStyle& style = ImGui::GetStyle();
+		style.WindowBorderSize = 0.0f;
+		style.ItemSpacing = ImVec2(30, 0);
+		ImGui::Image(img, ImVec2(128, 128));
+		ImGui::SameLine();
 		ImFont* pFont = ImGui::GetFont();
+		pFont->Scale = 4.0;
+		ImGui::PushFont(pFont);
+		ImGui::Text(SteamNetworkingManager::GetSelfUserNickName());
+		ImGui::PopFont();
+		ImGui::End();
+
+
+		//ImFont* pFont = ImGui::GetFont();
 		pFont->Scale = 2.0;
 
 		ImGui::PushFont(pFont);
 		ImGui::SetNextWindowBgAlpha(0.0f);
 		ImGui::SetNextWindowPos(ImVec2(MainWindow::GetWindowWidth() / 17, MainWindow::GetWindowHeight() / 2.8));
 		ImGui::Begin("Main menu", 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
-		ImGuiStyle& style = ImGui::GetStyle();
+		//ImGuiStyle& style = ImGui::GetStyle();
 		style.WindowBorderSize = 0.0f;
 		style.ItemSpacing = ImVec2(0, MainWindow::GetWindowHeight() / 40);
-		if (ImGui::Button("Play", ImVec2(MainWindow::GetWindowWidth() /4.2, MainWindow::GetWindowHeight() /20))) {
-			m_gui_state = LOBBY_BROWSER;
+		if (ImGui::Button("Create match", ImVec2(MainWindow::GetWindowWidth() /4.2, MainWindow::GetWindowHeight() /20))) {
+			if (SteamNetworkingManager::IsSteamConnected()) {
+				m_gui_state = CREATE_LOBBY;
+				SteamNetworkingManager::ClearLobbyStructData();
+			}
+		}
+
+		if (ImGui::Button("Join a match", ImVec2(MainWindow::GetWindowWidth() / 4.2, MainWindow::GetWindowHeight() / 20))) {
+			if (SteamNetworkingManager::IsSteamConnected()) {
+				SteamNetworkingManager::ClearLobbyStructData();
+				m_gui_state = LOBBY_BROWSER;
+			}
 		}
 
 		if (ImGui::Button("Settings", ImVec2(MainWindow::GetWindowWidth() / 4.2, MainWindow::GetWindowHeight() / 20))) {
@@ -60,6 +101,44 @@ private:
 		if (ImGui::Button("Quit", ImVec2(MainWindow::GetWindowWidth() / 4.2, MainWindow::GetWindowHeight() / 20))) {
 			m_gui_state = QUIT_DIALOG;
 		}
+		ImGui::End();
+		ImGui::PopFont();
+	}
+
+	void DrawCreateLobby() noexcept {
+#define CREATE_LOBBY_WIDTH 1920 / 4
+#define CREATE_LOBBY_HEIGHT 1080 / 4
+
+		ImFont* pFont = ImGui::GetFont();
+		pFont->Scale = 2.0;
+		ImGui::PushFont(pFont);
+		ImGui::SetNextWindowBgAlpha(0.0f);
+		ImGui::SetNextWindowPos(ImVec2((MainWindow::GetWindowWidth() - CREATE_LOBBY_WIDTH) / 2, (MainWindow::GetWindowHeight() - CREATE_LOBBY_HEIGHT) / 2));
+		ImGui::Begin("Create lobby", 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
+		ImGuiStyle& style = ImGui::GetStyle();
+		style.WindowBorderSize = 0.0f;
+		style.ItemSpacing = ImVec2(20, 20);
+		ImGui::Text("Lobby name:");
+
+		ImGui::InputText("##", SteamNetworkingManager::GetLobbyStruct()->m_name, 63);
+
+		if (TestButton("Public", ImVec2((CREATE_LOBBY_WIDTH - 20) / 2, 80), ImGuiButtonFlags_None, SteamNetworkingManager::GetLobbyStruct()->m_isPublic)) {
+			SteamNetworkingManager::GetLobbyStruct()->m_isPublic = true;
+		}
+		ImGui::SameLine();
+		if (TestButton("Friends-only", ImVec2((CREATE_LOBBY_WIDTH - 20) / 2, 80), ImGuiButtonFlags_None, !SteamNetworkingManager::GetLobbyStruct()->m_isPublic)) {
+			SteamNetworkingManager::GetLobbyStruct()->m_isPublic = false;
+		}
+
+		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + ((CREATE_LOBBY_WIDTH - 20) / 4), ImGui::GetCursorPos().y));
+		if (ImGui::Button("Confirm", ImVec2((CREATE_LOBBY_WIDTH - 20) / 2, 40))) {
+			SteamNetworkingManager::CreateLobby();
+		}
+		ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + ((CREATE_LOBBY_WIDTH - 20) / 4), ImGui::GetCursorPos().y));
+		if (ImGui::Button("Back", ImVec2((CREATE_LOBBY_WIDTH - 20) / 2, 40))) {
+			m_gui_state = MAIN_MENU;
+		}
+
 		ImGui::End();
 		ImGui::PopFont();
 	}
@@ -164,3 +243,48 @@ private:
 
 	GUI_STATE m_gui_state = MAIN_MENU;
 };
+
+
+ImVec2  operator+(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x + rhs.x, lhs.y + rhs.y); }
+ImVec2  operator-(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x - rhs.x, lhs.y - rhs.y); }
+bool TestButton(const char* label, const ImVec2& size_arg, ImGuiButtonFlags flags, bool isActive)
+{
+	using namespace ImGui;
+	ImGuiWindow* window = GetCurrentWindow();
+	if (window->SkipItems)
+		return false;
+
+	ImGuiContext& g = *GImGui;
+	const ImGuiStyle& style = g.Style;
+	const ImGuiID id = window->GetID(label);
+	const ImVec2 label_size = CalcTextSize(label, NULL, true);
+
+	ImVec2 pos = window->DC.CursorPos;
+	if ((flags & ImGuiButtonFlags_AlignTextBaseLine) && style.FramePadding.y < window->DC.CurrLineTextBaseOffset) // Try to vertically align buttons that are smaller/have no padding so that text baseline matches (bit hacky, since it shouldn't be a flag)
+		pos.y += window->DC.CurrLineTextBaseOffset - style.FramePadding.y;
+	ImVec2 size = CalcItemSize(size_arg, label_size.x + style.FramePadding.x * 2.0f, label_size.y + style.FramePadding.y * 2.0f);
+
+	const ImRect bb(pos, pos + size);
+	ItemSize(size, style.FramePadding.y);
+	if (!ItemAdd(bb, id))
+		return false;
+
+	bool hovered, held;
+	bool pressed = ButtonBehavior(bb, id, &hovered, &held, flags);
+
+	// Render
+	const ImU32 col = GetColorU32((held && hovered) ? ImGuiCol_ButtonActive : hovered ? ImGuiCol_ButtonHovered : isActive ? ImGuiCol_ButtonActive : ImGuiCol_Button);
+	RenderNavHighlight(bb, id);
+	RenderFrame(bb.Min, bb.Max, col, true, style.FrameRounding);
+
+	if (g.LogEnabled)
+		LogSetNextTextDecoration("[", "]");
+	RenderTextClipped(bb.Min + style.FramePadding, bb.Max - style.FramePadding, label, NULL, &label_size, style.ButtonTextAlign, &bb);
+
+	// Automatically close popups
+	//if (pressed && !(flags & ImGuiButtonFlags_DontClosePopups) && (window->Flags & ImGuiWindowFlags_Popup))
+	//    CloseCurrentPopup();
+
+	IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags);
+	return pressed;
+}

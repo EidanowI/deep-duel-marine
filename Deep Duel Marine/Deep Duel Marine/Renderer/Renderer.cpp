@@ -193,6 +193,42 @@ void Renderer::PresentFrame() noexcept {
 	s_pSwapChain->Present(1, 0);
 }
 
+ID3D11ShaderResourceView* Renderer::LoadImageToGPU(unsigned char* data, unsigned int width, unsigned int height) noexcept {
+	D3D11_TEXTURE2D_DESC textureDesc{};
+	{
+		textureDesc.Width = width;
+		textureDesc.Height = height;
+		textureDesc.MipLevels = 1u;
+		textureDesc.ArraySize = 1u;
+		textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		textureDesc.SampleDesc.Count = 1u;
+		textureDesc.SampleDesc.Quality = 0u;
+		textureDesc.Usage = D3D11_USAGE_DEFAULT;
+		textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+		textureDesc.CPUAccessFlags = 0u;
+		textureDesc.MiscFlags = 0u;
+	}
+	D3D11_SUBRESOURCE_DATA subresData{};
+	{
+		subresData.pSysMem = data;
+		subresData.SysMemPitch = width * 4;
+	}
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture;
+	s_pDevice->CreateTexture2D(&textureDesc, &subresData, &pTexture);
+
+	ID3D11ShaderResourceView* view;
+	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResViewDesc = {};
+	{
+		shaderResViewDesc.Format = textureDesc.Format;
+		shaderResViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		shaderResViewDesc.Texture2D.MostDetailedMip = 0;
+		shaderResViewDesc.Texture2D.MipLevels = 1;
+	}
+	s_pDevice->CreateShaderResourceView(pTexture.Get(), &shaderResViewDesc, &view);
+
+	return view;
+}
+
 IDXGIAdapter* Renderer::GetMostPowerfulAdapter(std::vector<Microsoft::WRL::ComPtr<IDXGIAdapter>> adapters) noexcept{
 	int bestScore = -1;
 	IDXGIAdapter* bestScore_adapter = nullptr;

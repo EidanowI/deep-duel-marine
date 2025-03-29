@@ -18,6 +18,8 @@ public:
 	static void ClearFrame() noexcept;
 	static void PresentFrame() noexcept;
 
+	static ID3D11ShaderResourceView* LoadImageToGPU(unsigned char* data, unsigned int width, unsigned int height) noexcept;
+
 private:
 	static IDXGIAdapter* GetMostPowerfulAdapter(std::vector<Microsoft::WRL::ComPtr<IDXGIAdapter>> adapters) noexcept;
 

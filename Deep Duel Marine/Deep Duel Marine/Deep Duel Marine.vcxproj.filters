@@ -51,6 +51,12 @@
     <ClCompile Include="GUI\CustomImGuiElemets.h">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SteamNetworking\SteamNetworking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SteamNetworking\GameClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeepDuelMarine.h">
@@ -95,5 +101,156 @@
     <ClInclude Include="GUI\GUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SteamNetworking\SteamNetworking.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamapps.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamappticket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamclient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamcontroller.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamdualsense.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamfriends.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamgamecoordinator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamgameserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamgameserverstats.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamhtmlsurface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamhttp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteaminput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteaminventory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteammatchmaking.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteammusic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteammusicremote.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamnetworking.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamnetworkingmessages.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamnetworkingsockets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamnetworkingutils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamparentalsettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamps3overlayrenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamremoteplay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamremotestorage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamscreenshots.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamtimeline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamugc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamuser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamuserstats.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamutils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\isteamvideo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\matchmakingtypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\steam_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\steam_api_common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\steam_api_flat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\steam_api_internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\steam_gameserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\steamclientpublic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\steamencryptedappticket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\steamhttpenums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\steamnetworkingfakeip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\steamnetworkingtypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\steamps3params.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\steamtypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\steam\public\steam\steamuniverse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SteamNetworking\GameClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SteamNetworking\Lobby.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Dependencies\steam\bin\steam_api.lib" />
+    <Library Include="Dependencies\steam\bin\steam_api64.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dependencies\steam\public\steam\steam_api.json" />
   </ItemGroup>
 </Project>
