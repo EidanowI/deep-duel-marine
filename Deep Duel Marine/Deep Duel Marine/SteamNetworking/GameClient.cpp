@@ -1,8 +1,10 @@
 #include "GameClient.h"
+#include "../GUI/GUI.h"
 
 
 
 GameClient::GameClient() noexcept {
+	m_lobby = Lobby();
 	if (SteamUser()->BLoggedOn())
 	{
 		m_client_steamID = SteamUser()->GetSteamID();
@@ -29,9 +31,19 @@ void GameClient::OnLobbyCreated(LobbyCreated_t* pCallback, bool bIOFailure) {
 	{
 		m_lobby.m_id = pCallback->m_ulSteamIDLobby;
 		m_client_gameState = GAME_STATE_IN_LOBBY;
+		is_client_owns_lobby = true;
 
 		SteamMatchmaking()->SetLobbyData(pCallback->m_ulSteamIDLobby, "name", m_lobby.m_name);
 		SteamMatchmaking()->SetLobbyData(pCallback->m_ulSteamIDLobby, "isPrivate", m_lobby.m_isPublic ? "1" : "0");
 		SteamMatchmaking()->SetLobbyData(pCallback->m_ulSteamIDLobby, "isDDM", "1");
 	}
+}
+
+void GameClient::LeaveLobby() noexcept {
+	if (!m_lobby.m_id) return;
+
+	SteamMatchmaking()->LeaveLobby(m_lobby.m_id);
+
+	m_lobby.m_id = 0;
+	m_lobby = Lobby();
 }

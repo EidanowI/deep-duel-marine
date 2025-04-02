@@ -129,6 +129,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -146,6 +147,7 @@
     <ClCompile Include="Dependencies\imGUI\imgui_tables.cpp" />
     <ClCompile Include="Dependencies\imGUI\imgui_widgets.cpp" />
     <ClCompile Include="GUI\CustomImGuiElemets.h" />
+    <ClCompile Include="GUI\GUI.cpp" />
     <ClCompile Include="ImGuiRender\ImGuiRender.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow\MainWindow.cpp" />
@@ -210,6 +212,7 @@
     <ClInclude Include="Dependencies\steam\public\steam\steam_api_flat.h" />
     <ClInclude Include="Dependencies\steam\public\steam\steam_api_internal.h" />
     <ClInclude Include="Dependencies\steam\public\steam\steam_gameserver.h" />
+    <ClInclude Include="GlobalParams.h" />
     <ClInclude Include="GUI\GUI.h" />
     <ClInclude Include="ImGuiRender\ImGuiRender.h" />
     <ClInclude Include="MainWindow\MainWindow.h" />

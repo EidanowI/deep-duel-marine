@@ -85,9 +85,29 @@ LobbyBrowser* SteamNetworkingManager::GetLobbyBrowser() noexcept {
 void SteamNetworkingManager::CreateLobby() noexcept {
 	s_pGame_client->CreateLobby();
 }
+void SteamNetworkingManager::LeaveLobby() noexcept {
+	s_pGame_client->LeaveLobby();
+}
 
 void* SteamNetworkingManager::LoadSelfAvatar() noexcept {
-	return LoadAvatar(SteamUser()->GetSteamID());
+	if (s_isConnected_to_steam) {
+		return LoadAvatar(SteamUser()->GetSteamID());
+	}
+	else {
+		return s_avatars[{}];
+	}
+}
+void* SteamNetworkingManager::LoadAponentAvatar() noexcept {
+	if (!s_pGame_client || s_pGame_client->m_lobby.m_id == 0) return s_avatars[{}];
+
+	for (int i = 0; i < SteamMatchmaking()->GetNumLobbyMembers(s_pGame_client->m_lobby.m_id); i++) {
+		auto sID = SteamMatchmaking()->GetLobbyMemberByIndex(s_pGame_client->m_lobby.m_id, i);
+		if (sID != SteamUser()->GetSteamID()) {
+			return LoadAvatar(sID);
+		}
+	}
+
+	return s_avatars[{}];
 }
 void* SteamNetworkingManager::LoadAvatar(CSteamID id) noexcept {
 	if (s_isConnected_to_steam) {
@@ -105,9 +125,9 @@ void* SteamNetworkingManager::LoadAvatar(CSteamID id) noexcept {
 			
 				s_avatars[id] = Renderer::LoadImageToGPU(imageBuffer, width, height);
 
-				return s_avatars[id];
-
 				delete[] imageBuffer;
+
+				return s_avatars[id];
 			}
 			else {
 				return s_avatars[{}];
@@ -122,6 +142,9 @@ void* SteamNetworkingManager::LoadAvatar(CSteamID id) noexcept {
 
 const char* SteamNetworkingManager::GetSelfUserNickName() noexcept {
 	return SteamFriends()->GetPersonaName();
+}
+const char* SteamNetworkingManager::GetAponentUserNickName() noexcept {
+	return "Unknown player";
 }
 const char* SteamNetworkingManager::GetUserNickName(CSteamID id) noexcept {
 	if (s_isConnected_to_steam) {

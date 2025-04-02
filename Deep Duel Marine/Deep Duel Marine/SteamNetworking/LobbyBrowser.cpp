@@ -1,4 +1,5 @@
 #include "LobbyBrowser.h"
+#include "../GlobalParams.h"
 
 
 bool ContainsSubstring(const std::string& str, const std::string& substr);
@@ -22,7 +23,9 @@ void LobbyBrowser::OnLobbyMatchListCallback(LobbyMatchList_t* pCallback, bool bI
 		Lobby lobby;
 		lobby.m_id = SteamMatchmaking()->GetLobbyByIndex(i).ConvertToUint64();
 		const char* nn = SteamMatchmaking()->GetLobbyData(SteamMatchmaking()->GetLobbyByIndex(i), "name");
-		//if (SteamMatchmaking()->GetLobbyData(SteamMatchmaking()->GetLobbyByIndex(i), "isDDM")[0] != '1') continue;
+#if ENABLE_NOT_DEEP_DUEL_LOBBYS_IN_LOBBY_BROWSER == 1
+		if (SteamMatchmaking()->GetLobbyData(SteamMatchmaking()->GetLobbyByIndex(i), "isDDM")[0] != '1') continue;
+#endif
 		if (nn[0] != 0) {
 			strncpy(lobby.m_name, SteamMatchmaking()->GetLobbyData(SteamMatchmaking()->GetLobbyByIndex(i), "name"), 63);
 			lobby.m_isPublic = SteamMatchmaking()->GetLobbyData(SteamMatchmaking()->GetLobbyByIndex(i), "isPrivate")[0] == '1' ? true : false;

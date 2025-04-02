@@ -25,11 +25,14 @@ public:
 	static LobbyBrowser* GetLobbyBrowser() noexcept;
 
 	static void CreateLobby() noexcept;
+	static void LeaveLobby() noexcept;
 
 	static void* LoadSelfAvatar() noexcept;
+	static void* LoadAponentAvatar() noexcept;
 	static void* LoadAvatar(CSteamID id) noexcept;
 
 	static const char* GetSelfUserNickName() noexcept;
+	static const char* GetAponentUserNickName() noexcept;
 	static const char* GetUserNickName(CSteamID id) noexcept;
 
 private:

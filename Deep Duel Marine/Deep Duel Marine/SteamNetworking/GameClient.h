@@ -26,6 +26,7 @@ public:
     ~GameClient() noexcept;
 
     void CreateLobby() noexcept;
+    void LeaveLobby() noexcept;
 
 
 private:
@@ -38,4 +39,5 @@ private:
     GAME_STATE m_client_gameState;
 
     Lobby m_lobby;
+    bool is_client_owns_lobby;
 };
