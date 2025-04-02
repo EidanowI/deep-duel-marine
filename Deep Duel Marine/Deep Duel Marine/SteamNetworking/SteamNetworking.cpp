@@ -82,8 +82,15 @@ LobbyBrowser* SteamNetworkingManager::GetLobbyBrowser() noexcept {
 	return s_pLobbyBrowser;
 }
 
+int SteamNetworkingManager::GetLobbyMemberCount() noexcept {
+	return s_pGame_client->GetLobbyMemberCount();
+}
+
 void SteamNetworkingManager::CreateLobby() noexcept {
 	s_pGame_client->CreateLobby();
+}
+void SteamNetworkingManager::JoinLobby(CSteamID id) noexcept {
+	s_pGame_client->JoinLobby(id);
 }
 void SteamNetworkingManager::LeaveLobby() noexcept {
 	s_pGame_client->LeaveLobby();

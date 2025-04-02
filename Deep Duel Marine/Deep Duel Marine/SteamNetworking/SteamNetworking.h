@@ -24,7 +24,10 @@ public:
 
 	static LobbyBrowser* GetLobbyBrowser() noexcept;
 
+	static int GetLobbyMemberCount() noexcept;
+
 	static void CreateLobby() noexcept;
+	static void JoinLobby(CSteamID id) noexcept;
 	static void LeaveLobby() noexcept;
 
 	static void* LoadSelfAvatar() noexcept;

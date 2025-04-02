@@ -25,7 +25,10 @@ public:
     GameClient() noexcept;
     ~GameClient() noexcept;
 
+    int GetLobbyMemberCount() noexcept;
+
     void CreateLobby() noexcept;
+    void JoinLobby(CSteamID id) noexcept;
     void LeaveLobby() noexcept;
 
 
@@ -33,6 +36,8 @@ private:
     void OnLobbyCreated(LobbyCreated_t* pCallback, bool bIOFailure);
     CCallResult<GameClient, LobbyCreated_t> m_steamCallResultLobbyCreated;
 
+    void OnLobbyEntered(LobbyEnter_t* pCallback, bool bIOFailure);
+    CCallResult<GameClient, LobbyEnter_t> m_SteamCallResultLobbyEntered;
 private:
     CSteamID m_client_steamID;
     EClientConnectionState m_client_connectionState;

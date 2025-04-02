@@ -18,6 +18,15 @@ GameClient::~GameClient() noexcept {
 
 }
 
+int GameClient::GetLobbyMemberCount() noexcept {
+	if (m_lobby.m_id) {
+		return SteamMatchmaking()->GetNumLobbyMembers(m_lobby.m_id);
+	}
+	else {
+		return 0;
+	}
+}
+
 void GameClient::CreateLobby() noexcept {
 	if (!m_steamCallResultLobbyCreated.IsActive())
 	{
@@ -39,8 +48,30 @@ void GameClient::OnLobbyCreated(LobbyCreated_t* pCallback, bool bIOFailure) {
 	}
 }
 
+void GameClient::JoinLobby(CSteamID id) noexcept {
+	SteamAPICall_t hSteamAPICall = SteamMatchmaking()->JoinLobby(id);
+	m_SteamCallResultLobbyEntered.Set(hSteamAPICall, this, &GameClient::OnLobbyEntered);
+}
+void GameClient::OnLobbyEntered(LobbyEnter_t* pCallback, bool bIOFailure) {
+	if (m_client_gameState == GAME_STATE_IN_LOBBY)
+		return;
+
+	if (pCallback->m_EChatRoomEnterResponse != k_EChatRoomEnterResponseSuccess)
+	{
+		MessageBoxA(0, "ERROR", "Cant join", MB_ICONERROR);
+		return;
+	}
+
+	// success
+	m_lobby.m_id = pCallback->m_ulSteamIDLobby;
+	m_client_gameState = GAME_STATE_IN_LOBBY;
+	is_client_owns_lobby = false;
+}
+
 void GameClient::LeaveLobby() noexcept {
 	if (!m_lobby.m_id) return;
+
+	m_client_gameState = GAME_STATE_IN_MENU;
 
 	SteamMatchmaking()->LeaveLobby(m_lobby.m_id);
 

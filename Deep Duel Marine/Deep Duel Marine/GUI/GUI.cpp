@@ -19,7 +19,9 @@ void GUI::Draw() noexcept {
 	static int sync_counter = 0;
 	if (sync_counter > 100) {
 		sync_counter = 0;
-		UpdateAponentAvatar();
+		if (SteamNetworkingManager::GetLobbyStruct()->m_id) {
+			UpdateAponentAvatar();
+		}	
 	}
 	sync_counter++;
 
@@ -61,6 +63,7 @@ void GUI::SetGuiState(GUI_STATE state) noexcept {
 }
 
 void GUI::DrawMainMenu() noexcept {
+	///TODO indication when yor not connected
 	ImGui::SetNextWindowBgAlpha(0.0f);
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::Begin("Profile info", 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
@@ -139,8 +142,8 @@ void GUI::DrawCreateLobby() noexcept {
 
 	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + ((CREATE_LOBBY_WIDTH - 20) / 4), ImGui::GetCursorPos().y));
 	if (ImGui::Button("Confirm", ImVec2((CREATE_LOBBY_WIDTH - 20) / 2, 40))) {
-		SteamNetworkingManager::CreateLobby();
 		m_gui_state = LOBBY_LOADING;
+		SteamNetworkingManager::CreateLobby();
 	}
 	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + ((CREATE_LOBBY_WIDTH - 20) / 4), ImGui::GetCursorPos().y));
 	if (ImGui::Button("Back", ImVec2((CREATE_LOBBY_WIDTH - 20) / 2, 40))) {
@@ -178,7 +181,8 @@ void GUI::DrawLobbyBrowser() noexcept {
 			std::string a = SteamNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_name;
 			if (ImGui::Selectable(SteamNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_name, false))
 			{
-				MessageBoxA(0, "Join to ", SteamNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_name, 0);
+				m_gui_state = LOBBY_LOADING;
+				SteamNetworkingManager::JoinLobby(SteamNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_id);
 				item_current_idx = i;
 			}
 
@@ -219,7 +223,8 @@ void GUI::DrawReadyOrNotMenu() noexcept {
 
 	static bool isReady = false;
 
-	ImGui::Image(m_pSelf_avatar, ImVec2(128, 128));
+	ImGui::Text(std::to_string(SteamNetworkingManager::GetLobbyMemberCount()).c_str());
+	//ImGui::Image(m_pSelf_avatar, ImVec2(128, 128));
 	
 	if (SteamNetworkingManager::GetLobbyStruct()->m_id != 0) {
 		ImGui::SetCursorScreenPos(ImVec2(MainWindow::GetWindowWidth() - 135 - MainWindow::GetWindowWidth() / 50, MainWindow::GetWindowHeight() - MainWindow::GetWindowHeight() / 10));
