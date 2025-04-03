@@ -25,6 +25,7 @@ public:
 	static LobbyBrowser* GetLobbyBrowser() noexcept;
 
 	static int GetLobbyMemberCount() noexcept;
+	static bool IsThisClientLobbyOwner() noexcept;
 
 	static void CreateLobby() noexcept;
 	static void JoinLobby(CSteamID id) noexcept;

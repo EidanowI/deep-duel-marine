@@ -59,7 +59,11 @@ void SteamNetworkingManager::Terminate() noexcept {
 	SteamAPI_Shutdown();
 }
 void SteamNetworkingManager::Update() noexcept {
+	if (!s_isConnected_to_steam) return;
+
 	SteamAPI_RunCallbacks();
+
+	s_pGame_client->Update();
 }
 
 void SteamNetworkingManager::ClearLobbyStructData() noexcept {
@@ -84,6 +88,9 @@ LobbyBrowser* SteamNetworkingManager::GetLobbyBrowser() noexcept {
 
 int SteamNetworkingManager::GetLobbyMemberCount() noexcept {
 	return s_pGame_client->GetLobbyMemberCount();
+}
+bool SteamNetworkingManager::IsThisClientLobbyOwner() noexcept {
+	return s_pGame_client->is_client_owns_lobby;
 }
 
 void SteamNetworkingManager::CreateLobby() noexcept {
@@ -151,6 +158,15 @@ const char* SteamNetworkingManager::GetSelfUserNickName() noexcept {
 	return SteamFriends()->GetPersonaName();
 }
 const char* SteamNetworkingManager::GetAponentUserNickName() noexcept {
+	if (!s_pGame_client || s_pGame_client->m_lobby.m_id == 0) return "Unknown player";
+
+	for (int i = 0; i < SteamMatchmaking()->GetNumLobbyMembers(s_pGame_client->m_lobby.m_id); i++) {
+		auto sID = SteamMatchmaking()->GetLobbyMemberByIndex(s_pGame_client->m_lobby.m_id, i);
+		if (sID != SteamUser()->GetSteamID()) {
+			return GetUserNickName(sID);
+		}
+	}
+
 	return "Unknown player";
 }
 const char* SteamNetworkingManager::GetUserNickName(CSteamID id) noexcept {

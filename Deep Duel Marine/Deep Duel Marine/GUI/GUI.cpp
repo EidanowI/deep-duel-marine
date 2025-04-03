@@ -16,14 +16,13 @@ void GUI::Draw() noexcept {
 		m_pSelf_avatar = (char*)SteamNetworkingManager::LoadSelfAvatar();
 	}
 
-	static int sync_counter = 0;
-	if (sync_counter > 100) {
-		sync_counter = 0;
-		if (SteamNetworkingManager::GetLobbyStruct()->m_id) {
-			UpdateAponentAvatar();
-		}	
+	static int tick_counter = 0;
+	if (tick_counter > 60) {
+		tick_counter = 0;
+
+		UpdateAponentAvatar();
 	}
-	sync_counter++;
+	tick_counter++;
 
 	switch (m_gui_state)
 	{
@@ -106,6 +105,7 @@ void GUI::DrawMainMenu() noexcept {
 	}
 
 	if (ImGui::Button("Settings", ImVec2(MainWindow::GetWindowWidth() / 4.2, MainWindow::GetWindowHeight() / 20))) {
+		//ShellExecute(0, 0, L"https://github.com/EidanowI/deep-duel-marine", 0, 0, SW_SHOW);
 		m_gui_state = SETTINGS;
 	}
 
@@ -223,8 +223,30 @@ void GUI::DrawReadyOrNotMenu() noexcept {
 
 	static bool isReady = false;
 
-	ImGui::Text(std::to_string(SteamNetworkingManager::GetLobbyMemberCount()).c_str());
-	//ImGui::Image(m_pSelf_avatar, ImVec2(128, 128));
+	//ImGui::Text(std::to_string(SteamNetworkingManager::GetLobbyMemberCount()).c_str());
+	ImGui::Image(m_pSelf_avatar, ImVec2(128, 128));
+	ImGui::SameLine();
+	ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
+	ImGui::Text(SteamNetworkingManager::GetSelfUserNickName());
+	if (SteamNetworkingManager::IsThisClientLobbyOwner()) {
+		ImGui::SameLine();
+		ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
+		ImGui::Text("OWNER---");
+	}
+
+
+	if (SteamNetworkingManager::GetLobbyMemberCount() == 2) {
+		ImGui::Image(m_pAponent_avatar, ImVec2(128, 128));
+		ImGui::SameLine();
+		ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
+		ImGui::Text(SteamNetworkingManager::GetAponentUserNickName());
+		if (!SteamNetworkingManager::IsThisClientLobbyOwner()) {
+			ImGui::SameLine();
+			ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
+			ImGui::Text("OWNER---");
+		}
+	}
+	
 	
 	if (SteamNetworkingManager::GetLobbyStruct()->m_id != 0) {
 		ImGui::SetCursorScreenPos(ImVec2(MainWindow::GetWindowWidth() - 135 - MainWindow::GetWindowWidth() / 50, MainWindow::GetWindowHeight() - MainWindow::GetWindowHeight() / 10));
@@ -296,8 +318,10 @@ void GUI::DrawQuitDialog() noexcept {
 }
 
 void GUI::UpdateAponentAvatar() noexcept {
-	m_pSelf_avatar = (char*)SteamNetworkingManager::LoadSelfAvatar();
-	m_pAponent_avatar = (char*)SteamNetworkingManager::LoadAponentAvatar();
+	if (SteamNetworkingManager::IsSteamConnected()) {
+		m_pSelf_avatar = (char*)SteamNetworkingManager::LoadSelfAvatar();
+		m_pAponent_avatar = (char*)SteamNetworkingManager::LoadAponentAvatar();
+	}
 }
 
 

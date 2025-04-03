@@ -25,6 +25,8 @@ public:
     GameClient() noexcept;
     ~GameClient() noexcept;
 
+    void Update() noexcept;
+
     int GetLobbyMemberCount() noexcept;
 
     void CreateLobby() noexcept;
@@ -45,4 +47,5 @@ private:
 
     Lobby m_lobby;
     bool is_client_owns_lobby;
+    int m_lobby_members_count;
 };

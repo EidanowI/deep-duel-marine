@@ -15,7 +15,17 @@ GameClient::GameClient() noexcept {
 	m_client_gameState = GAME_STATE_IN_MENU;
 }
 GameClient::~GameClient() noexcept {
+	LeaveLobby();
+}
+void GameClient::Update() noexcept {
+	if (!m_lobby.m_id) {
+		auto count = SteamMatchmaking()->GetNumLobbyMembers(m_lobby.m_id);
+		if (m_lobby_members_count != count) {
+			m_lobby_members_count = count;
 
+			is_client_owns_lobby = SteamUser()->GetSteamID() == SteamMatchmaking()->GetLobbyOwner(m_lobby.m_id);
+		}
+	}
 }
 
 int GameClient::GetLobbyMemberCount() noexcept {
