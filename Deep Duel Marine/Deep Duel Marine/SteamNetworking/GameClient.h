@@ -27,6 +27,8 @@ public:
 
     void Update() noexcept;
 
+    void SetReadyOrNotStatus(bool isReady) noexcept;
+
     int GetLobbyMemberCount() noexcept;
 
     void CreateLobby() noexcept;

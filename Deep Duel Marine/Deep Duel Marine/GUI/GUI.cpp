@@ -47,6 +47,9 @@ void GUI::Draw() noexcept {
 	case IN_LOBBY:
 		DrawReadyOrNotMenu();
 		break;
+	case STARTING_SERVER:
+		DrawLobbyLoading();
+		break;
 	case SETTINGS:
 		DrawSetting();
 		break;
@@ -210,7 +213,7 @@ void GUI::DrawLobbyLoading() noexcept {
 	ImGuiStyle& style = ImGui::GetStyle();
 	style.WindowBorderSize = 0.0f;
 	style.ItemSpacing = ImVec2(25, MainWindow::GetWindowHeight() / 40);
-	ImGui::Text("LOADING");
+	ImGui::Text("PUPSING");
 	ImGui::End();
 }
 void GUI::DrawReadyOrNotMenu() noexcept {
@@ -223,7 +226,8 @@ void GUI::DrawReadyOrNotMenu() noexcept {
 
 	static bool isReady = false;
 
-	//ImGui::Text(std::to_string(SteamNetworkingManager::GetLobbyMemberCount()).c_str());
+	bool is_self_reaty = SteamNetworkingManager::GetSelfReadyOrNotStatus();
+	bool is_aponent_ready = SteamNetworkingManager::GetAponentReadyOrNotStatus();
 	ImGui::Image(m_pSelf_avatar, ImVec2(128, 128));
 	ImGui::SameLine();
 	ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
@@ -232,6 +236,11 @@ void GUI::DrawReadyOrNotMenu() noexcept {
 		ImGui::SameLine();
 		ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
 		ImGui::Text("OWNER---");
+	}
+	if (is_self_reaty) {
+		ImGui::SameLine();
+		ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
+		ImGui::Text("READY");
 	}
 
 
@@ -244,6 +253,41 @@ void GUI::DrawReadyOrNotMenu() noexcept {
 			ImGui::SameLine();
 			ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
 			ImGui::Text("OWNER---");
+					
+		}
+		if (is_aponent_ready) {
+			ImGui::SameLine();
+			ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
+			ImGui::Text("READY");
+		}
+	}
+
+	ImGui::SameLine();
+	ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x + 500, ImGui::GetCursorScreenPos().y));
+	if (SteamNetworkingManager::GetLobbyMemberCount() != 2) {
+		ImGui::Text("Waiting player");
+	}
+	else{
+		int sec_rem = 0;
+		bool alfred = SteamNetworkingManager::StartServerRetarder(is_aponent_ready && is_self_reaty, sec_rem);
+		if (is_aponent_ready) {
+			if (is_self_reaty) {
+				if (alfred) {
+					m_gui_state = STARTING_SERVER;///---------------- TODO SERVER LOADING GUI_STATE
+				}
+				ImGui::Text(("Server starts after " + std::to_string(sec_rem) + " seconds").c_str());
+			}
+			else {
+				ImGui::Text("Your aponent is ready to play");
+			}
+		}
+		else {
+			if (is_self_reaty) {
+				ImGui::Text("Waiting for your aponent ready to play");
+			}
+			else {
+				ImGui::Text("Waitin for both players ready");
+			}
 		}
 	}
 	
@@ -251,8 +295,8 @@ void GUI::DrawReadyOrNotMenu() noexcept {
 	if (SteamNetworkingManager::GetLobbyStruct()->m_id != 0) {
 		ImGui::SetCursorScreenPos(ImVec2(MainWindow::GetWindowWidth() - 135 - MainWindow::GetWindowWidth() / 50, MainWindow::GetWindowHeight() - MainWindow::GetWindowHeight() / 10));
 		if (TestButton("Ready", ImVec2(135, 75), ImGuiButtonFlags_None, isReady)) {
-
 			isReady = isReady ? false : true;
+			SteamNetworkingManager::SetReadyOrNotStatus(isReady);
 		}
 	}	
 

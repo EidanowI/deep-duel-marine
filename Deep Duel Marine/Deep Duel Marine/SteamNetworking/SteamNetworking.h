@@ -4,6 +4,7 @@
 #include "../Dependencies/steam/public/steam/steam_api.h"
 #include <map>
 #include <string>
+#include <ctime>
 
 #include "Lobby.h"
 #include "GameClient.h"
@@ -26,6 +27,15 @@ public:
 
 	static int GetLobbyMemberCount() noexcept;
 	static bool IsThisClientLobbyOwner() noexcept;
+
+	static void SetReadyOrNotStatus(bool isReady) noexcept;
+	static bool GetSelfReadyOrNotStatus() noexcept;
+	static bool GetAponentReadyOrNotStatus() noexcept;
+
+	/*This method receives info about readiness of both players and start counting down,
+	seconds return in seconds_remaining ref, after 5 seconds the method will return true if
+	both players are still ready and start server init*/
+	static bool StartServerRetarder(bool isBoth_plaers_ready, int& seconds_remaining) noexcept;
 
 	static void CreateLobby() noexcept;
 	static void JoinLobby(CSteamID id) noexcept;

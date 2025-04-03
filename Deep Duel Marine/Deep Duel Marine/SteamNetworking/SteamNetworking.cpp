@@ -93,6 +93,59 @@ bool SteamNetworkingManager::IsThisClientLobbyOwner() noexcept {
 	return s_pGame_client->is_client_owns_lobby;
 }
 
+void SteamNetworkingManager::SetReadyOrNotStatus(bool isReady) noexcept {
+	//SteamMatchmaking()->GetLobbyMemberData(m_steamIDLobby, SteamUser()->GetSteamID(), "ready")
+
+	s_pGame_client->SetReadyOrNotStatus(isReady);
+}
+bool SteamNetworkingManager::GetSelfReadyOrNotStatus() noexcept {
+	if (s_pGame_client->m_lobby.m_id) {
+		return SteamMatchmaking()->GetLobbyMemberData(s_pGame_client->m_lobby.m_id, SteamUser()->GetSteamID(), "ready")[0] == '1';
+	}
+}
+bool SteamNetworkingManager::GetAponentReadyOrNotStatus() noexcept {
+	//if (s_pGame_client->m_lobby_members_count != 2) return false;
+
+	for (int i = 0; i < SteamMatchmaking()->GetNumLobbyMembers(s_pGame_client->m_lobby.m_id); i++) {
+		auto sID = SteamMatchmaking()->GetLobbyMemberByIndex(s_pGame_client->m_lobby.m_id, i);
+		if (sID != SteamUser()->GetSteamID()) {
+			//MessageBoxA(0, "A", SteamMatchmaking()->GetLobbyMemberData(s_pGame_client->m_lobby.m_id, sID, "ready"), 0);
+			//OutputDebugStringA(SteamMatchmaking()->GetLobbyMemberData(s_pGame_client->m_lobby.m_id, sID, "ready")[0] == '1');
+			return SteamMatchmaking()->GetLobbyMemberData(s_pGame_client->m_lobby.m_id, sID, "ready")[0] == '1';
+		}
+	}
+}
+
+bool SteamNetworkingManager::StartServerRetarder(bool isBoth_plaers_ready, int& seconds_remaining) noexcept {
+	static bool is_sync_both_ready = false;
+	static int ssecs = 0;
+
+	if (isBoth_plaers_ready && !is_sync_both_ready) {
+		is_sync_both_ready = true;
+		ssecs = 6;
+	}
+	if (!isBoth_plaers_ready) {
+		ssecs = 6;
+		is_sync_both_ready = false;
+		return false;
+	}
+
+	static int now_time = 0;
+	if (now_time != std::time(0)) {
+		now_time = std::time(0);
+		ssecs--;
+	}
+
+	seconds_remaining = ssecs;
+
+	if (ssecs < 0) {
+		MessageBoxA(0, "Bruh", "Server should start init now", 0);
+		///TODO starting server logic
+		return true;
+	}
+	return false;
+}
+
 void SteamNetworkingManager::CreateLobby() noexcept {
 	s_pGame_client->CreateLobby();
 }

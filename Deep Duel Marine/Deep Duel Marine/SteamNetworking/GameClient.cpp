@@ -18,7 +18,7 @@ GameClient::~GameClient() noexcept {
 	LeaveLobby();
 }
 void GameClient::Update() noexcept {
-	if (!m_lobby.m_id) {
+	if (m_lobby.m_id) {
 		auto count = SteamMatchmaking()->GetNumLobbyMembers(m_lobby.m_id);
 		if (m_lobby_members_count != count) {
 			m_lobby_members_count = count;
@@ -26,6 +26,12 @@ void GameClient::Update() noexcept {
 			is_client_owns_lobby = SteamUser()->GetSteamID() == SteamMatchmaking()->GetLobbyOwner(m_lobby.m_id);
 		}
 	}
+}
+
+void GameClient::SetReadyOrNotStatus(bool isReady) noexcept {
+	if (!m_lobby.m_id) return;
+
+	SteamMatchmaking()->SetLobbyMemberData(m_lobby.m_id, "ready", isReady ? "1" : "0");
 }
 
 int GameClient::GetLobbyMemberCount() noexcept {
@@ -55,6 +61,7 @@ void GameClient::OnLobbyCreated(LobbyCreated_t* pCallback, bool bIOFailure) {
 		SteamMatchmaking()->SetLobbyData(pCallback->m_ulSteamIDLobby, "name", m_lobby.m_name);
 		SteamMatchmaking()->SetLobbyData(pCallback->m_ulSteamIDLobby, "isPrivate", m_lobby.m_isPublic ? "1" : "0");
 		SteamMatchmaking()->SetLobbyData(pCallback->m_ulSteamIDLobby, "isDDM", "1");
+		SetReadyOrNotStatus(false);
 	}
 }
 
@@ -76,6 +83,7 @@ void GameClient::OnLobbyEntered(LobbyEnter_t* pCallback, bool bIOFailure) {
 	m_lobby.m_id = pCallback->m_ulSteamIDLobby;
 	m_client_gameState = GAME_STATE_IN_LOBBY;
 	is_client_owns_lobby = false;
+	SetReadyOrNotStatus(false);
 }
 
 void GameClient::LeaveLobby() noexcept {
