@@ -1,8 +1,8 @@
 #include "Renderer.h"
 
-#include "../Dependencies/imGUI/imgui.h"
-#include "../Dependencies/imgui/imgui_impl_win32.h"
-#include "../Dependencies/imgui/imgui_impl_dx11.h"
+#include "../../Dependencies/imGUI/imgui.h"
+#include "../../Dependencies/imgui/imgui_impl_win32.h"
+#include "../../Dependencies/imgui/imgui_impl_dx11.h"
 
 extern bool G_isShould_close_window;
 

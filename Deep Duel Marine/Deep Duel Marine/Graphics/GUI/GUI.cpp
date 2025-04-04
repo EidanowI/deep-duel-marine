@@ -48,7 +48,7 @@ void GUI::Draw() noexcept {
 		DrawReadyOrNotMenu();
 		break;
 	case STARTING_SERVER:
-		DrawLobbyLoading();
+		DrawStartingServer();
 		break;
 	case SETTINGS:
 		DrawSetting();
@@ -213,7 +213,7 @@ void GUI::DrawLobbyLoading() noexcept {
 	ImGuiStyle& style = ImGui::GetStyle();
 	style.WindowBorderSize = 0.0f;
 	style.ItemSpacing = ImVec2(25, MainWindow::GetWindowHeight() / 40);
-	ImGui::Text("PUPSING");
+	ImGui::Text("Loading");
 	ImGui::End();
 }
 void GUI::DrawReadyOrNotMenu() noexcept {
@@ -224,9 +224,8 @@ void GUI::DrawReadyOrNotMenu() noexcept {
 	style.WindowBorderSize = 0.0f;
 	style.ItemSpacing = ImVec2(25, MainWindow::GetWindowHeight() / 40);
 
-	static bool isReady = false;
+	static bool is_self_ready = false;
 
-	bool is_self_reaty = SteamNetworkingManager::GetSelfReadyOrNotStatus();
 	bool is_aponent_ready = SteamNetworkingManager::GetAponentReadyOrNotStatus();
 	ImGui::Image(m_pSelf_avatar, ImVec2(128, 128));
 	ImGui::SameLine();
@@ -237,7 +236,7 @@ void GUI::DrawReadyOrNotMenu() noexcept {
 		ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
 		ImGui::Text("OWNER---");
 	}
-	if (is_self_reaty) {
+	if (is_self_ready) {
 		ImGui::SameLine();
 		ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
 		ImGui::Text("READY");
@@ -263,16 +262,16 @@ void GUI::DrawReadyOrNotMenu() noexcept {
 	}
 
 	ImGui::SameLine();
-	ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x + 500, ImGui::GetCursorScreenPos().y));
+	ImGui::SetCursorScreenPos(ImVec2(MainWindow::GetWindowWidth() / 2, MainWindow::GetWindowHeight() / 3));
 	if (SteamNetworkingManager::GetLobbyMemberCount() != 2) {
 		ImGui::Text("Waiting player");
 	}
 	else{
 		int sec_rem = 0;
-		bool alfred = SteamNetworkingManager::StartServerRetarder(is_aponent_ready && is_self_reaty, sec_rem);
+		bool is_should_start_server = SteamNetworkingManager::StartServerRetarder(is_aponent_ready && is_self_ready, sec_rem);
 		if (is_aponent_ready) {
-			if (is_self_reaty) {
-				if (alfred) {
+			if (is_self_ready) {
+				if (is_should_start_server) {
 					m_gui_state = STARTING_SERVER;///---------------- TODO SERVER LOADING GUI_STATE
 				}
 				ImGui::Text(("Server starts after " + std::to_string(sec_rem) + " seconds").c_str());
@@ -282,7 +281,7 @@ void GUI::DrawReadyOrNotMenu() noexcept {
 			}
 		}
 		else {
-			if (is_self_reaty) {
+			if (is_self_ready) {
 				ImGui::Text("Waiting for your aponent ready to play");
 			}
 			else {
@@ -294,9 +293,9 @@ void GUI::DrawReadyOrNotMenu() noexcept {
 	
 	if (SteamNetworkingManager::GetLobbyStruct()->m_id != 0) {
 		ImGui::SetCursorScreenPos(ImVec2(MainWindow::GetWindowWidth() - 135 - MainWindow::GetWindowWidth() / 50, MainWindow::GetWindowHeight() - MainWindow::GetWindowHeight() / 10));
-		if (TestButton("Ready", ImVec2(135, 75), ImGuiButtonFlags_None, isReady)) {
-			isReady = isReady ? false : true;
-			SteamNetworkingManager::SetReadyOrNotStatus(isReady);
+		if (TestButton("Ready", ImVec2(135, 75), ImGuiButtonFlags_None, is_self_ready)) {
+			is_self_ready = is_self_ready ? false : true;
+			SteamNetworkingManager::SetReadyOrNotStatus(is_self_ready);
 		}
 	}	
 
@@ -305,6 +304,21 @@ void GUI::DrawReadyOrNotMenu() noexcept {
 		SteamNetworkingManager::LeaveLobby();
 		m_gui_state = MAIN_MENU;
 	}
+	ImGui::End();
+}
+void GUI::DrawStartingServer() noexcept {
+	ImGui::SetNextWindowPos(ImVec2(MainWindow::GetWindowWidth() / 2, MainWindow::GetWindowHeight() / 2));
+	ImGui::SetNextWindowBgAlpha(0.0f);
+	ImGui::Begin("DrawLobbyLoading", 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
+	ImGuiStyle& style = ImGui::GetStyle();
+	style.WindowBorderSize = 0.0f;
+	style.ItemSpacing = ImVec2(25, MainWindow::GetWindowHeight() / 40);
+	if (SteamNetworkingManager::IsThisClientLobbyOwner()) {
+		ImGui::Text("Creating server...");
+	}
+	else {
+		ImGui::Text("Connecting to server..");
+	}	
 	ImGui::End();
 }
 void GUI::DrawSetting() noexcept {

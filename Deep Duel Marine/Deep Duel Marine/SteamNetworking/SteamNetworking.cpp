@@ -1,5 +1,5 @@
 #include "SteamNetworking.h"
-#include "../Renderer/Renderer.h"
+#include "../Graphics/Renderer/Renderer.h"
 
 
 extern bool G_isShould_close_window;
@@ -98,11 +98,6 @@ void SteamNetworkingManager::SetReadyOrNotStatus(bool isReady) noexcept {
 
 	s_pGame_client->SetReadyOrNotStatus(isReady);
 }
-bool SteamNetworkingManager::GetSelfReadyOrNotStatus() noexcept {
-	if (s_pGame_client->m_lobby.m_id) {
-		return SteamMatchmaking()->GetLobbyMemberData(s_pGame_client->m_lobby.m_id, SteamUser()->GetSteamID(), "ready")[0] == '1';
-	}
-}
 bool SteamNetworkingManager::GetAponentReadyOrNotStatus() noexcept {
 	//if (s_pGame_client->m_lobby_members_count != 2) return false;
 
@@ -139,7 +134,7 @@ bool SteamNetworkingManager::StartServerRetarder(bool isBoth_plaers_ready, int& 
 	seconds_remaining = ssecs;
 
 	if (ssecs < 0) {
-		MessageBoxA(0, "Bruh", "Server should start init now", 0);
+		//MessageBoxA(0, "Bruh", "Server should start init now", 0);
 		///TODO starting server logic
 		return true;
 	}

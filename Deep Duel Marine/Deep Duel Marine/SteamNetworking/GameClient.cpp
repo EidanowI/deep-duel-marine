@@ -1,5 +1,5 @@
 #include "GameClient.h"
-#include "../GUI/GUI.h"
+#include "../Graphics/GUI/GUI.h"
 
 
 

@@ -29,7 +29,6 @@ public:
 	static bool IsThisClientLobbyOwner() noexcept;
 
 	static void SetReadyOrNotStatus(bool isReady) noexcept;
-	static bool GetSelfReadyOrNotStatus() noexcept;
 	static bool GetAponentReadyOrNotStatus() noexcept;
 
 	/*This method receives info about readiness of both players and start counting down,

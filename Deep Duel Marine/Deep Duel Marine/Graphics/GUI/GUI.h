@@ -2,12 +2,12 @@
 #include <string>
 #include <algorithm>
 
-#include "../Dependencies/imGUI/imgui.h"
-#include "../Dependencies/imGUI/imgui_internal.h"
+#include "../../Dependencies/imGUI/imgui.h"
+#include "../../Dependencies/imGUI/imgui_internal.h"
 //#include "../Dependencies/imGUI/"
 
 #include "../MainWindow/MainWindow.h"
-#include "../SteamNetworking/SteamNetworking.h"
+#include "../../SteamNetworking/SteamNetworking.h"
 
 
 
@@ -50,6 +50,8 @@ private:
 	void DrawLobbyLoading() noexcept;
 
 	void DrawReadyOrNotMenu() noexcept;
+
+	void DrawStartingServer() noexcept;
 
 	void DrawSetting() noexcept;
 

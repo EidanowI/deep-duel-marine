@@ -1,8 +1,8 @@
 #pragma once
-#include "MainWindow/MainWindow.h"
-#include "Renderer/Renderer.h"
-#include "ImGuiRender/ImGuiRender.h"
-#include "GUI/GUI.h"
+#include "Graphics/MainWindow/MainWindow.h"
+#include "Graphics/Renderer/Renderer.h"
+#include "Graphics/ImGuiRender/ImGuiRender.h"
+#include "Graphics/GUI/GUI.h"
 #include "SteamNetworking/SteamNetworking.h"
 
 bool G_isShould_close_window = false;
