@@ -66,6 +66,9 @@
     <ClCompile Include="Graphics\GUI\DisplayHubManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\Shader\VertexShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeepDuelMarine.h">
@@ -266,6 +269,9 @@
     <ClInclude Include="Graphics\GUI\IGUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics\Shader\VertexShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="Dependencies\steam\bin\steam_api.lib" />
@@ -273,5 +279,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\steam\public\steam\steam_api.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Graphics\Shader\ShaderSourceCode\TestVertexShader.hlsl" />
   </ItemGroup>
 </Project>

@@ -20,6 +20,10 @@ public:
 
 	static ID3D11ShaderResourceView* LoadImageToGPU(unsigned char* data, unsigned int width, unsigned int height) noexcept;
 
+	static ID3D11Device* GetDevice() noexcept;
+	static ID3D11DeviceContext* GetDeviceContext() noexcept;
+	static IDXGISwapChain* GetSwapChain() noexcept;
+
 private:
 	static IDXGIAdapter* GetMostPowerfulAdapter(std::vector<Microsoft::WRL::ComPtr<IDXGIAdapter>> adapters) noexcept;
 

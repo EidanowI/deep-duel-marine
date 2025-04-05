@@ -229,6 +229,16 @@ ID3D11ShaderResourceView* Renderer::LoadImageToGPU(unsigned char* data, unsigned
 	return view;
 }
 
+ID3D11Device* Renderer::GetDevice() noexcept {
+	return s_pDevice;
+}
+ID3D11DeviceContext* Renderer::GetDeviceContext() noexcept {
+	return s_pDeviceContext;
+}
+IDXGISwapChain* Renderer::GetSwapChain() noexcept {
+	return s_pSwapChain;
+}
+
 IDXGIAdapter* Renderer::GetMostPowerfulAdapter(std::vector<Microsoft::WRL::ComPtr<IDXGIAdapter>> adapters) noexcept{
 	int bestScore = -1;
 	IDXGIAdapter* bestScore_adapter = nullptr;
