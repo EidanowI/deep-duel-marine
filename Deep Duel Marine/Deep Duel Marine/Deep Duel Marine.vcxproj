@@ -146,6 +146,7 @@
     <ClCompile Include="Dependencies\imGUI\imgui_impl_win32.cpp" />
     <ClCompile Include="Dependencies\imGUI\imgui_tables.cpp" />
     <ClCompile Include="Dependencies\imGUI\imgui_widgets.cpp" />
+    <ClCompile Include="Graphics\GUI\DisplayHubManager.cpp" />
     <ClCompile Include="Graphics\GUI\CustomImGuiElemets.h" />
     <ClCompile Include="Graphics\GUI\GUI.cpp" />
     <ClCompile Include="Graphics\ImGuiRender\ImGuiRender.cpp" />
@@ -212,8 +213,10 @@
     <ClInclude Include="Dependencies\steam\public\steam\steam_api_flat.h" />
     <ClInclude Include="Dependencies\steam\public\steam\steam_api_internal.h" />
     <ClInclude Include="Dependencies\steam\public\steam\steam_gameserver.h" />
+    <ClInclude Include="Graphics\GUI\DisplayHubManager.h" />
     <ClInclude Include="GlobalParams.h" />
     <ClInclude Include="Graphics\GUI\GUI.h" />
+    <ClInclude Include="Graphics\GUI\IGUI.h" />
     <ClInclude Include="Graphics\ImGuiRender\ImGuiRender.h" />
     <ClInclude Include="Graphics\MainWindow\MainWindow.h" />
     <ClInclude Include="Graphics\Renderer\Renderer.h" />

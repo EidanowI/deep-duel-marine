@@ -10,6 +10,9 @@ Lobby G_lobby;
 GUI::GUI() noexcept {
 	m_pAponent_avatar = (char*)SteamNetworkingManager::LoadAponentAvatar();
 }
+GUI::~GUI() noexcept {
+
+}
 
 void GUI::Draw() noexcept {
 	if (m_pSelf_avatar == 0) {

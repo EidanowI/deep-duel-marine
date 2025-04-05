@@ -8,6 +8,7 @@
 
 #include "../MainWindow/MainWindow.h"
 #include "../../SteamNetworking/SteamNetworking.h"
+#include "IGUI.h"
 
 
 
@@ -31,11 +32,13 @@ enum GUI_STATE {
 	SETTINGS,
 	QUIT_DIALOG
 };
-class GUI {
+
+class GUI : public IGUI {
 public:
 	GUI() noexcept;
+	~GUI() noexcept override;
 
-	void Draw() noexcept;
+	void Draw() noexcept override;
 
 	void SetGuiState(GUI_STATE state) noexcept;
 	///void UpdateAvatars() noexcept;

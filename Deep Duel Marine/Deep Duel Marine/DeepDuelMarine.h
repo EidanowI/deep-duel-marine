@@ -4,31 +4,10 @@
 #include "Graphics/ImGuiRender/ImGuiRender.h"
 #include "Graphics/GUI/GUI.h"
 #include "SteamNetworking/SteamNetworking.h"
+#include "Graphics/GUI/DisplayHubManager.h"
 
 bool G_isShould_close_window = false;
 
-
-
-class DisplayHub {
-public:
-	DisplayHub() noexcept {
-		m_pGui = new GUI();
-		///m_pScene ...
-	}
-	~DisplayHub() noexcept {
-		delete m_pGui;
-		///delete m_pScene;
-	}
-
-	void Display() noexcept {
-		m_pGui->Draw();
-		///m_pScene->Render();
-	}
-
-private:
-	GUI* m_pGui;
-	///TODO scene class
-};
 
 
 class DeepDuelMarine {
@@ -40,9 +19,11 @@ public:
 		MainWindow::Initialize();
 		Renderer::Initialize();
 		SteamNetworkingManager::TryToConnect();
+		DisplayHubManager::Initialize();
 
 		MainLoop();
 
+		DisplayHubManager::Terminate();
 		SteamNetworkingManager::Terminate();
 		Renderer::Terminate();
 		MainWindow::Terminate();
@@ -63,14 +44,11 @@ private:
 
 			ImGuiRenderer::StartFrame();
 			
-			m_displayHub.Display();
+			DisplayHubManager::Display();
 
 			ImGuiRenderer::EndFrame();
 
 			Renderer::PresentFrame();
 		}
 	}
-
-private:
-	DisplayHub m_displayHub;
 };
