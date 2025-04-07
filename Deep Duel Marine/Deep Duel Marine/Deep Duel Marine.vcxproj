@@ -146,11 +146,14 @@
     <ClCompile Include="Dependencies\imGUI\imgui_impl_win32.cpp" />
     <ClCompile Include="Dependencies\imGUI\imgui_tables.cpp" />
     <ClCompile Include="Dependencies\imGUI\imgui_widgets.cpp" />
+    <ClCompile Include="Dependencies\lodepng\lodepng.cpp" />
     <ClCompile Include="Graphics\GUI\DisplayHubManager.cpp" />
     <ClCompile Include="Graphics\GUI\CustomImGuiElemets.h" />
     <ClCompile Include="Graphics\GUI\GUI.cpp" />
     <ClCompile Include="Graphics\ImGuiRender\ImGuiRender.cpp" />
+    <ClCompile Include="Graphics\Modules\Transform.cpp" />
     <ClCompile Include="Graphics\Shader\Shader.cpp" />
+    <ClCompile Include="Graphics\Textures\Image.cpp" />
     <ClCompile Include="Graphics\Utils\GraphicsMath.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Graphics\MainWindow\MainWindow.cpp" />
@@ -170,6 +173,7 @@
     <ClInclude Include="Dependencies\imGUI\imstb_rectpack.h" />
     <ClInclude Include="Dependencies\imGUI\imstb_textedit.h" />
     <ClInclude Include="Dependencies\imGUI\imstb_truetype.h" />
+    <ClInclude Include="Dependencies\lodepng\lodepng.h" />
     <ClInclude Include="Dependencies\steam\public\steam\isteamapps.h" />
     <ClInclude Include="Dependencies\steam\public\steam\isteamappticket.h" />
     <ClInclude Include="Dependencies\steam\public\steam\isteamclient.h" />
@@ -224,6 +228,7 @@
     <ClInclude Include="Graphics\Modules\Transform.h" />
     <ClInclude Include="Graphics\Renderer\Renderer.h" />
     <ClInclude Include="Graphics\Shader\Shader.h" />
+    <ClInclude Include="Graphics\Textures\Image.h" />
     <ClInclude Include="Graphics\Utils\GraphicsMath.h" />
     <ClInclude Include="SteamNetworking\GameClient.h" />
     <ClInclude Include="SteamNetworking\Lobby.h" />
