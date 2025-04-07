@@ -151,6 +151,7 @@
     <ClCompile Include="Graphics\GUI\GUI.cpp" />
     <ClCompile Include="Graphics\ImGuiRender\ImGuiRender.cpp" />
     <ClCompile Include="Graphics\Shader\Shader.cpp" />
+    <ClCompile Include="Graphics\Utils\GraphicsMath.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Graphics\MainWindow\MainWindow.cpp" />
     <ClCompile Include="Graphics\Renderer\Renderer.cpp" />
@@ -220,8 +221,10 @@
     <ClInclude Include="Graphics\GUI\IGUI.h" />
     <ClInclude Include="Graphics\ImGuiRender\ImGuiRender.h" />
     <ClInclude Include="Graphics\MainWindow\MainWindow.h" />
+    <ClInclude Include="Graphics\Modules\Transform.h" />
     <ClInclude Include="Graphics\Renderer\Renderer.h" />
     <ClInclude Include="Graphics\Shader\Shader.h" />
+    <ClInclude Include="Graphics\Utils\GraphicsMath.h" />
     <ClInclude Include="SteamNetworking\GameClient.h" />
     <ClInclude Include="SteamNetworking\Lobby.h" />
     <ClInclude Include="SteamNetworking\LobbyBrowser.h" />

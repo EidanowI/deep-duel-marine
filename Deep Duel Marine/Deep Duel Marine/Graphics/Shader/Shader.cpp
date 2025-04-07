@@ -70,7 +70,7 @@ std::map<unsigned int, VertexShader*> ShaderManager::s_vertexShaders{};
 std::map<unsigned int, PixelShader*> ShaderManager::s_pixelShaders{};
 
 void ShaderManager::Initialize() noexcept {
-
+	///TODO precompiling some shaders for faster loading
 }
 void ShaderManager::Terminate() noexcept {
 	for (const auto& [v_id, v_pShader] : s_vertexShaders) {
@@ -86,11 +86,9 @@ VertexShader* ShaderManager::GetVertexShader(const std::string& name) noexcept {
 	unsigned int hash = Hash(name);
 
 	if (s_vertexShaders.contains(hash)) {
-		MessageBox(0, L"Contains", 0, 0);
 		return s_vertexShaders[hash];
 	}
 	else {
-		MessageBox(0, L"Adding new", 0, 0);
 		auto pVShader = new VertexShader(name);
 		s_vertexShaders[hash] = pVShader;
 
