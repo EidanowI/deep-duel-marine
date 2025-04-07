@@ -5,6 +5,7 @@
 #include "Graphics/GUI/GUI.h"
 #include "SteamNetworking/SteamNetworking.h"
 #include "Graphics/GUI/DisplayHubManager.h"
+#include "Graphics/Shader/Shader.h"
 
 bool G_isShould_close_window = false;
 
@@ -18,6 +19,8 @@ public:
 		ImGuiRenderer::Initialize();
 		MainWindow::Initialize();
 		Renderer::Initialize();
+		ShaderManager::Initialize();
+
 		SteamNetworkingManager::TryToConnect();
 		DisplayHubManager::Initialize();
 
@@ -25,6 +28,8 @@ public:
 
 		DisplayHubManager::Terminate();
 		SteamNetworkingManager::Terminate();
+
+		ShaderManager::Terminate();
 		Renderer::Terminate();
 		MainWindow::Terminate();
 		ImGuiRenderer::Terminate();
