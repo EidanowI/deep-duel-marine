@@ -154,6 +154,7 @@
     <ClCompile Include="Graphics\Modules\Transform.cpp" />
     <ClCompile Include="Graphics\Shader\Shader.cpp" />
     <ClCompile Include="Graphics\Textures\Image.cpp" />
+    <ClCompile Include="Graphics\Textures\Texture.cpp" />
     <ClCompile Include="Graphics\Utils\GraphicsMath.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Graphics\MainWindow\MainWindow.cpp" />
@@ -223,12 +224,14 @@
     <ClInclude Include="GlobalParams.h" />
     <ClInclude Include="Graphics\GUI\GUI.h" />
     <ClInclude Include="Graphics\GUI\IGUI.h" />
+    <ClInclude Include="Graphics\IBindable.h" />
     <ClInclude Include="Graphics\ImGuiRender\ImGuiRender.h" />
     <ClInclude Include="Graphics\MainWindow\MainWindow.h" />
     <ClInclude Include="Graphics\Modules\Transform.h" />
     <ClInclude Include="Graphics\Renderer\Renderer.h" />
     <ClInclude Include="Graphics\Shader\Shader.h" />
     <ClInclude Include="Graphics\Textures\Image.h" />
+    <ClInclude Include="Graphics\Textures\Texture.h" />
     <ClInclude Include="Graphics\Utils\GraphicsMath.h" />
     <ClInclude Include="SteamNetworking\GameClient.h" />
     <ClInclude Include="SteamNetworking\Lobby.h" />
