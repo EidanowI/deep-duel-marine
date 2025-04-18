@@ -229,6 +229,7 @@
     <ClInclude Include="Graphics\MainWindow\MainWindow.h" />
     <ClInclude Include="Graphics\Modules\Transform.h" />
     <ClInclude Include="Graphics\Renderer\Renderer.h" />
+    <ClInclude Include="Graphics\Scene\IScene.h" />
     <ClInclude Include="Graphics\Shader\Shader.h" />
     <ClInclude Include="Graphics\Textures\Image.h" />
     <ClInclude Include="Graphics\Textures\Texture.h" />

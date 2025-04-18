@@ -3,28 +3,20 @@
 
 #include "IGUI.h"
 #include "GUI.h"
+#include "../Scene/IScene.h"
 
 
 
 class DisplayHub {
 public:
-	DisplayHub(void* pGUI, void* pScene) noexcept {
-		m_pGui = (IGUI*)pGUI;
-		///m_pScene ...
-	}
-	~DisplayHub() noexcept {
-		delete m_pGui;
-		///delete m_pScene;
-	}
+	DisplayHub(void* pGUI, void* pScene) noexcept;
+	~DisplayHub() noexcept;
 
-	void Display() noexcept {
-		m_pGui->Draw();
-		///m_pScene->Render();
-	}
+	void Display() noexcept;
 
 private:
 	IGUI* m_pGui;
-	///TODO scene class
+	IScene* m_pScene;
 };
 
 enum DISPLAYHUB_MANAGER_STATE{

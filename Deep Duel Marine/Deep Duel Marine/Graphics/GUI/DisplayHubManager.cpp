@@ -6,6 +6,21 @@ DisplayHub* DisplayHubManager::s_current_displayHub = nullptr;
 std::vector<DisplayHub*> DisplayHubManager::s_displayHubs{};
 
 
+DisplayHub::DisplayHub(void* pGUI, void* pScene) noexcept {
+	m_pGui = (IGUI*)pGUI;
+	m_pScene = (IScene*)pScene;
+}
+DisplayHub::~DisplayHub() noexcept {
+	delete m_pGui;
+	delete m_pScene;
+}
+
+void DisplayHub::Display() noexcept {
+	m_pGui->Draw();
+	//m_pScene->Render();
+}
+
+
 void DisplayHubManager::Initialize() noexcept {
 	s_displayHubs.push_back(new DisplayHub(new GUI(), 0));/// MAIN_MENU state
 	s_displayHubs.push_back(new DisplayHub(0, 0));/// IN_GAME state
