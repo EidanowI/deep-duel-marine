@@ -1,8 +1,59 @@
 #include "Mesh.h"
 
+#include "../../Dependencies/assimp/include/assimp/Importer.hpp";
+#include "../../Dependencies/assimp/include/assimp/scene.h";
+#include "../../Dependencies/assimp/include/assimp/postprocess.h";
+
 
 
 Mesh::Mesh(std::string path, VertexShader* pVertexShader) {
+	Assimp::Importer importer;
+	const aiScene* scene = importer.ReadFile("Meshes/" + path, aiProcess_FlipUVs | aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
+	if (scene == nullptr ||
+		scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE ||
+		!scene->mRootNode) {
+		MessageBoxA(0, "Error with assimp mesh loading", "Error with assimp mesh loading", MB_ICONERROR);
+		return;
+	}
+
+	if (scene->mNumMeshes != 1) {
+		MessageBoxA(0, "Error num of submesh != 1", path.c_str(), MB_ICONERROR);
+		return;
+	}
+
+	aiMesh* pAssimp_mesh = scene->mMeshes[0];
+
+	m_pVertexes = std::vector<Vertex48B>(pAssimp_mesh->mNumVertices);
+	m_pPolygon_indexes = std::vector<TriangularPolygon>(pAssimp_mesh->mNumFaces);
+
+	bool is_mesh_have_uv = pAssimp_mesh->mTextureCoords[0];
+	bool is_mesh_have_vertColor = pAssimp_mesh->mColors[0];
+
+	for (unsigned int i = 0; i < pAssimp_mesh->mNumVertices; i++) {
+		m_pVertexes[i].position = Vector3D(pAssimp_mesh->mVertices[i].x, pAssimp_mesh->mVertices[i].y, pAssimp_mesh->mVertices[i].z);
+		m_pVertexes[i].normal = Vector3D(pAssimp_mesh->mNormals[i].x, pAssimp_mesh->mNormals[i].y, pAssimp_mesh->mNormals[i].z);
+		if (is_mesh_have_uv)
+		{
+			m_pVertexes[i].UV = Vector2D(pAssimp_mesh->mTextureCoords[0][i].x, pAssimp_mesh->mTextureCoords[0][i].y);
+		}
+		else
+		{
+			m_pVertexes[i].UV = Vector2D(0.0f);
+		}
+		if (is_mesh_have_vertColor) {
+			m_pVertexes[i].color = Vector4D(pAssimp_mesh->mColors[i]->r, pAssimp_mesh->mColors[i]->g, pAssimp_mesh->mColors[i]->b, pAssimp_mesh->mColors[i]->a);
+		}
+		else {
+			m_pVertexes[i].color = Vector4D(0.0f);
+		}
+	}
+
+	for (int i = 0; i < pAssimp_mesh->mNumFaces; i++) {
+		m_pPolygon_indexes[i].i1 = pAssimp_mesh->mFaces[i].mIndices[0];
+		m_pPolygon_indexes[i].i2 = pAssimp_mesh->mFaces[i].mIndices[1];
+		m_pPolygon_indexes[i].i3 = pAssimp_mesh->mFaces[i].mIndices[2];
+	}
+
 	D3D11_BUFFER_DESC vertex_buffer_desc{};
 	{
 		vertex_buffer_desc.ByteWidth = m_pVertexes.size() * sizeof(Vertex48B);

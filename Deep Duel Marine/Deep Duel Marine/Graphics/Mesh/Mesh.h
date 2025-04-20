@@ -20,7 +20,7 @@ public:
 	};
 	struct TriangularPolygon {
 		unsigned int i1;
-		unsigned int i1;
+		unsigned int i2;
 		unsigned int i3;
 	};
 
