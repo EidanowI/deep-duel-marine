@@ -17,7 +17,7 @@ DisplayHub::~DisplayHub() noexcept {
 
 void DisplayHub::Display() noexcept {
 	m_pGui->Draw();
-	//m_pScene->Render();
+	m_pScene->Render();
 }
 
 
