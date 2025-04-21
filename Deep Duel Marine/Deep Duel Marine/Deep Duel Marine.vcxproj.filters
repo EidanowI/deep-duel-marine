@@ -87,6 +87,12 @@
     <ClCompile Include="Graphics\Mesh\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\Model\Model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Scene\MainMenuScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeepDuelMarine.h">
@@ -314,6 +320,12 @@
     <ClInclude Include="Graphics\Mesh\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics\Model\Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Scene\MainMenuScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="Dependencies\steam\bin\steam_api.lib" />
@@ -325,5 +337,7 @@
   <ItemGroup>
     <FxCompile Include="Graphics\Shader\ShaderSourceCode\TestVertexShader.hlsl" />
     <FxCompile Include="Graphics\Shader\ShaderSourceCode\TestPixelShader.hlsl" />
+    <FxCompile Include="Graphics\Shader\ShaderSourceCode\ModelVertexShader.hlsl" />
+    <FxCompile Include="Graphics\Shader\ShaderSourceCode\ModelPixelShader.hlsl" />
   </ItemGroup>
 </Project>
