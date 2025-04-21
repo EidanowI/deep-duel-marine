@@ -203,7 +203,12 @@ void* SteamNetworkingManager::LoadAvatar(CSteamID id) noexcept {
 }
 
 const char* SteamNetworkingManager::GetSelfUserNickName() noexcept {
-	return SteamFriends()->GetPersonaName();
+	if (s_isConnected_to_steam) {
+		return SteamFriends()->GetPersonaName();
+	}
+	else {
+		return "Unknown";
+	}
 }
 const char* SteamNetworkingManager::GetAponentUserNickName() noexcept {
 	if (!s_pGame_client || s_pGame_client->m_lobby.m_id == 0) return "Unknown player";
