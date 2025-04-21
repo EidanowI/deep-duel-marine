@@ -1,4 +1,5 @@
 #include "DisplayHubManager.h"
+#include "../Scene/MainMenuScene.h"
 
 
 
@@ -22,7 +23,7 @@ void DisplayHub::Display() noexcept {
 
 
 void DisplayHubManager::Initialize() noexcept {
-	s_displayHubs.push_back(new DisplayHub(new GUI(), 0));/// MAIN_MENU state
+	s_displayHubs.push_back(new DisplayHub(new GUI(), new MainMenuScene()));/// MAIN_MENU state
 	s_displayHubs.push_back(new DisplayHub(0, 0));/// IN_GAME state
 
 	ChangeState(DHM_MAIN_MENU);

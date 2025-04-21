@@ -1,4 +1,5 @@
 #include "IScene.h"
+#include "../Model/Model.h"
 
 
 
@@ -10,5 +11,5 @@ public:
 	void Render() override;
 
 private:
-
+	Model* m_pModel;
 };
