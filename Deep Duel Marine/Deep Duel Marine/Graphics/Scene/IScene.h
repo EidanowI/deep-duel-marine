@@ -4,7 +4,7 @@
 
 class IScene {
 public:
-	virtual ~IScene(){}
+	virtual ~IScene() noexcept {}
 
-	virtual void Render() = 0;
+	virtual void Render() noexcept = 0;
 };

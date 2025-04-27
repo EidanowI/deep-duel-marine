@@ -5,10 +5,10 @@
 
 class MainMenuScene : public IScene {
 public:
-	MainMenuScene();
-	~MainMenuScene() override;
+	MainMenuScene() noexcept;
+	~MainMenuScene() noexcept override;
 
-	void Render() override;
+	void Render() noexcept override;
 
 private:
 	Model* m_pModel;

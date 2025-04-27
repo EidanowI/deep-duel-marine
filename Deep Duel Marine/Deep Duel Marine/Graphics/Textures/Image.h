@@ -9,12 +9,12 @@
 class Image {
 public:
 	Image(const std::string& name) noexcept;
-	~Image();
+	~Image() noexcept;
 
-	int GetWidth();
-	int GetHeight();
+	int GetWidth() noexcept;
+	int GetHeight() noexcept;
 
-	std::vector<unsigned char>* GetData();
+	std::vector<unsigned char>* GetData() noexcept;
 
 private:
 	std::vector<unsigned char> m_data{};
