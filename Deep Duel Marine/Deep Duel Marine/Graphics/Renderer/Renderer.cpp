@@ -239,6 +239,35 @@ IDXGISwapChain* Renderer::GetSwapChain() noexcept {
 	return s_pSwapChain;
 }
 
+ID3D11Buffer* Renderer::CreateConstBuffer(const char* pConstBuffer_struct, unsigned int struct_size) noexcept {
+	D3D11_BUFFER_DESC constBuffDesc{};
+	{
+		constBuffDesc.ByteWidth = struct_size;
+		constBuffDesc.Usage = D3D11_USAGE_DYNAMIC;
+		constBuffDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		constBuffDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		constBuffDesc.MiscFlags = 0u;
+		constBuffDesc.StructureByteStride = 0u;
+	}
+
+	D3D11_SUBRESOURCE_DATA constBuffSubResData{};
+	{
+		constBuffSubResData.pSysMem = pConstBuffer_struct;
+	}
+
+	ID3D11Buffer* pConstBuffer;
+
+	GetDevice()->CreateBuffer(&constBuffDesc, &constBuffSubResData, &pConstBuffer);
+
+	return pConstBuffer;
+}
+void Renderer::UpdateConstBuffer(ID3D11Buffer* pConstBuffer, void* pConstBuffer_struct, int struct_size) noexcept {
+	D3D11_MAPPED_SUBRESOURCE constBuffMappedSRes;
+	GetDeviceContext()->Map(pConstBuffer, 0u, D3D11_MAP_WRITE_DISCARD, 0u, &constBuffMappedSRes);
+	memcpy(constBuffMappedSRes.pData, pConstBuffer_struct, struct_size);
+	GetDeviceContext()->Unmap(pConstBuffer, 0u);
+}
+
 IDXGIAdapter* Renderer::GetMostPowerfulAdapter(std::vector<Microsoft::WRL::ComPtr<IDXGIAdapter>> adapters) noexcept{
 	int bestScore = -1;
 	IDXGIAdapter* bestScore_adapter = nullptr;

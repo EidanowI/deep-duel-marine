@@ -24,6 +24,9 @@ public:
 	static ID3D11DeviceContext* GetDeviceContext() noexcept;
 	static IDXGISwapChain* GetSwapChain() noexcept;
 
+	static ID3D11Buffer* CreateConstBuffer(const char* pConstBuffer_struct, unsigned int struct_size) noexcept;
+	static void UpdateConstBuffer(ID3D11Buffer* pConstBuffer, void* pConstBuffer_struct, int struct_size) noexcept;
+
 private:
 	static IDXGIAdapter* GetMostPowerfulAdapter(std::vector<Microsoft::WRL::ComPtr<IDXGIAdapter>> adapters) noexcept;
 
