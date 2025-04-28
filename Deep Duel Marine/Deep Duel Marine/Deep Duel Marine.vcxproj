@@ -151,6 +151,7 @@
     <ClCompile Include="Dependencies\imGUI\imgui_tables.cpp" />
     <ClCompile Include="Dependencies\imGUI\imgui_widgets.cpp" />
     <ClCompile Include="Dependencies\lodepng\lodepng.cpp" />
+    <ClCompile Include="Graphics\Camera\Camera.cpp" />
     <ClCompile Include="Graphics\GUI\DisplayHubManager.cpp" />
     <ClCompile Include="Graphics\GUI\CustomImGuiElemets.h" />
     <ClCompile Include="Graphics\GUI\GUI.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="Dependencies\steam\public\steam\steam_api_flat.h" />
     <ClInclude Include="Dependencies\steam\public\steam\steam_api_internal.h" />
     <ClInclude Include="Dependencies\steam\public\steam\steam_gameserver.h" />
+    <ClInclude Include="Graphics\Camera\Camera.h" />
     <ClInclude Include="Graphics\GUI\DisplayHubManager.h" />
     <ClInclude Include="GlobalParams.h" />
     <ClInclude Include="Graphics\GUI\GUI.h" />

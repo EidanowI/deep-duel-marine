@@ -1,5 +1,6 @@
 #include "IScene.h"
 #include "../Model/Model.h"
+#include "../Camera/Camera.h"
 
 
 
@@ -11,5 +12,6 @@ public:
 	void Render() noexcept override;
 
 private:
+	Camera* m_pCamera;
 	Model* m_pModel;
 };

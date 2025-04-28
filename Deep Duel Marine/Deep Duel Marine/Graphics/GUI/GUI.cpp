@@ -1,10 +1,8 @@
 #include "GUI.h"
 
 
-
 extern bool G_isShould_close_window;
 Lobby G_lobby;
-
 
 
 GUI::GUI() noexcept {

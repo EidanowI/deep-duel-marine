@@ -13,8 +13,8 @@ public:
 	Texture(std::string file_name) noexcept;
 	~Texture() noexcept;
 
-	void Bind() override;
-	void Bind(int bind_index) override;
+	void Bind() noexcept override;
+	void Bind(int bind_index) noexcept override;
 
 private:
 	ID3D11Texture2D* m_pTexture;

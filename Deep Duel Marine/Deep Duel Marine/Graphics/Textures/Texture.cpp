@@ -50,9 +50,9 @@ Texture::~Texture() noexcept {
 	}
 }
 
-void Texture::Bind() {
+void Texture::Bind() noexcept{
 	Bind(0);
 }
-void Texture::Bind(int bind_index) {
+void Texture::Bind(int bind_index) noexcept{
 	Renderer::GetDeviceContext()->PSSetShaderResources(bind_index, 1u, &m_pShader_resource_view);
 }
