@@ -4,6 +4,8 @@
 #include "../../Dependencies/assimp/include/assimp/scene.h";
 #include "../../Dependencies/assimp/include/assimp/postprocess.h";
 
+#include <DirectXMath.h>
+
 
 
 Mesh::Mesh(std::string path, VertexShader* pVertexShader) {
@@ -30,8 +32,18 @@ Mesh::Mesh(std::string path, VertexShader* pVertexShader) {
 	bool is_mesh_have_vertColor = pAssimp_mesh->mColors[0];
 
 	for (unsigned int i = 0; i < pAssimp_mesh->mNumVertices; i++) {
-		m_pVertexes[i].position = Vector3D(pAssimp_mesh->mVertices[i].x, pAssimp_mesh->mVertices[i].y, pAssimp_mesh->mVertices[i].z);
-		m_pVertexes[i].normal = Vector3D(pAssimp_mesh->mNormals[i].x, pAssimp_mesh->mNormals[i].y, pAssimp_mesh->mNormals[i].z);
+		DirectX::XMMATRIX compinsator_matrix = DirectX::XMMatrixRotationRollPitchYaw(-1.570796f, 0.0f, 0.0f);
+		DirectX::XMVECTOR compinsated_pos = DirectX::XMVector3Transform(DirectX::XMVectorSet(pAssimp_mesh->mVertices[i].x,
+			pAssimp_mesh->mVertices[i].y,
+			pAssimp_mesh->mVertices[i].z, 1.0f),
+			compinsator_matrix);
+		DirectX::XMVECTOR compinsated_norm = DirectX::XMVector3Transform(DirectX::XMVectorSet(pAssimp_mesh->mNormals[i].x,
+			pAssimp_mesh->mNormals[i].y,
+			pAssimp_mesh->mNormals[i].z, 1.0f),
+			compinsator_matrix);
+
+		m_pVertexes[i].position = Vector3D(DirectX::XMVectorGetX(compinsated_pos), DirectX::XMVectorGetY(compinsated_pos), DirectX::XMVectorGetZ(compinsated_pos));
+		m_pVertexes[i].normal = Vector3D(DirectX::XMVectorGetX(compinsated_norm), DirectX::XMVectorGetY(compinsated_norm), DirectX::XMVectorGetZ(compinsated_norm));
 		if (is_mesh_have_uv)
 		{
 			m_pVertexes[i].UV = Vector2D(pAssimp_mesh->mTextureCoords[0][i].x, pAssimp_mesh->mTextureCoords[0][i].y);
