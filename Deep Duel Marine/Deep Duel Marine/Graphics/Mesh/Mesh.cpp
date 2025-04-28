@@ -118,7 +118,7 @@ void Mesh::Bind() {
 	unsigned int strides[] = { sizeof(Vertex48B) };
 	unsigned int offsets[] = { 0u };
 	Renderer::GetDeviceContext()->IASetVertexBuffers(0u, 1u, &m_pVertex_buffer, strides, offsets);
-	Renderer::GetDeviceContext()->IASetIndexBuffer(m_pIndex_buffer, DXGI_FORMAT_R16_UINT, 0u);
+	Renderer::GetDeviceContext()->IASetIndexBuffer(m_pIndex_buffer, DXGI_FORMAT_R32_UINT, 0u);
 	Renderer::GetDeviceContext()->IASetInputLayout(m_pInput_layout);
 	Renderer::GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
