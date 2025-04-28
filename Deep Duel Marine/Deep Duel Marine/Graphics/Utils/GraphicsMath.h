@@ -133,4 +133,5 @@ public:
 };
 
 DirectX::XMMATRIX MakeTransformMatrix(const Vector3D& position, const Vector3D& rotationRPY, const Vector3D& scale) noexcept;
+DirectX::XMMATRIX MakeTransformMatrix(const Vector3D& position, const Vector3D& rotationRPY) noexcept;
 DirectX::XMMATRIX MakeNormalMatrix(const DirectX::XMMATRIX& transform) noexcept;

@@ -320,6 +320,10 @@ DirectX::XMMATRIX MakeTransformMatrix(const Vector3D& position, const Vector3D& 
 		DirectX::XMMatrixRotationRollPitchYaw(rotationRPY.x, rotationRPY.y, rotationRPY.z) *
 		DirectX::XMMatrixTranslation(position.x, position.y, position.z);
 }
+DirectX::XMMATRIX MakeTransformMatrix(const Vector3D& position, const Vector3D& rotationRPY) noexcept {
+	return DirectX::XMMatrixRotationRollPitchYaw(rotationRPY.x, rotationRPY.y, rotationRPY.z) *
+		DirectX::XMMatrixTranslation(position.x, position.y, position.z);
+}
 DirectX::XMMATRIX MakeNormalMatrix(const DirectX::XMMATRIX& transform) noexcept {
 	return DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, transform));
 }
