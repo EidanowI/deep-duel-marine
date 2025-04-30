@@ -26,7 +26,7 @@ float WaveSpeed(float wave_length)
 {
     float PI = 3.141592f;
     float g = 9.8f;
-    return sqrt(2 * PI / wave_length * g) * BUF1_global_time.x/1.5;
+    return sqrt(2 * PI / wave_length * g) * BUF1_global_time.x/3;
 }
 float3 Wave(float3 pos, float3 wave_direction, float wave_length, float wave_height, float wave_sharpness)
 {
@@ -57,7 +57,11 @@ VSOut main(float3 v_pos : Position, float3 v_normal : Normal, float2 v_UV : UV, 
     float wave_height = 0.1;
     float wave_sharpness = 0.15f;
     
-    v_pos += Wave(v_pos, wave_direction, wave_length, wave_height, wave_sharpness);
+    float3 wave_a = Wave(v_pos, float3(-0.2f, 0.0f, -0.7f), 2.5f, 0.02f, 0.3f);
+    float3 wave_b = Wave(v_pos, float3(-1.0f, 0.0f, 0.0f), 3.0f, 0.02f, 0.3f);
+    float3 wave_c = Wave(v_pos, float3(-0.5f, 0.0f, 0.5f), 1.8f, 0.01f, 0.4f);
+    
+    v_pos += wave_a + wave_b + wave_c;
     //v_pos.y += 
     //v_pos.y = 4;
     

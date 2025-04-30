@@ -14,7 +14,7 @@ float4 main(float3 p_normal : Normal, float2 p_UV : UV, float4 p_color : Colory,
     //return facesColors[FaceID / 2];
     //return p_color;
     //return lightColorBUF0;
-    float4 a = water_surface_tex.Sample(splr, p_UV * 5);
+    float4 a = water_surface_tex.Sample(splr, p_UV * 2);
     //a =- float4(0.02f, 0.01f, -0.05f, 0.0f);
     
     float n = clamp(ILerp(6, 35,length(p_color.xyz)), 0.0f, 1.0f);
