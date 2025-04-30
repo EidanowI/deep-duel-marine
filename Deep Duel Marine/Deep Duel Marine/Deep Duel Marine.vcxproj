@@ -270,6 +270,8 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\Fiodar\Documents\GitHub_Projects\deep-duel-marine\Deep Duel Marine\Deep Duel Marine\Shaders/ModelVertexShader.cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\Fiodar\Documents\GitHub_Projects\deep-duel-marine\Deep Duel Marine\Deep Duel Marine\Shaders/ModelVertexShader.cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Graphics\Shader\ShaderSourceCode\TestPixelShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

@@ -3,7 +3,10 @@
 
 
 Camera::Camera(Vector3D position, Vector3D rotation) noexcept : m_position(position), m_rotation(rotation) {
-	m_rotation_matrix = DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
+	m_rotation_matrix = DirectX::XMMatrixRotationAxis(DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), rotation.z);
+	m_rotation_matrix *= DirectX::XMMatrixRotationAxis(DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f), rotation.x);
+	m_rotation_matrix *= DirectX::XMMatrixRotationAxis(DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), rotation.y);
+
 	m_constBuf0.projection = DirectX::XMMatrixPerspectiveFovLH(1.0f, (float)MainWindow::GetWindowWidth() / (float)MainWindow::GetWindowHeight(), 0.1f, 2000.0f);
 	
 	UpdateDirectionVectors();
@@ -25,7 +28,9 @@ void Camera::SetPosition(Vector3D position) noexcept {
 }
 void Camera::SetRotation(Vector3D rotation) noexcept {
 	m_rotation = rotation;
-	m_rotation_matrix = DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
+	m_rotation_matrix = DirectX::XMMatrixRotationAxis(DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), m_rotation.z);
+	m_rotation_matrix *= DirectX::XMMatrixRotationAxis(DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f), m_rotation.x);
+	m_rotation_matrix *= DirectX::XMMatrixRotationAxis(DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), m_rotation.y);
 
 	UpdateConstBuf0();
 }
