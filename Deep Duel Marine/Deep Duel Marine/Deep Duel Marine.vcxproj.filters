@@ -96,6 +96,9 @@
     <ClCompile Include="Graphics\Camera\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\Model\WaterSurfaceObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeepDuelMarine.h">
@@ -332,6 +335,9 @@
     <ClInclude Include="Graphics\Camera\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics\Model\WaterSurfaceObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="Dependencies\steam\bin\steam_api.lib" />
@@ -345,5 +351,7 @@
     <FxCompile Include="Graphics\Shader\ShaderSourceCode\TestPixelShader.hlsl" />
     <FxCompile Include="Graphics\Shader\ShaderSourceCode\ModelVertexShader.hlsl" />
     <FxCompile Include="Graphics\Shader\ShaderSourceCode\ModelPixelShader.hlsl" />
+    <FxCompile Include="Graphics\Shader\ShaderSourceCode\WaterSurfaceVertShader.hlsl" />
+    <FxCompile Include="Graphics\Shader\ShaderSourceCode\WaterSurfacePixelShader.hlsl" />
   </ItemGroup>
 </Project>

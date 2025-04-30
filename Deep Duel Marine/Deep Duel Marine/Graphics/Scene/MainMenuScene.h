@@ -1,6 +1,7 @@
 #include "IScene.h"
 #include "../Model/Model.h"
 #include "../Camera/Camera.h"
+#include "../Model/WaterSurfaceObject.h"
 
 
 
@@ -13,5 +14,5 @@ public:
 
 private:
 	Camera* m_pCamera;
-	Model* m_pModel;
+	WaterSurfaceObject* m_pWaterSurface_object;
 };
