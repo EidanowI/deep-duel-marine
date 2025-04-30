@@ -185,7 +185,7 @@ void Renderer::SetRenderViews() noexcept {
 }
 
 void Renderer::ClearFrame() noexcept {
-	const float clear_color[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	const float clear_color[] = { 0.66f, 0.67f, 0.73f, 1.0f };
 	s_pDeviceContext->ClearRenderTargetView(s_pRenderTargetView, clear_color);
 	s_pDeviceContext->ClearDepthStencilView(s_pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0.0f);
 }
