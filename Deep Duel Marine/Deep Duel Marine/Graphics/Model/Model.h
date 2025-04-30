@@ -8,10 +8,10 @@
 
 class Model {
 public:
-	Model(std::string mesh_name) noexcept;
+	Model(std::string mesh_name, const std::string& vertex_shader_name, const std::string& pixel_shader_name) noexcept;
 	~Model() noexcept;
 
-	void Render();
+	void Render() noexcept;
 
 private:
 	VertexShader* m_pVertexSahder;
