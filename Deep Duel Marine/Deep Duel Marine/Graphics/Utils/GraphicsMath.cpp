@@ -16,6 +16,12 @@ float Utils::Random01() noexcept {
 float Utils::RandomMinus11() noexcept {
 	return ((float(rand() % RAND_MAX)) / (float)RAND_MAX - 0.5f) * 2.0f;
 }
+float Utils::Lerp(float a, float b, float t) noexcept {
+	return a + t * (b - a);
+}
+float Utils::SmoothLerp01(float t) noexcept {
+	return t * t * (3 - 2 * t);
+}
 
 
 Vector2D::Vector2D(float x, float y) noexcept : x(x), y(y) {}
@@ -131,6 +137,10 @@ void Vector3D::Clamp(float min, float max) noexcept {
 }
 void Vector3D::Clamp01() noexcept {
 	*this = this->Clamped01();
+}
+
+Vector3D Vector3D::Lerp(const Vector3D& a, const Vector3D& b, float t) noexcept {
+	return Vector3D(Utils::Lerp(a.x, b.x, t), Utils::Lerp(a.y, b.y, t), Utils::Lerp(a.z, b.z, t));
 }
 
 Vector3D Vector3D::operator+ (const Vector3D& o) noexcept {

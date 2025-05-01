@@ -9,6 +9,9 @@ namespace Utils {
 	float Clamp01(float value) noexcept;
 	float Random01() noexcept;
 	float RandomMinus11() noexcept;
+
+	float Lerp(float a, float b, float t) noexcept;
+	float SmoothLerp01(float t) noexcept;
 }
 
 class Vector2D {
@@ -59,6 +62,8 @@ public:
 	Vector3D Clamped01() const noexcept;
 	void Clamp(float min, float max) noexcept;
 	void Clamp01() noexcept;
+
+	static Vector3D Lerp(const Vector3D& a, const Vector3D& b, float t) noexcept;
 
 	Vector3D operator+ (const Vector3D& o) noexcept;
 	Vector3D operator- (const Vector3D& o) noexcept;
