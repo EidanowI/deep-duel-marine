@@ -99,6 +99,9 @@
     <ClCompile Include="Graphics\Model\WaterSurfaceObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\Model\BeaconLogoObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeepDuelMarine.h">
@@ -338,6 +341,9 @@
     <ClInclude Include="Graphics\Model\WaterSurfaceObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics\Model\BeaconLogoObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="Dependencies\steam\bin\steam_api.lib" />
@@ -353,5 +359,7 @@
     <FxCompile Include="Graphics\Shader\ShaderSourceCode\ModelPixelShader.hlsl" />
     <FxCompile Include="Graphics\Shader\ShaderSourceCode\WaterSurfaceVertShader.hlsl" />
     <FxCompile Include="Graphics\Shader\ShaderSourceCode\WaterSurfacePixelShader.hlsl" />
+    <FxCompile Include="Graphics\Shader\ShaderSourceCode\BeaconLogoVertShader.hlsl" />
+    <FxCompile Include="Graphics\Shader\ShaderSourceCode\BeaconLogoPixelShader.hlsl" />
   </ItemGroup>
 </Project>

@@ -17,5 +17,5 @@ private:
 	VertexShader* m_pVertexSahder;
 	PixelShader* m_pPixelShader;
 
-	Mesh* m_pMesh;
+	std::vector<Mesh*> m_pMeshes;
 };

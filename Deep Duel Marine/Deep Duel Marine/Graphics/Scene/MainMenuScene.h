@@ -2,6 +2,7 @@
 #include "../Model/Model.h"
 #include "../Camera/Camera.h"
 #include "../Model/WaterSurfaceObject.h"
+#include "../Model/BeaconLogoObject.h"
 
 
 
@@ -15,4 +16,5 @@ public:
 private:
 	Camera* m_pCamera;
 	WaterSurfaceObject* m_pWaterSurface_object;
+	BeaconLogoObject* m_pBeaconLogo_object;
 };

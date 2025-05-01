@@ -9,15 +9,16 @@
 
 
 
-class WaterSurfaceObject {
+class BeaconLogoObject {
 public:
 	struct ConstBuf1 {
+		DirectX::XMMATRIX model;
 		float time[4];
 	};
 
 public:
-	WaterSurfaceObject() noexcept;
-	~WaterSurfaceObject() noexcept;
+	BeaconLogoObject() noexcept;
+	~BeaconLogoObject() noexcept;
 
 	void Render() noexcept;
 
@@ -28,5 +29,6 @@ private:
 	ID3D11Buffer* m_pConstBuff1;
 
 	ID3D11SamplerState* m_pSamplerState;
-	Texture* m_pWaterSurface_texture;
+	Texture* m_pBeaconLogo_color;
+	Texture* m_pBeaconLogo_blinker_mask;
 };

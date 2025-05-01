@@ -57,9 +57,9 @@ VSOut main(float3 v_pos : Position, float3 v_normal : Normal, float2 v_UV : UV, 
     float wave_height = 0.1;
     float wave_sharpness = 0.15f;
     
-    float3 wave_a = Wave(v_pos, float3(-0.2f, 0.0f, -0.7f), 2.5f, 0.02f, 0.3f);
-    float3 wave_b = Wave(v_pos, float3(-1.0f, 0.0f, 0.0f), 3.0f, 0.02f, 0.3f);
-    float3 wave_c = Wave(v_pos, float3(-0.5f, 0.0f, 0.5f), 1.8f, 0.01f, 0.4f);
+    float3 wave_a = Wave(v_pos, float3(-0.2f, 0.0f, -0.7f), 2.5f, 0.03f, 0.3f);
+    float3 wave_b = Wave(v_pos, float3(-1.0f, 0.0f, 0.0f), 3.0f, 0.04f, 0.3f);
+    float3 wave_c = Wave(v_pos, float3(-0.5f, 0.0f, 0.5f), 1.8f, 0.02f, 0.4f);
     
     v_pos += wave_a + wave_b + wave_c;
     //v_pos.y += 

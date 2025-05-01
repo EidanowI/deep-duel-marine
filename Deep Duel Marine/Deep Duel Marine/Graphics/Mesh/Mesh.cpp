@@ -8,8 +8,8 @@
 
 
 
-Mesh::Mesh(std::string path, VertexShader* pVertexShader) {
-	Assimp::Importer importer;
+Mesh::Mesh(std::string path, VertexShader* pVertexShader, aiMesh* pAssimp_mesh) {
+	/*Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile("Meshes/" + path, aiProcess_FlipUVs | aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
 	if (scene == nullptr ||
 		scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE ||
@@ -21,9 +21,9 @@ Mesh::Mesh(std::string path, VertexShader* pVertexShader) {
 	if (scene->mNumMeshes != 1) {
 		MessageBoxA(0, "Error num of submesh != 1", path.c_str(), MB_ICONERROR);
 		return;
-	}
+	}*/
 
-	aiMesh* pAssimp_mesh = scene->mMeshes[0];
+	//aiMesh* pAssimp_mesh = scene->mMeshes[0];
 
 	m_pVertexes = std::vector<Vertex48B>(pAssimp_mesh->mNumVertices);
 	m_pPolygon_indexes = std::vector<TriangularPolygon>(pAssimp_mesh->mNumFaces);
@@ -46,7 +46,7 @@ Mesh::Mesh(std::string path, VertexShader* pVertexShader) {
 		m_pVertexes[i].normal = Vector3D(DirectX::XMVectorGetX(compinsated_norm), DirectX::XMVectorGetY(compinsated_norm), DirectX::XMVectorGetZ(compinsated_norm));
 		if (is_mesh_have_uv)
 		{
-			m_pVertexes[i].UV = Vector2D(pAssimp_mesh->mTextureCoords[0][i].x, pAssimp_mesh->mTextureCoords[0][i].y);
+			m_pVertexes[i].UV = Vector2D(pAssimp_mesh->mTextureCoords[0][i].x, 1 - pAssimp_mesh->mTextureCoords[0][i].y);
 		}
 		else
 		{

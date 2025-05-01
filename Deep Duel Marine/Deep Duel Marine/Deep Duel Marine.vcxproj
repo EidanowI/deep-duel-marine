@@ -157,6 +157,7 @@
     <ClCompile Include="Graphics\GUI\GUI.cpp" />
     <ClCompile Include="Graphics\ImGuiRender\ImGuiRender.cpp" />
     <ClCompile Include="Graphics\Mesh\Mesh.cpp" />
+    <ClCompile Include="Graphics\Model\BeaconLogoObject.cpp" />
     <ClCompile Include="Graphics\Model\Model.cpp" />
     <ClCompile Include="Graphics\Model\WaterSurfaceObject.cpp" />
     <ClCompile Include="Graphics\Modules\Transform.cpp" />
@@ -238,6 +239,7 @@
     <ClInclude Include="Graphics\ImGuiRender\ImGuiRender.h" />
     <ClInclude Include="Graphics\MainWindow\MainWindow.h" />
     <ClInclude Include="Graphics\Mesh\Mesh.h" />
+    <ClInclude Include="Graphics\Model\BeaconLogoObject.h" />
     <ClInclude Include="Graphics\Model\Model.h" />
     <ClInclude Include="Graphics\Model\WaterSurfaceObject.h" />
     <ClInclude Include="Graphics\Modules\Transform.h" />
@@ -261,6 +263,28 @@
     <None Include="Dependencies\steam\public\steam\steam_api.json" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Graphics\Shader\ShaderSourceCode\BeaconLogoPixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <EnableDebuggingInformation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</EnableDebuggingInformation>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <DisableOptimizations Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DisableOptimizations>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Deep Duel Marine\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)Deep Duel Marine\Shaders\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Graphics\Shader\ShaderSourceCode\BeaconLogoVertShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Deep Duel Marine\Shaders\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)Deep Duel Marine\Shaders\%(Filename).cso</ObjectFileOutput>
+      <DisableOptimizations Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DisableOptimizations>
+      <EnableDebuggingInformation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</EnableDebuggingInformation>
+    </FxCompile>
     <FxCompile Include="Graphics\Shader\ShaderSourceCode\ModelPixelShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>

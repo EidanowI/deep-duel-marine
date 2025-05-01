@@ -8,6 +8,10 @@
 #include "../Shader/Shader.h"
 #include "../Renderer/Renderer.h"
 
+#include "../../Dependencies/assimp/include/assimp/Importer.hpp";
+#include "../../Dependencies/assimp/include/assimp/scene.h";
+#include "../../Dependencies/assimp/include/assimp/postprocess.h";
+
 
 
 class Mesh {
@@ -25,7 +29,7 @@ public:
 	};
 
 public:
-	Mesh(std::string path, VertexShader* pVertexShader);
+	Mesh(std::string path, VertexShader* pVertexShader, aiMesh* pAssimp_mesh);
 	~Mesh();
 
 	void Bind();
