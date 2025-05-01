@@ -23,7 +23,7 @@ float4 main(float3 p_normal : Normal, float2 p_UV : UV, float4 p_color : Colory,
     float4 color_with_fog = base_color * 0.8;
 
     //clamp(sin(p_color.x * 10), 0.0f, 1.0f)
-    float a = lerp(clamp(sin(p_color.x * 10), 0.0f, 1.0f), 0.0f, SquareWave(p_color.x / 5));
+    float a = lerp(clamp(sin(p_color.x * 15), 0.0f, 1.0f), 0.0f, SquareWave(p_color.x / 5));
     return lerp(color_with_fog, lerp(color_with_fog, float4(1.0f, 0.0f, 0.0f, 1.0f), a), beaconLogo_blinker_mask_tex.Sample(splr, p_UV).x);
     //return beaconLogo_color_tex.Sample(splr, p_UV);
 }
