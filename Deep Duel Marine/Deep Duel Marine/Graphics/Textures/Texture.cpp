@@ -56,3 +56,7 @@ void Texture::Bind() noexcept{
 void Texture::Bind(int bind_index) noexcept{
 	Renderer::GetDeviceContext()->PSSetShaderResources(bind_index, 1u, &m_pShader_resource_view);
 }
+
+ID3D11ShaderResourceView* Texture::GetShaderResView() noexcept {
+	return m_pShader_resource_view;
+}

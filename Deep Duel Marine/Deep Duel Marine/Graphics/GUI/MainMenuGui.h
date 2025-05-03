@@ -9,11 +9,11 @@
 #include "../MainWindow/MainWindow.h"
 #include "../../SteamNetworking/SteamNetworking.h"
 #include "IGUI.h"
+#include "CustomImGuiElemets.h"
 
 
 
 bool TestButton(const char* label, const ImVec2& size_arg, ImGuiButtonFlags flags, bool isActive);
-bool MainMenuButton(const char* label, ImGuiButtonFlags flags = 0);
 int InputFilterTextCalback(ImGuiInputTextCallbackData* data);
 
 

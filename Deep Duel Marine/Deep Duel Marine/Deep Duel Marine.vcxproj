@@ -152,6 +152,7 @@
     <ClCompile Include="Dependencies\imGUI\imgui_widgets.cpp" />
     <ClCompile Include="Dependencies\lodepng\lodepng.cpp" />
     <ClCompile Include="Graphics\Camera\Camera.cpp" />
+    <ClCompile Include="Graphics\GUI\CustomImGuiElemets.cpp" />
     <ClCompile Include="Graphics\GUI\DisplayHubManager.cpp" />
     <ClCompile Include="Graphics\GUI\CustomImGuiElemets.h" />
     <ClCompile Include="Graphics\GUI\MainMenuGui.cpp" />

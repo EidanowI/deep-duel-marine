@@ -16,6 +16,8 @@ public:
 	void Bind() noexcept override;
 	void Bind(int bind_index) noexcept override;
 
+	ID3D11ShaderResourceView* GetShaderResView() noexcept;
+
 private:
 	ID3D11Texture2D* m_pTexture;
 	ID3D11ShaderResourceView* m_pShader_resource_view;

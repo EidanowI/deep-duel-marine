@@ -1,20 +1,20 @@
 #pragma once
+#pragma once
+#include <string>
+#include <algorithm>
+
 #include "../../Dependencies/imGUI/imgui.h"
+#include "../../Dependencies/imGUI/imgui_internal.h"
 
 #include "../MainWindow/MainWindow.h"
+#include "../Textures/Texture.h"
 
 
 
-bool CustomButton(const char* label) noexcept {
-	ImGui::PushID(label);
-
-	ImVec2 button_size = ImVec2(MainWindow::GetWindowWidth() / 14, MainWindow::GetWindowHeight() / 12);
-
-	ImVec2 cursor_pos = ImGui::GetCursorScreenPos();
-	bool is_clicked = ImGui::InvisibleButton(label, button_size);
+ImVec2  operator+(const ImVec2& lhs, const ImVec2& rhs);
+ImVec2  operator-(const ImVec2& lhs, const ImVec2& rhs);
 
 
-	ImGui::PopID();
-
-	return 1;
-}
+bool MainMenuButton(const char* label, ImGuiButtonFlags flags = 0);
+bool MainMenuGitHubButton(ImGuiButtonFlags flags = 0);
+bool MainMenuTelegramButton(ImGuiButtonFlags flags = 0);
