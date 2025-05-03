@@ -1,4 +1,5 @@
 #include "DisplayHubManager.h"
+#include "../GUI/MainMenuGui.h"
 #include "../Scene/MainMenuScene.h"
 
 
@@ -7,8 +8,8 @@ DisplayHub* DisplayHubManager::s_current_displayHub = nullptr;
 std::vector<DisplayHub*> DisplayHubManager::s_displayHubs{};
 
 
-DisplayHub::DisplayHub(void* pGUI, void* pScene) noexcept {
-	m_pGui = (IGUI*)pGUI;
+DisplayHub::DisplayHub(IGui* pGUI, IScene* pScene) noexcept {
+	m_pGui = pGUI;
 	m_pScene = (IScene*)pScene;
 }
 DisplayHub::~DisplayHub() noexcept {
@@ -23,7 +24,7 @@ void DisplayHub::Display() noexcept {
 
 
 void DisplayHubManager::Initialize() noexcept {
-	s_displayHubs.push_back(new DisplayHub(new GUI(), new MainMenuScene()));/// MAIN_MENU state
+	s_displayHubs.push_back(new DisplayHub(new MainMenuGui(), new MainMenuScene()));/// MAIN_MENU state
 	s_displayHubs.push_back(new DisplayHub(0, 0));/// IN_GAME state
 
 	ChangeState(DHM_MAIN_MENU);

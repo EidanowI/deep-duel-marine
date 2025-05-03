@@ -154,7 +154,7 @@
     <ClCompile Include="Graphics\Camera\Camera.cpp" />
     <ClCompile Include="Graphics\GUI\DisplayHubManager.cpp" />
     <ClCompile Include="Graphics\GUI\CustomImGuiElemets.h" />
-    <ClCompile Include="Graphics\GUI\GUI.cpp" />
+    <ClCompile Include="Graphics\GUI\MainMenuGui.cpp" />
     <ClCompile Include="Graphics\ImGuiRender\ImGuiRender.cpp" />
     <ClCompile Include="Graphics\Mesh\Mesh.cpp" />
     <ClCompile Include="Graphics\Model\BeaconLogoObject.cpp" />
@@ -233,8 +233,8 @@
     <ClInclude Include="Graphics\Camera\Camera.h" />
     <ClInclude Include="Graphics\GUI\DisplayHubManager.h" />
     <ClInclude Include="GlobalParams.h" />
-    <ClInclude Include="Graphics\GUI\GUI.h" />
-    <ClInclude Include="Graphics\GUI\IGUI.h" />
+    <ClInclude Include="Graphics\GUI\MainMenuGui.h" />
+    <ClInclude Include="Graphics\GUI\IGui.h" />
     <ClInclude Include="Graphics\IBindable.h" />
     <ClInclude Include="Graphics\ImGuiRender\ImGuiRender.h" />
     <ClInclude Include="Graphics\MainWindow\MainWindow.h" />

@@ -8,7 +8,7 @@
 void ImGuiRenderer::Initialize() noexcept {
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    //io.Fonts->AddFontFromFileTTF("C:/Users/Fiodar/Desktop/GAVS.otf", 32.0f);
+    io.Fonts->AddFontFromFileTTF("Fonts/unispace bd.ttf", 80.0f);
     ImGui::StyleColorsDark();
 }
 void ImGuiRenderer::Terminate() noexcept {

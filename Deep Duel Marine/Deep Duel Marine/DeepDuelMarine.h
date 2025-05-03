@@ -2,7 +2,6 @@
 #include "Graphics/MainWindow/MainWindow.h"
 #include "Graphics/Renderer/Renderer.h"
 #include "Graphics/ImGuiRender/ImGuiRender.h"
-#include "Graphics/GUI/GUI.h"
 #include "SteamNetworking/SteamNetworking.h"
 #include "Graphics/GUI/DisplayHubManager.h"
 #include "Graphics/Shader/Shader.h"

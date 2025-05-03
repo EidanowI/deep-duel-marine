@@ -1,18 +1,18 @@
-#include "GUI.h"
+#include "MainMenuGui.h"
 
 
 extern bool G_isShould_close_window;
 Lobby G_lobby;
 
 
-GUI::GUI() noexcept {
+MainMenuGui::MainMenuGui() noexcept {
 	m_pAponent_avatar = (char*)SteamNetworkingManager::LoadAponentAvatar();
 }
-GUI::~GUI() noexcept {
+MainMenuGui::~MainMenuGui() noexcept {
 
 }
 
-void GUI::Draw() noexcept {
+void MainMenuGui::Draw() noexcept {
 	if (m_pSelf_avatar == 0) {
 		m_pSelf_avatar = (char*)SteamNetworkingManager::LoadSelfAvatar();
 	}
@@ -61,46 +61,54 @@ void GUI::Draw() noexcept {
 		break;
 	}
 }
-void GUI::SetGuiState(GUI_STATE state) noexcept {
+void MainMenuGui::SetGuiState(GUI_STATE state) noexcept {
 	m_gui_state = state;
 }
 
-void GUI::DrawMainMenu() noexcept {
-	///TODO indication when yor not connected
+
+void BeginImGuiTranspWindow(const char* pWindow_name) noexcept {
 	ImGui::SetNextWindowBgAlpha(0.0f);
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
-	ImGui::Begin("Profile info", 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
+	ImGui::Begin(pWindow_name, 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
 	ImGuiStyle& style = ImGui::GetStyle();
 	style.WindowBorderSize = 0.0f;
 	style.ItemSpacing = ImVec2(30, 0);
-	ImGui::Image(m_pSelf_avatar, ImVec2(128, 128));
-	ImGui::SameLine();
-	ImFont* pFont = ImGui::GetFont();
-	pFont->Scale = 4.0;
-	ImGui::PushFont(pFont);
-	ImGui::Text(SteamNetworkingManager::GetSelfUserNickName());
-	ImGui::PopFont();
+}
+void EndImGuiTranspWindow() noexcept {
 	ImGui::End();
+}
 
+void MainMenuGui::DrawMainMenu() noexcept {
+	BeginImGuiTranspWindow("MainMenu");
+	ImFont* pFont = ImGui::GetFont();
 
-	//ImFont* pFont = ImGui::GetFont();
-	pFont->Scale = 2.0;
+	ImGui::SetCursorPos(ImVec2(7, 7));
+	ImGui::Image(m_pSelf_avatar, ImVec2((int)(MainWindow::GetWindowWidth() / 14.77f), (int)(MainWindow::GetWindowHeight() / 8.31f)));
+
+	pFont->Scale = 1.0f;
 
 	ImGui::PushFont(pFont);
-	ImGui::SetNextWindowBgAlpha(0.0f);
-	ImGui::SetNextWindowPos(ImVec2(MainWindow::GetWindowWidth() / 17, MainWindow::GetWindowHeight() / 2.8));
-	ImGui::Begin("Main menu", 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
-	//ImGuiStyle& style = ImGui::GetStyle();
-	style.WindowBorderSize = 0.0f;
-	style.ItemSpacing = ImVec2(0, MainWindow::GetWindowHeight() / 40);
-	if (ImGui::Button("Create match", ImVec2(MainWindow::GetWindowWidth() / 4.2, MainWindow::GetWindowHeight() / 20))) {
+	if (SteamNetworkingManager::GetSelfUserNickName()) {
+		ImGui::SetCursorPos(ImVec2(7 + (int)(MainWindow::GetWindowWidth() / 14.77f) + 15, 7 + (int)(MainWindow::GetWindowHeight() / 8.31f / 2.0f) - 40));
+		ImGui::Text(SteamNetworkingManager::GetSelfUserNickName());
+	}
+	ImGui::PopFont();
+	
+	pFont->Scale = 0.6;
+	ImGui::PushFont(pFont);
+
+	int button_size_and_spacing = MainWindow::GetWindowHeight() / 20 + MainWindow::GetWindowHeight() / 45;
+
+	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 17, MainWindow::GetWindowHeight() / 2.8 + 0 * button_size_and_spacing));
+	if (MainMenuButton("Create match")){
 		if (SteamNetworkingManager::IsSteamConnected()) {
 			m_gui_state = CREATE_LOBBY;
 			SteamNetworkingManager::ClearLobbyStructData();
 		}
 	}
 
-	if (ImGui::Button("Join a match", ImVec2(MainWindow::GetWindowWidth() / 4.2, MainWindow::GetWindowHeight() / 20))) {
+	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 17, MainWindow::GetWindowHeight() / 2.8 + 1 * button_size_and_spacing));
+	if (MainMenuButton("Join a match")) {
 		if (SteamNetworkingManager::IsSteamConnected()) {
 			SteamNetworkingManager::ClearLobbyStructData();
 			SteamNetworkingManager::GetLobbyBrowser()->Refresh();
@@ -108,18 +116,22 @@ void GUI::DrawMainMenu() noexcept {
 		}
 	}
 
-	if (ImGui::Button("Settings", ImVec2(MainWindow::GetWindowWidth() / 4.2, MainWindow::GetWindowHeight() / 20))) {
+	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 17, MainWindow::GetWindowHeight() / 2.8 + 2 * button_size_and_spacing));
+	if (MainMenuButton("Settings")) {
 		//ShellExecute(0, 0, L"https://github.com/EidanowI/deep-duel-marine", 0, 0, SW_SHOW);
 		m_gui_state = SETTINGS;
 	}
 
-	if (ImGui::Button("Quit", ImVec2(MainWindow::GetWindowWidth() / 4.2, MainWindow::GetWindowHeight() / 20))) {
+	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 17, MainWindow::GetWindowHeight() / 2.8 + 3 * button_size_and_spacing));
+	if (MainMenuButton("Quit")) {
 		m_gui_state = QUIT_DIALOG;
 	}
-	ImGui::End();
+
 	ImGui::PopFont();
+
+	EndImGuiTranspWindow();
 }
-void GUI::DrawCreateLobby() noexcept {
+void MainMenuGui::DrawCreateLobby() noexcept {
 #define CREATE_LOBBY_WIDTH 1920 / 4
 #define CREATE_LOBBY_HEIGHT 1080 / 4
 
@@ -157,7 +169,7 @@ void GUI::DrawCreateLobby() noexcept {
 	ImGui::End();
 	ImGui::PopFont();
 }
-void GUI::DrawLobbyBrowser() noexcept {
+void MainMenuGui::DrawLobbyBrowser() noexcept {
 #define LOBBY_BROWSER_WIDTH 1920 / 2.3
 #define LOBBY_BROWSER_HEIGHT 1080 * 0.75
 
@@ -207,7 +219,7 @@ void GUI::DrawLobbyBrowser() noexcept {
 
 	ImGui::End();
 }
-void GUI::DrawLobbyLoading() noexcept {
+void MainMenuGui::DrawLobbyLoading() noexcept {
 	ImGui::SetNextWindowPos(ImVec2(MainWindow::GetWindowWidth()/ 2, MainWindow::GetWindowHeight() /2));
 	ImGui::SetNextWindowBgAlpha(0.0f);
 	ImGui::Begin("DrawLobbyLoading", 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
@@ -217,7 +229,7 @@ void GUI::DrawLobbyLoading() noexcept {
 	ImGui::Text("Loading");
 	ImGui::End();
 }
-void GUI::DrawReadyOrNotMenu() noexcept {
+void MainMenuGui::DrawReadyOrNotMenu() noexcept {
 	ImGui::SetNextWindowPos(ImVec2(0,0));
 	ImGui::SetNextWindowBgAlpha(0.0f);
 	ImGui::Begin("Lobby Browser", 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
@@ -307,7 +319,7 @@ void GUI::DrawReadyOrNotMenu() noexcept {
 	}
 	ImGui::End();
 }
-void GUI::DrawStartingServer() noexcept {
+void MainMenuGui::DrawStartingServer() noexcept {
 	ImGui::SetNextWindowPos(ImVec2(MainWindow::GetWindowWidth() / 2, MainWindow::GetWindowHeight() / 2));
 	ImGui::SetNextWindowBgAlpha(0.0f);
 	ImGui::Begin("DrawLobbyLoading", 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
@@ -322,7 +334,7 @@ void GUI::DrawStartingServer() noexcept {
 	}	
 	ImGui::End();
 }
-void GUI::DrawSetting() noexcept {
+void MainMenuGui::DrawSetting() noexcept {
 #define SETTINGS_WIDTH 1920 / 3
 #define SETTINGS_HEIGHT 1080 / 3 
 	ImFont* pFont = ImGui::GetFont();
@@ -348,7 +360,7 @@ void GUI::DrawSetting() noexcept {
 	ImGui::End();
 	ImGui::PopFont();
 }
-void GUI::DrawQuitDialog() noexcept {
+void MainMenuGui::DrawQuitDialog() noexcept {
 	ImFont* pFont = ImGui::GetFont();
 	pFont->Scale = 2.0;
 
@@ -376,7 +388,7 @@ void GUI::DrawQuitDialog() noexcept {
 	ImGui::PopFont();
 }
 
-void GUI::UpdateAponentAvatar() noexcept {
+void MainMenuGui::UpdateAponentAvatar() noexcept {
 	if (SteamNetworkingManager::IsSteamConnected()) {
 		m_pSelf_avatar = (char*)SteamNetworkingManager::LoadSelfAvatar();
 		m_pAponent_avatar = (char*)SteamNetworkingManager::LoadAponentAvatar();
@@ -387,6 +399,58 @@ void GUI::UpdateAponentAvatar() noexcept {
 
 ImVec2  operator+(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x + rhs.x, lhs.y + rhs.y); }
 ImVec2  operator-(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x - rhs.x, lhs.y - rhs.y); }
+
+bool MainMenuButton(const char* label, ImGuiButtonFlags flags)
+{
+	ImVec2 size_arg = ImVec2(MainWindow::GetWindowWidth() / 4.2, MainWindow::GetWindowHeight() / 20);
+
+	//ImFont* pFont = ImGui::GetFont();
+	//pFont->Scale = 0.2;
+	//ImGui::PushFont(pFont);
+
+	using namespace ImGui;
+	ImGuiWindow* window = GetCurrentWindow();
+	if (window->SkipItems)
+		return false;
+
+	ImGuiContext& g = *GImGui;
+	const ImGuiStyle& style = g.Style;
+	const ImGuiID id = window->GetID(label);
+	const ImVec2 label_size = CalcTextSize(label, NULL, true);
+
+	ImVec2 pos = window->DC.CursorPos;
+	if ((flags & ImGuiButtonFlags_AlignTextBaseLine) && style.FramePadding.y < window->DC.CurrLineTextBaseOffset) // Try to vertically align buttons that are smaller/have no padding so that text baseline matches (bit hacky, since it shouldn't be a flag)
+		pos.y += window->DC.CurrLineTextBaseOffset - style.FramePadding.y;
+	ImVec2 size = CalcItemSize(size_arg, label_size.x + style.FramePadding.x * 2.0f, label_size.y + style.FramePadding.y * 2.0f);
+
+	const ImRect bb(pos, pos + size);
+	ItemSize(size, style.FramePadding.y);
+	if (!ItemAdd(bb, id))
+		return false;
+
+	bool hovered, held;
+	bool pressed = ButtonBehavior(bb, id, &hovered, &held, flags);
+
+	// Render
+	ImColor buton_active_color = ImColor(100, 100, 100, 255 - 100);
+	ImColor buton_hovered_color = ImColor(115, 115, 115, 255 - 115);
+	ImColor buton_color = ImColor(0, 0, 0, 0);
+
+	const ImU32 col = ((held && hovered) ? buton_active_color : hovered ? buton_hovered_color : buton_color);
+	RenderNavHighlight(bb, id);
+	RenderFrame(bb.Min, bb.Max, col, true, style.FrameRounding);
+
+	if (g.LogEnabled)
+		LogSetNextTextDecoration("[", "]");
+	RenderTextClipped(bb.Min + style.FramePadding, bb.Max - style.FramePadding, label, NULL, &label_size, style.ButtonTextAlign, &bb);
+
+	IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags);
+
+	//ImGui::PopFont();
+
+	return pressed;
+}
+
 bool TestButton(const char* label, const ImVec2& size_arg, ImGuiButtonFlags flags, bool isActive)
 {
 	using namespace ImGui;

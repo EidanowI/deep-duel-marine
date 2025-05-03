@@ -60,7 +60,7 @@
     <ClCompile Include="SteamNetworking\LobbyBrowser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics\GUI\GUI.cpp">
+    <ClCompile Include="Graphics\GUI\MainMenuGui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\GUI\DisplayHubManager.cpp">
@@ -143,7 +143,7 @@
     <ClInclude Include="Graphics\ImGuiRender\ImGuiRender.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\GUI\GUI.h">
+    <ClInclude Include="Graphics\GUI\MainMenuGui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SteamNetworking\SteamNetworking.h">
@@ -299,7 +299,7 @@
     <ClInclude Include="Graphics\GUI\DisplayHubManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\GUI\IGUI.h">
+    <ClInclude Include="Graphics\GUI\IGui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\Shader\Shader.h">

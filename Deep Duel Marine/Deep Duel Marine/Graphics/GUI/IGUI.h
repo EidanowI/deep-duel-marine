@@ -2,11 +2,7 @@
 
 
 
-class IGUI {
+class IGui {
 public:
-	virtual ~IGUI() noexcept {}
-
 	virtual void Draw() noexcept = 0;
-private:
-
 };

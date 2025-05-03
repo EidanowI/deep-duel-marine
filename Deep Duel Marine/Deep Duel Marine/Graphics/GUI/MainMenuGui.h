@@ -13,35 +13,29 @@
 
 
 bool TestButton(const char* label, const ImVec2& size_arg, ImGuiButtonFlags flags, bool isActive);
+bool MainMenuButton(const char* label, ImGuiButtonFlags flags = 0);
 int InputFilterTextCalback(ImGuiInputTextCallbackData* data);
 
 
 enum GUI_STATE {
 	MAIN_MENU,
-
 	CREATE_LOBBY,
-
 	LOBBY_BROWSER,
-
 	LOBBY_LOADING,
-
 	IN_LOBBY,
-
 	STARTING_SERVER,
-
 	SETTINGS,
 	QUIT_DIALOG
 };
 
-class GUI : public IGUI {
+class MainMenuGui : public IGui {
 public:
-	GUI() noexcept;
-	~GUI() noexcept override;
+	MainMenuGui() noexcept;
+	~MainMenuGui() noexcept;
 
 	void Draw() noexcept override;
 
 	void SetGuiState(GUI_STATE state) noexcept;
-	///void UpdateAvatars() noexcept;
 
 private:
 	void DrawMainMenu() noexcept;

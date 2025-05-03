@@ -1,21 +1,20 @@
 #pragma once
 #include <vector>
 
-#include "IGUI.h"
-#include "GUI.h"
+#include "IGui.h"
 #include "../Scene/IScene.h"
 
 
 
 class DisplayHub {
 public:
-	DisplayHub(void* pGUI, void* pScene) noexcept;
+	DisplayHub(IGui* pGUI, IScene* pScene) noexcept;
 	~DisplayHub() noexcept;
 
 	void Display() noexcept;
 
 private:
-	IGUI* m_pGui;
+	IGui* m_pGui;
 	IScene* m_pScene;
 };
 
