@@ -85,22 +85,21 @@ void MainMenuGui::DrawMainMenu() noexcept {
 	ImGui::SetCursorPos(ImVec2(7, 7));
 	ImGui::Image(m_pSelf_avatar, ImVec2((int)(MainWindow::GetWindowWidth() / 14.77f), (int)(MainWindow::GetWindowHeight() / 8.31f)));
 
-	pFont->Scale = 1.0f;
-
+	pFont->Scale = (float)MainWindow::GetWindowWidth() / 1920.0f;
 	ImGui::PushFont(pFont);
 	if (SteamNetworkingManager::GetSelfUserNickName()) {
-		ImGui::SetCursorPos(ImVec2(7 + (int)(MainWindow::GetWindowWidth() / 14.77f) + 15, 7 + (int)(MainWindow::GetWindowHeight() / 8.31f / 2.0f) - 40));
+		ImGui::SetCursorPos(ImVec2(7 + (int)(MainWindow::GetWindowWidth() / 14.77f) + 15, 7 + (int)(MainWindow::GetWindowHeight() / 8.31f / 2.0f) - 40 * (float)MainWindow::GetWindowWidth() / 1920.0f));
 		ImGui::Text(SteamNetworkingManager::GetSelfUserNickName());
 	}
 	ImGui::PopFont();
 	
-	pFont->Scale = 0.6;
+	pFont->Scale = (float)MainWindow::GetWindowWidth() / 3200.0f;
 	ImGui::PushFont(pFont);
 
 	int button_size_and_spacing = MainWindow::GetWindowHeight() / 20 + MainWindow::GetWindowHeight() / 45;
 
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 17, MainWindow::GetWindowHeight() / 2.8 + 0 * button_size_and_spacing));
-	if (MainMenuButton("Create match")){
+	if (MainMenuButton("Create a match")){
 		if (SteamNetworkingManager::IsSteamConnected()) {
 			m_gui_state = CREATE_LOBBY;
 			SteamNetworkingManager::ClearLobbyStructData();
