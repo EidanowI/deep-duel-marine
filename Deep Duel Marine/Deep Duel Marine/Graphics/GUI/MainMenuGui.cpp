@@ -139,7 +139,6 @@ void MainMenuGui::DrawMainMenu() noexcept {
 		ShellExecute(0, 0, L"https://t.me/Eidanowi", 0, 0, SW_SHOW);
 	}
 
-
 	EndImGuiTranspWindow();
 }
 void MainMenuGui::DrawCreateLobby() noexcept {
@@ -152,13 +151,10 @@ void MainMenuGui::DrawCreateLobby() noexcept {
 	ImGui::SetCursorPos(ImVec2((MainWindow::GetWindowWidth() / 2) - lobby_name_text_size.x / 2,
 		MainWindow::GetWindowHeight() / 3));
 	ImGui::Text("Lobby name:");
-	ImGui::PopFont();
 
-	pFont->Scale = (float)MainWindow::GetWindowWidth() / 3200.0f;
-	ImGui::PushFont(pFont);
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() * 5 / 14, ImGui::GetCursorPosY() + 7));
 	ImGui::InputTextEx("##", 0, SteamNetworkingManager::GetLobbyStruct()->m_name, 63, ImVec2(MainWindow::GetWindowWidth() / 3.5, lobby_name_text_size.y), 0);
-	ImGui::PopFont();
+	
 
 	auto pos_y_forconf = ImGui::GetCursorPosY() + 20;
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() * 5 / 14, pos_y_forconf));
@@ -172,67 +168,30 @@ void MainMenuGui::DrawCreateLobby() noexcept {
 		SteamNetworkingManager::GetLobbyStruct()->m_isPublic = true;
 		SteamNetworkingManager::CreateLobby();
 	}
-	//ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + ((CREATE_LOBBY_WIDTH - 20) / 4), ImGui::GetCursorPos().y));
 
+	ImGui::PopFont();
 	EndImGuiTranspWindow();
-
-
-/*#define CREATE_LOBBY_WIDTH 1920 / 4
-#define CREATE_LOBBY_HEIGHT 1080 / 4
-
-	ImFont* pFont = ImGui::GetFont();
-	pFont->Scale = 0.3;
-	ImGui::PushFont(pFont);
-	ImGui::SetNextWindowBgAlpha(0.0f);
-	ImGui::SetNextWindowPos(ImVec2((MainWindow::GetWindowWidth() - CREATE_LOBBY_WIDTH) / 2, (MainWindow::GetWindowHeight() - CREATE_LOBBY_HEIGHT) / 2));
-	ImGui::Begin("Create lobby", 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
-	ImGuiStyle& style = ImGui::GetStyle();
-	style.WindowBorderSize = 0.0f;
-	style.ItemSpacing = ImVec2(20, 20);
-	ImGui::Text("Lobby name:");
-
-	ImGui::InputText("##", SteamNetworkingManager::GetLobbyStruct()->m_name, 63);
-
-	if (TestButton("Public", ImVec2((CREATE_LOBBY_WIDTH - 20) / 2, 80), ImGuiButtonFlags_None, SteamNetworkingManager::GetLobbyStruct()->m_isPublic)) {
-		SteamNetworkingManager::GetLobbyStruct()->m_isPublic = true;
-	}
-	ImGui::SameLine();
-	if (TestButton("Friends-only", ImVec2((CREATE_LOBBY_WIDTH - 20) / 2, 80), ImGuiButtonFlags_None, !SteamNetworkingManager::GetLobbyStruct()->m_isPublic)) {
-		SteamNetworkingManager::GetLobbyStruct()->m_isPublic = false;
-	}
-
-	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + ((CREATE_LOBBY_WIDTH - 20) / 4), ImGui::GetCursorPos().y));
-	if (ImGui::Button("Confirm", ImVec2((CREATE_LOBBY_WIDTH - 20) / 2, 40))) {
-		m_gui_state = LOBBY_LOADING;
-		SteamNetworkingManager::CreateLobby();
-	}
-	ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + ((CREATE_LOBBY_WIDTH - 20) / 4), ImGui::GetCursorPos().y));
-	if (ImGui::Button("Back", ImVec2((CREATE_LOBBY_WIDTH - 20) / 2, 40))) {
-		m_gui_state = MAIN_MENU;
-	}
-
-	ImGui::End();
-	ImGui::PopFont();*/
 }
 void MainMenuGui::DrawLobbyBrowser() noexcept {
-#define LOBBY_BROWSER_WIDTH 1920 / 2.3
-#define LOBBY_BROWSER_HEIGHT 1080 * 0.75
+	BeginImGuiTranspWindow("Lobby browser");
+	ImFont* pFont = ImGui::GetFont();
 
-	ImGui::SetNextWindowPos(ImVec2((MainWindow::GetWindowWidth() - LOBBY_BROWSER_WIDTH) * 0.3, (MainWindow::GetWindowHeight() - LOBBY_BROWSER_HEIGHT) / 2));
-	ImGui::Begin("Lobby Browser", 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
-	ImGuiStyle& style = ImGui::GetStyle();
-	//style.WindowBorderSize = 0.0f;
-	style.ItemSpacing = ImVec2(25, MainWindow::GetWindowHeight() / 40);
-	ImGui::InputTextWithHint("##", "Lobby name filter", SteamNetworkingManager::GetLobbyBrowser()->GetFilterName(), 64, ImGuiInputTextFlags_CallbackEdit, InputFilterTextCalback);
+	pFont->Scale = (float)MainWindow::GetWindowWidth() / 3200.0f;
+	ImGui::PushFont(pFont);
 
-	ImGui::SameLine();
-
-	if (ImGui::Button("Refresh", ImVec2(120, 35))) {
+	ImVec2 filter_text_size = ImGui::CalcTextSize("Lobby name filter");
+	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 8, MainWindow::GetWindowHeight()/4));
+	ImGui::InputTextEx("##", "Lobby name filter", SteamNetworkingManager::GetLobbyBrowser()->GetFilterName(), 63, ImVec2(MainWindow::GetWindowWidth() / 3, filter_text_size.y), ImGuiInputTextFlags_CallbackEdit, InputFilterTextCalback);
+	
+	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 8 + MainWindow::GetWindowWidth() / 3 + 10, MainWindow::GetWindowHeight() / 4));
+	if (CustomLobbyBrowser::RefreshButton(filter_text_size.y, ImGui::GetCursorPos())) {
 		SteamNetworkingManager::GetLobbyBrowser()->Refresh();
 	}
 
 	static int item_current_idx = -1;
-	if (ImGui::BeginListBox("##listbox 2", ImVec2(-FLT_MIN, 10 * ImGui::GetTextLineHeightWithSpacing())))
+
+	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 8, ImGui::GetCursorPosY() + 10));
+	if (ImGui::BeginListBox("##listbox 2", ImVec2(MainWindow::GetWindowWidth() / 3 + filter_text_size.y + 10, 10 * ImGui::GetTextLineHeightWithSpacing())))
 	{
 		for (int i = 0; i < SteamNetworkingManager::GetLobbyBrowser()->GetlobbyCount(); i++)
 		{
@@ -240,7 +199,7 @@ void MainMenuGui::DrawLobbyBrowser() noexcept {
 			const bool is_selected = (item_current_idx == i);
 
 			std::string a = SteamNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_name;
-			if (ImGui::Selectable(SteamNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_name, false))
+			if (ImGui::Selectable(SteamNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_name, false, 0, ImVec2(MainWindow::GetWindowWidth() / 3 + filter_text_size.y + 10, filter_text_size.y)))
 			{
 				m_gui_state = LOBBY_LOADING;
 				SteamNetworkingManager::JoinLobby(SteamNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_id);
@@ -257,12 +216,13 @@ void MainMenuGui::DrawLobbyBrowser() noexcept {
 		ImGui::EndListBox();
 	}
 
-	if (ImGui::Button("Back to main menu", ImVec2(ImGui::CalcTextSize("Back to main menu ").x, 35))) {
+	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 8, ImGui::GetCursorPosY() + 10));
+	if (ImGui::Button("Back", ImVec2(MainWindow::GetWindowWidth() / 10, filter_text_size.y))) {
 		m_gui_state = MAIN_MENU;
 	}
 
-
-	ImGui::End();
+	ImGui::PopFont();
+	EndImGuiTranspWindow();
 }
 void MainMenuGui::DrawLobbyLoading() noexcept {
 	ImGui::SetNextWindowPos(ImVec2(MainWindow::GetWindowWidth()/ 2, MainWindow::GetWindowHeight() /2));
@@ -431,31 +391,6 @@ void MainMenuGui::DrawQuitDialog() noexcept {
 
 	ImGui::PopFont();
 	EndImGuiTranspWindow();
-	/*ImFont* pFont = ImGui::GetFont();
-	pFont->Scale = 2.0;
-
-	ImGui::PushFont(pFont);
-	ImGui::SetNextWindowBgAlpha(0.0f);
-	ImGui::SetNextWindowPos(ImVec2((MainWindow::GetWindowWidth() - (MainWindow::GetWindowWidth() / 4.2 - 20)) / 2, MainWindow::GetWindowHeight() / 2.2));
-	ImGui::Begin("Quit dialog", 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
-	ImGuiStyle& style = ImGui::GetStyle();
-	style.WindowBorderSize = 0.0f;
-	style.ItemSpacing = ImVec2(20, MainWindow::GetWindowHeight() / 20);
-
-	ImGui::Text("   You shure you want to quit?");
-
-	if (ImGui::Button("Cancel", ImVec2((MainWindow::GetWindowWidth() / 4.2 - 20) / 2, MainWindow::GetWindowHeight() / 20))) {
-		m_gui_state = MAIN_MENU;
-	}
-
-	ImGui::SameLine();
-
-	if (ImGui::Button("Quit", ImVec2((MainWindow::GetWindowWidth() / 4.2 - 20) / 2, MainWindow::GetWindowHeight() / 20))) {
-		G_isShould_close_window = true;
-	}
-
-	ImGui::End();
-	ImGui::PopFont();*/
 }
 
 void MainMenuGui::UpdateAponentAvatar() noexcept {

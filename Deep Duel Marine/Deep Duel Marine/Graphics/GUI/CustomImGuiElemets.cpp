@@ -179,3 +179,46 @@ bool ConfBackButton(const char* label, const ImColor color_hovered, const ImColo
 
 	return pressed;
 }
+
+bool CustomLobbyBrowser::RefreshButton(int side, ImVec2 img_pos, ImGuiButtonFlags flags) {
+	static Texture refresh_tex = Texture("Refresh.png");
+	const char* label = "RefreshButton";
+	ImVec2 size_arg = ImVec2(side, side);
+
+
+	using namespace ImGui;
+	ImGuiWindow* window = GetCurrentWindow();
+	if (window->SkipItems)
+		return false;
+
+	ImGuiContext& g = *GImGui;
+	const ImGuiStyle& style = g.Style;
+	const ImGuiID id = window->GetID(label);
+	const ImVec2 label_size = CalcTextSize(label, NULL, true);
+
+	ImVec2 pos = window->DC.CursorPos;
+	if ((flags & ImGuiButtonFlags_AlignTextBaseLine) && style.FramePadding.y < window->DC.CurrLineTextBaseOffset) // Try to vertically align buttons that are smaller/have no padding so that text baseline matches (bit hacky, since it shouldn't be a flag)
+		pos.y += window->DC.CurrLineTextBaseOffset - style.FramePadding.y;
+	ImVec2 size = CalcItemSize(size_arg, label_size.x + style.FramePadding.x * 2.0f, label_size.y + style.FramePadding.y * 2.0f);
+
+	const ImRect bb(pos, pos + size);
+
+	ItemSize(size, style.FramePadding.y);
+	if (!ItemAdd(bb, id))
+		return false;
+
+	bool hovered, held;
+	bool pressed = ButtonBehavior(bb, id, &hovered, &held, flags);
+
+	// Render
+	ImColor buton_active_color = ImColor(150, 150, 150, 255);
+	ImColor buton_hovered_color = ImColor(255, 255, 255, 150);
+	ImColor buton_color = ImColor(255, 255, 255, 255);
+
+	const ImVec4 col = ((held && hovered) ? buton_active_color : hovered ? buton_hovered_color : buton_color);
+
+	ImGui::SetCursorPos(pos);
+	ImGui::Image(refresh_tex.GetShaderResView(), size_arg, ImVec2(0, 0), ImVec2(1, 1), col);
+
+	return pressed;
+}

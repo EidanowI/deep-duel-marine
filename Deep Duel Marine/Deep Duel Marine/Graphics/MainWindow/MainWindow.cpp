@@ -166,7 +166,7 @@ LRESULT WindowProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	case WM_KEYDOWN:
 	case WM_SYSKEYDOWN:
 	{
-		if ((unsigned char)wParam == 'W') {
+		/*if ((unsigned char)wParam == 'W') {
 			MainWindow::FixateCursor(true);
 		}
 		else if ((unsigned char)wParam == 'Q') {
@@ -177,7 +177,7 @@ LRESULT WindowProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		}
 		else if ((unsigned char)wParam == 'R') {
 			MainWindow::SetCursorVisibility(true);
-		}
+		}*/
 		break;
 	}
 	/*case WM_KILLFOCUS:
