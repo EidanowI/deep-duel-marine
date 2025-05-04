@@ -20,7 +20,4 @@ namespace CustomMainMenu {
 	bool MainMenuTelegramButton(ImGuiButtonFlags flags = 0);
 }
 
-namespace CustomCreateLobby {
-	bool ConfBackButton(const char* label, const ImColor color_hovered);
-}
-
+bool ConfBackButton(const char* label, const ImColor color_hovered, const ImColor color_active);

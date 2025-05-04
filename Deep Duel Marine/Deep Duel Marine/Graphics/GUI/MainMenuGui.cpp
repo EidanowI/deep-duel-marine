@@ -162,12 +162,12 @@ void MainMenuGui::DrawCreateLobby() noexcept {
 
 	auto pos_y_forconf = ImGui::GetCursorPosY() + 20;
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() * 5 / 14, pos_y_forconf));
-	if (CustomCreateLobby::ConfBackButton("Back", ImColor(160, 115, 115, 255 - 115))) {
+	if (ConfBackButton("Back", ImColor(160, 115, 115, 255 - 115), ImColor(160, 100, 100, 255 - 100))) {
 		m_gui_state = MAIN_MENU;
 	}
 
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() * 5 / 14 + MainWindow::GetWindowWidth() / 7, pos_y_forconf));
-	if (CustomCreateLobby::ConfBackButton("Confirm", ImColor(115, 160, 115, 255 - 115))) {
+	if (ConfBackButton("Confirm", ImColor(115, 160, 115, 255 - 115), ImColor(100, 160, 100, 255 - 100))) {
 		m_gui_state = LOBBY_LOADING;
 		SteamNetworkingManager::GetLobbyStruct()->m_isPublic = true;
 		SteamNetworkingManager::CreateLobby();
@@ -406,7 +406,32 @@ void MainMenuGui::DrawSetting() noexcept {
 	ImGui::PopFont();
 }
 void MainMenuGui::DrawQuitDialog() noexcept {
+	BeginImGuiTranspWindow("Quit Dialog");
 	ImFont* pFont = ImGui::GetFont();
+
+	pFont->Scale = (float)MainWindow::GetWindowWidth() / 3200.0f;
+	ImGui::PushFont(pFont);
+
+	ImVec2 mes_size = ImGui::CalcTextSize("Are you sure you want to quit the game?");
+
+	ImGui::SetCursorPos(ImVec2((MainWindow::GetWindowWidth() / 2) - mes_size.x / 2,
+		MainWindow::GetWindowHeight() / 2.5));
+	ImGui::Text("Are you sure you want to quit the game?");
+
+	auto pos_y_forconf = ImGui::GetCursorPosY() + 20;
+	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() * 5 / 14, pos_y_forconf));
+	if (ConfBackButton("Back", ImColor(115, 160, 115, 255 - 115), ImColor(100, 160, 100, 255 - 100))) {
+		m_gui_state = MAIN_MENU;
+	}
+
+	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() * 5 / 14 + MainWindow::GetWindowWidth() / 7, pos_y_forconf));
+	if (ConfBackButton("Quit", ImColor(160, 115, 115, 255 - 115), ImColor(160, 100, 100, 255 - 100))) {
+		G_isShould_close_window = true;
+	}
+
+	ImGui::PopFont();
+	EndImGuiTranspWindow();
+	/*ImFont* pFont = ImGui::GetFont();
 	pFont->Scale = 2.0;
 
 	ImGui::PushFont(pFont);
@@ -430,7 +455,7 @@ void MainMenuGui::DrawQuitDialog() noexcept {
 	}
 
 	ImGui::End();
-	ImGui::PopFont();
+	ImGui::PopFont();*/
 }
 
 void MainMenuGui::UpdateAponentAvatar() noexcept {

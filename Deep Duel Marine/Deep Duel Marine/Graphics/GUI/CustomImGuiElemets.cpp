@@ -136,7 +136,7 @@ bool CustomMainMenu::MainMenuTelegramButton(ImGuiButtonFlags flags)
 	return pressed;
 }
 
-bool CustomCreateLobby::ConfBackButton(const char* label, const ImColor color_hovered) {
+bool ConfBackButton(const char* label, const ImColor color_hovered, const ImColor color_active) {
 	const ImGuiButtonFlags flags = 0;
 	ImVec2 size_arg = ImVec2(MainWindow::GetWindowWidth() / 7, MainWindow::GetWindowHeight() / 20);
 
@@ -167,7 +167,7 @@ bool CustomCreateLobby::ConfBackButton(const char* label, const ImColor color_ho
 	ImColor buton_active_color = ImColor(100, 100, 100, 255 - 100);
 	ImColor buton_color = ImColor(0, 0, 0, 0);
 
-	const ImU32 col = ((held && hovered) ? buton_active_color : hovered ? color_hovered : buton_color);
+	const ImU32 col = ((held && hovered) ? color_active : hovered ? color_hovered : buton_color);
 	RenderNavHighlight(bb, id);
 	RenderFrame(bb.Min, bb.Max, col, true, style.FrameRounding);
 
