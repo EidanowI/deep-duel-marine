@@ -14,7 +14,13 @@
 ImVec2  operator+(const ImVec2& lhs, const ImVec2& rhs);
 ImVec2  operator-(const ImVec2& lhs, const ImVec2& rhs);
 
+namespace CustomMainMenu {
+	bool MainMenuButton(const char* label, ImGuiButtonFlags flags = 0);
+	bool MainMenuGitHubButton(ImGuiButtonFlags flags = 0);
+	bool MainMenuTelegramButton(ImGuiButtonFlags flags = 0);
+}
 
-bool MainMenuButton(const char* label, ImGuiButtonFlags flags = 0);
-bool MainMenuGitHubButton(ImGuiButtonFlags flags = 0);
-bool MainMenuTelegramButton(ImGuiButtonFlags flags = 0);
+namespace CustomCreateLobby {
+	bool ConfBackButton(const char* label, const ImColor color_hovered);
+}
+

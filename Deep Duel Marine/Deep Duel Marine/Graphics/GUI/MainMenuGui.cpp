@@ -100,7 +100,7 @@ void MainMenuGui::DrawMainMenu() noexcept {
 	int button_size_and_spacing = MainWindow::GetWindowHeight() / 20 + MainWindow::GetWindowHeight() / 45;
 
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 17, MainWindow::GetWindowHeight() / 2.8 + 0 * button_size_and_spacing));
-	if (MainMenuButton("Create a match")){
+	if (CustomMainMenu::MainMenuButton("Create a match")){
 		if (SteamNetworkingManager::IsSteamConnected()) {
 			m_gui_state = CREATE_LOBBY;
 			SteamNetworkingManager::ClearLobbyStructData();
@@ -108,7 +108,7 @@ void MainMenuGui::DrawMainMenu() noexcept {
 	}
 
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 17, MainWindow::GetWindowHeight() / 2.8 + 1 * button_size_and_spacing));
-	if (MainMenuButton("Join a match")) {
+	if (CustomMainMenu::MainMenuButton("Join a match")) {
 		if (SteamNetworkingManager::IsSteamConnected()) {
 			SteamNetworkingManager::ClearLobbyStructData();
 			SteamNetworkingManager::GetLobbyBrowser()->Refresh();
@@ -117,12 +117,12 @@ void MainMenuGui::DrawMainMenu() noexcept {
 	}
 
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 17, MainWindow::GetWindowHeight() / 2.8 + 2 * button_size_and_spacing));
-	if (MainMenuButton("Settings")) {
+	if (CustomMainMenu::MainMenuButton("Settings")) {
 		m_gui_state = SETTINGS;
 	}
 
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 17, MainWindow::GetWindowHeight() / 2.8 + 3 * button_size_and_spacing));
-	if (MainMenuButton("Quit")) {
+	if (CustomMainMenu::MainMenuButton("Quit")) {
 		m_gui_state = QUIT_DIALOG;
 	}
 
@@ -130,12 +130,12 @@ void MainMenuGui::DrawMainMenu() noexcept {
 
 	
 	ImGui::SetCursorPos(ImVec2(7, MainWindow::GetWindowHeight() - MainWindow::GetWindowHeight() / 16.62f - 7));
-	if (MainMenuGitHubButton()) {
+	if (CustomMainMenu::MainMenuGitHubButton()) {
 		ShellExecute(0, 0, L"https://github.com/EidanowI/deep-duel-marine", 0, 0, SW_SHOW);
 	}
 
 	ImGui::SetCursorPos(ImVec2(16 + MainWindow::GetWindowHeight() / 16.62f * 2.7f, MainWindow::GetWindowHeight() - MainWindow::GetWindowHeight() / 16.62f - 7));
-	if (MainMenuTelegramButton()) {
+	if (CustomMainMenu::MainMenuTelegramButton()) {
 		ShellExecute(0, 0, L"https://t.me/Eidanowi", 0, 0, SW_SHOW);
 	}
 
@@ -143,11 +143,45 @@ void MainMenuGui::DrawMainMenu() noexcept {
 	EndImGuiTranspWindow();
 }
 void MainMenuGui::DrawCreateLobby() noexcept {
-#define CREATE_LOBBY_WIDTH 1920 / 4
+	BeginImGuiTranspWindow("CreateLobby");
+	ImFont* pFont = ImGui::GetFont();
+
+	pFont->Scale = (float)MainWindow::GetWindowWidth() / 3200.0f;
+	ImGui::PushFont(pFont);
+	ImVec2 lobby_name_text_size = ImGui::CalcTextSize("Lobby name");
+	ImGui::SetCursorPos(ImVec2((MainWindow::GetWindowWidth() / 2) - lobby_name_text_size.x / 2,
+		MainWindow::GetWindowHeight() / 3));
+	ImGui::Text("Lobby name:");
+	ImGui::PopFont();
+
+	pFont->Scale = (float)MainWindow::GetWindowWidth() / 3200.0f;
+	ImGui::PushFont(pFont);
+	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() * 5 / 14, ImGui::GetCursorPosY() + 7));
+	ImGui::InputTextEx("##", 0, SteamNetworkingManager::GetLobbyStruct()->m_name, 63, ImVec2(MainWindow::GetWindowWidth() / 3.5, lobby_name_text_size.y), 0);
+	ImGui::PopFont();
+
+	auto pos_y_forconf = ImGui::GetCursorPosY() + 20;
+	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() * 5 / 14, pos_y_forconf));
+	if (CustomCreateLobby::ConfBackButton("Back", ImColor(160, 115, 115, 255 - 115))) {
+		m_gui_state = MAIN_MENU;
+	}
+
+	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() * 5 / 14 + MainWindow::GetWindowWidth() / 7, pos_y_forconf));
+	if (CustomCreateLobby::ConfBackButton("Confirm", ImColor(115, 160, 115, 255 - 115))) {
+		m_gui_state = LOBBY_LOADING;
+		SteamNetworkingManager::GetLobbyStruct()->m_isPublic = true;
+		SteamNetworkingManager::CreateLobby();
+	}
+	//ImGui::SetCursorPos(ImVec2(ImGui::GetCursorPos().x + ((CREATE_LOBBY_WIDTH - 20) / 4), ImGui::GetCursorPos().y));
+
+	EndImGuiTranspWindow();
+
+
+/*#define CREATE_LOBBY_WIDTH 1920 / 4
 #define CREATE_LOBBY_HEIGHT 1080 / 4
 
 	ImFont* pFont = ImGui::GetFont();
-	pFont->Scale = 2.0;
+	pFont->Scale = 0.3;
 	ImGui::PushFont(pFont);
 	ImGui::SetNextWindowBgAlpha(0.0f);
 	ImGui::SetNextWindowPos(ImVec2((MainWindow::GetWindowWidth() - CREATE_LOBBY_WIDTH) / 2, (MainWindow::GetWindowHeight() - CREATE_LOBBY_HEIGHT) / 2));
@@ -178,7 +212,7 @@ void MainMenuGui::DrawCreateLobby() noexcept {
 	}
 
 	ImGui::End();
-	ImGui::PopFont();
+	ImGui::PopFont();*/
 }
 void MainMenuGui::DrawLobbyBrowser() noexcept {
 #define LOBBY_BROWSER_WIDTH 1920 / 2.3
