@@ -5,6 +5,7 @@
 #include "SteamNetworking/SteamNetworking.h"
 #include "Graphics/GUI/DisplayHubManager.h"
 #include "Graphics/Shader/Shader.h"
+#include "Graphics/Utils/Timer.h"
 
 bool G_isShould_close_window = false;
 
@@ -49,10 +50,12 @@ private:
 			ImGuiRenderer::StartFrame();
 			
 			DisplayHubManager::Display();
+			Timer::Update();
 
 			ImGuiRenderer::EndFrame();
 
 			Renderer::PresentFrame();
+
 		}
 	}
 };

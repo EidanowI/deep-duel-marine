@@ -1,4 +1,5 @@
 #include "BeaconLogoObject.h"
+#include "../Utils/Timer.h"
 
 
 
@@ -14,7 +15,7 @@ BeaconLogoObject::BeaconLogoObject() noexcept {
 	m_begin_key = &m_rotations[0];
 	//m_end_key = &m_rotations[1];
 
-	m_constBuff1.time[0] = 0.0f;
+	m_constBuff1.time[0] = Timer::GetMsFromLastFrame() * BEACON_WAVE_TIME_MULTIPLIER;
 	m_constBuff1.model = MakeTransformMatrix(Vector3D(-6.5f, 0.0f, 15.0f), UpdateAndGetAnimRot(), Vector3D(2.0f));
 	m_pConstBuff1 = Renderer::CreateConstBuffer((char*)&m_constBuff1, sizeof(ConstBuf1));
 
@@ -43,7 +44,7 @@ BeaconLogoObject::~BeaconLogoObject() noexcept {
 }
 
 void BeaconLogoObject::Render() noexcept {
-	m_constBuff1.time[0] += 0.01f;
+	m_constBuff1.time[0] += Timer::GetMsFromLastFrame() * BEACON_WAVE_TIME_MULTIPLIER;
 	m_constBuff1.model = MakeTransformMatrix(Vector3D(-6.5f, 0.0f, 15.0f), UpdateAndGetAnimRot(), Vector3D(2.0f));
 	Renderer::UpdateConstBuffer(m_pConstBuff1, &m_constBuff1, sizeof(ConstBuf1));
 

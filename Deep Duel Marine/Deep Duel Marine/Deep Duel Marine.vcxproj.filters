@@ -105,6 +105,9 @@
     <ClCompile Include="Graphics\GUI\CustomImGuiElemets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\Utils\Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeepDuelMarine.h">
@@ -345,6 +348,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\Model\BeaconLogoObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Utils\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

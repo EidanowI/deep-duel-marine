@@ -8,6 +8,9 @@
 #include "../Textures/Texture.h"
 
 
+#define WATER_SURFACE_TIME_MULTIPLIER 1.6f 
+
+
 
 class WaterSurfaceObject {
 public:

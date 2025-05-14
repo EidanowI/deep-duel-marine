@@ -7,6 +7,12 @@
 #include "../Shader/Shader.h"
 #include "../Textures/Texture.h"
 
+#include "../Utils/Timer.h"
+
+
+#define BEACON_WAVE_TIME_MULTIPLIER 1.6f 
+#define BEACON_ROTATION_TIME_MULTIPLIER 0.3f 
+
 
 
 class BeaconLogoObject {
@@ -23,7 +29,7 @@ public:
 	void Render() noexcept;
 
 	Vector3D UpdateAndGetAnimRot() noexcept {
-		m_anim_time += 0.003f;
+		m_anim_time += Timer::GetMsFromLastFrame() * BEACON_ROTATION_TIME_MULTIPLIER;
 
 		if (m_anim_time >= 1.0f) {
 			m_anim_time = 0;
@@ -55,5 +61,4 @@ private:
 	int m_key_index = 1;
 	float m_anim_time = 0.0f;
 	Vector3D* m_begin_key = nullptr;
-	//Vector3D* m_end_key = nullptr;
 };

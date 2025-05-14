@@ -1,15 +1,15 @@
 #include "WaterSurfaceObject.h"
+#include "../Utils/Timer.h"
+
 
 static float a = 0.0f;
-float GetNowMilliseconds() noexcept {
-	auto now = std::chrono::high_resolution_clock::now();
-	return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
-}
+
+
 
 WaterSurfaceObject::WaterSurfaceObject() noexcept {
 	m_pModel = new Model("WaterSurfaceMainMenu.dae", "WaterSurfaceVertShader.cso", "WaterSurfacePixelShader.cso");
 
-	m_constBuff1.time[0] = 0.0f;
+	m_constBuff1.time[0] = Timer::GetMsFromLastFrame() * WATER_SURFACE_TIME_MULTIPLIER;
 	m_pConstBuff1 = Renderer::CreateConstBuffer((char*)&m_constBuff1, sizeof(ConstBuf1));
 
 	m_pWaterSurface_texture = new Texture("WaterSurface.png");
@@ -35,7 +35,7 @@ WaterSurfaceObject::~WaterSurfaceObject() noexcept {
 }
 
 void WaterSurfaceObject::Render() noexcept {
-	m_constBuff1.time[0] += 0.01f;
+	m_constBuff1.time[0] += Timer::GetMsFromLastFrame() * WATER_SURFACE_TIME_MULTIPLIER;
 	Renderer::UpdateConstBuffer(m_pConstBuff1, &m_constBuff1, sizeof(ConstBuf1));
 
 	Renderer::GetDeviceContext()->VSSetConstantBuffers(1u, 1u, &m_pConstBuff1);

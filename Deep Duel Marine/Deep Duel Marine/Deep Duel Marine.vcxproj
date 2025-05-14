@@ -167,6 +167,7 @@
     <ClCompile Include="Graphics\Textures\Image.cpp" />
     <ClCompile Include="Graphics\Textures\Texture.cpp" />
     <ClCompile Include="Graphics\Utils\GraphicsMath.cpp" />
+    <ClCompile Include="Graphics\Utils\Timer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Graphics\MainWindow\MainWindow.cpp" />
     <ClCompile Include="Graphics\Renderer\Renderer.cpp" />
@@ -251,6 +252,7 @@
     <ClInclude Include="Graphics\Textures\Image.h" />
     <ClInclude Include="Graphics\Textures\Texture.h" />
     <ClInclude Include="Graphics\Utils\GraphicsMath.h" />
+    <ClInclude Include="Graphics\Utils\Timer.h" />
     <ClInclude Include="SteamNetworking\GameClient.h" />
     <ClInclude Include="SteamNetworking\Lobby.h" />
     <ClInclude Include="SteamNetworking\LobbyBrowser.h" />
