@@ -10,6 +10,7 @@
 
 class Texture : public IBindable{
 public:
+	Texture(int width, int height, const unsigned char* pDataRGBA) noexcept;
 	Texture(std::string file_name) noexcept;
 	~Texture() noexcept;
 

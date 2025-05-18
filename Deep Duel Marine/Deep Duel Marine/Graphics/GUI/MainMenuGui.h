@@ -53,13 +53,7 @@ private:
 	void DrawSetting() noexcept;
 
 	void DrawQuitDialog() noexcept;
-	
-	void UpdateAponentAvatar() noexcept;
 
 private:
-
 	GUI_STATE m_gui_state = MAIN_MENU;
-
-	char* m_pSelf_avatar;
-	char* m_pAponent_avatar;
 };

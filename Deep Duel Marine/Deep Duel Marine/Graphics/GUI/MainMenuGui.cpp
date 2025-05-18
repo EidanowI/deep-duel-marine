@@ -7,14 +7,14 @@ Lobby G_lobby;
 
 
 MainMenuGui::MainMenuGui() noexcept {
-	m_pAponent_avatar = (char*)SteamNetworkingManager::LoadAponentAvatar();
+	//m_pAponent_avatar = (char*)SteamNetworkingManager::LoadAponentAvatar();
 }
 MainMenuGui::~MainMenuGui() noexcept {
 
 }
 
 void MainMenuGui::Draw() noexcept {
-	if (m_pSelf_avatar == 0) {
+	/*if (m_pSelf_avatar == 0) {
 		m_pSelf_avatar = (char*)SteamNetworkingManager::LoadSelfAvatar();
 	}
 
@@ -24,7 +24,7 @@ void MainMenuGui::Draw() noexcept {
 
 		UpdateAponentAvatar();
 	}
-	tick_counter++;
+	tick_counter++;*/
 
 	switch (m_gui_state)
 	{
@@ -84,7 +84,7 @@ void MainMenuGui::DrawMainMenu() noexcept {
 	ImFont* pFont = ImGui::GetFont();
 
 	ImGui::SetCursorPos(ImVec2(7, 7));
-	ImGui::Image(m_pSelf_avatar, ImVec2((int)(MainWindow::GetWindowWidth() / 14.77f), (int)(MainWindow::GetWindowHeight() / 8.31f)));
+	ImGui::Image(SteamNetworkingManager::GetSelfAvatarTex()->GetShaderResView(), ImVec2((int)(MainWindow::GetWindowWidth() / 14.77f), (int)(MainWindow::GetWindowHeight() / 8.31f)));
 
 	pFont->Scale = (float)MainWindow::GetWindowWidth() / 1920.0f;
 	ImGui::PushFont(pFont);
@@ -165,6 +165,7 @@ void MainMenuGui::DrawCreateLobby() noexcept {
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() * 5 / 14 + MainWindow::GetWindowWidth() / 7, pos_y_forconf));
 	if (ConfBackButton("Confirm", ImColor(115, 160, 115, 255 - 115), ImColor(100, 160, 100, 255 - 100))) {
 		m_gui_state = LOBBY_LOADING;
+		SteamNetworkingManager::GetLobbyStruct()->m_id = 0;
 		SteamNetworkingManager::GetLobbyStruct()->m_isPublic = true;
 		SteamNetworkingManager::CreateLobby();
 	}
@@ -225,14 +226,20 @@ void MainMenuGui::DrawLobbyBrowser() noexcept {
 	EndImGuiTranspWindow();
 }
 void MainMenuGui::DrawLobbyLoading() noexcept {
-	ImGui::SetNextWindowPos(ImVec2(MainWindow::GetWindowWidth()/ 2, MainWindow::GetWindowHeight() /2));
-	ImGui::SetNextWindowBgAlpha(0.0f);
-	ImGui::Begin("DrawLobbyLoading", 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
-	ImGuiStyle& style = ImGui::GetStyle();
-	style.WindowBorderSize = 0.0f;
-	style.ItemSpacing = ImVec2(25, MainWindow::GetWindowHeight() / 40);
+	BeginImGuiTranspWindow("Loading");
+	ImFont* pFont = ImGui::GetFont();
+
+	pFont->Scale = (float)MainWindow::GetWindowWidth() / 3200.0f;
+	ImGui::PushFont(pFont);
+
+	ImVec2 loading_text_size = ImGui::CalcTextSize("Loading");
+	//ImGui::SetCursorPos(ImVec2((MainWindow::GetWindowWidth() - loading_text_size.x) / 2, (MainWindow::GetWindowHeight() - loading_text_size.y) / 2));
+	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() - loading_text_size.x - 30, MainWindow::GetWindowHeight() - loading_text_size.y - 20));
 	ImGui::Text("Loading");
-	ImGui::End();
+
+	ImGui::PopFont();
+
+	EndImGuiTranspWindow();
 }
 void MainMenuGui::DrawReadyOrNotMenu() noexcept {
 	ImGui::SetNextWindowPos(ImVec2(0,0));
@@ -245,7 +252,7 @@ void MainMenuGui::DrawReadyOrNotMenu() noexcept {
 	static bool is_self_ready = false;
 
 	bool is_aponent_ready = SteamNetworkingManager::GetAponentReadyOrNotStatus();
-	ImGui::Image(m_pSelf_avatar, ImVec2(128, 128));
+	ImGui::Image(SteamNetworkingManager::GetSelfAvatarTex()->GetShaderResView(), ImVec2(128, 128));
 	ImGui::SameLine();
 	ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
 	ImGui::Text(SteamNetworkingManager::GetSelfUserNickName());
@@ -262,7 +269,8 @@ void MainMenuGui::DrawReadyOrNotMenu() noexcept {
 
 
 	if (SteamNetworkingManager::GetLobbyMemberCount() == 2) {
-		ImGui::Image(m_pAponent_avatar, ImVec2(128, 128));
+		///TODO He can get 0
+		ImGui::Image(SteamNetworkingManager::GetAponentAvatarTex()->GetShaderResView(), ImVec2(128, 128));
 		ImGui::SameLine();
 		ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
 		ImGui::Text(SteamNetworkingManager::GetAponentUserNickName());
@@ -309,7 +317,7 @@ void MainMenuGui::DrawReadyOrNotMenu() noexcept {
 	}
 	
 	
-	if (SteamNetworkingManager::GetLobbyStruct()->m_id != 0) {
+	if (SteamNetworkingManager::GetLobbyStruct() && SteamNetworkingManager::GetLobbyStruct()->m_id != 0) {
 		ImGui::SetCursorScreenPos(ImVec2(MainWindow::GetWindowWidth() - 135 - MainWindow::GetWindowWidth() / 50, MainWindow::GetWindowHeight() - MainWindow::GetWindowHeight() / 10));
 		if (TestButton("Ready", ImVec2(135, 75), ImGuiButtonFlags_None, is_self_ready)) {
 			is_self_ready = is_self_ready ? false : true;
@@ -393,12 +401,12 @@ void MainMenuGui::DrawQuitDialog() noexcept {
 	EndImGuiTranspWindow();
 }
 
-void MainMenuGui::UpdateAponentAvatar() noexcept {
-	if (SteamNetworkingManager::IsSteamConnected()) {
-		m_pSelf_avatar = (char*)SteamNetworkingManager::LoadSelfAvatar();
-		m_pAponent_avatar = (char*)SteamNetworkingManager::LoadAponentAvatar();
-	}
-}
+//void MainMenuGui::UpdateAponentAvatar() noexcept {
+//	if (SteamNetworkingManager::IsSteamConnected()) {
+//		m_pSelf_avatar = (char*)SteamNetworkingManager::LoadSelfAvatar();
+//		m_pAponent_avatar = (char*)SteamNetworkingManager::LoadAponentAvatar();
+//	}
+//}
 
 
 bool TestButton(const char* label, const ImVec2& size_arg, ImGuiButtonFlags flags, bool isActive)

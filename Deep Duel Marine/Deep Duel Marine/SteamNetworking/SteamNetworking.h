@@ -9,6 +9,8 @@
 #include "Lobby.h"
 #include "GameClient.h"
 #include "LobbyBrowser.h"
+#include "../Graphics/Textures/Texture.h"
+#include "../Dependencies/steam/public/steam/steam_api.h"
 
 
 
@@ -40,22 +42,30 @@ public:
 	static void JoinLobby(CSteamID id) noexcept;
 	static void LeaveLobby() noexcept;
 
-	static void* LoadSelfAvatar() noexcept;
-	static void* LoadAponentAvatar() noexcept;
-	static void* LoadAvatar(CSteamID id) noexcept;
+	static Texture* GetSelfAvatarTex() noexcept;
+	static Texture* GetAponentAvatarTex() noexcept;
 
 	static const char* GetSelfUserNickName() noexcept;
 	static const char* GetAponentUserNickName() noexcept;
 	static const char* GetUserNickName(CSteamID id) noexcept;
 
+	//static void* LoadSelfAvatar() noexcept;
+	//static void* LoadAponentAvatar() noexcept;
+
+public:
+	static Texture* LoadAvatar(CSteamID id) noexcept;
+
 private:
 	static bool s_isConnected_to_steam;
-	static std::map<CSteamID, ID3D11ShaderResourceView*> s_avatars;
 
-	static unsigned char* s_pDefault_avatar_image;
-#define DEFAULT_AVATAR_IMAGE_WIDTH_HEIGHT 184
+	//static unsigned char* s_pDefault_avatar_image;
+//#define DEFAULT_AVATAR_IMAGE_WIDTH_HEIGHT 184
 
 	//static Lobby s_lobby;
 	static GameClient* s_pGame_client;
 	static LobbyBrowser* s_pLobbyBrowser;
+
+	static std::map<CSteamID, Texture*> s_avatars_pTex;
+	static Texture* m_pNoInetConn_tex;
+	static Texture* m_pLoadingAvatar_tex;
 };

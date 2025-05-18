@@ -35,7 +35,7 @@ void GameClient::SetReadyOrNotStatus(bool isReady) noexcept {
 }
 
 int GameClient::GetLobbyMemberCount() noexcept {
-	if (m_lobby.m_id) {
+	if ( m_lobby.m_id) {
 		return SteamMatchmaking()->GetNumLobbyMembers(m_lobby.m_id);
 	}
 	else {
@@ -46,7 +46,7 @@ int GameClient::GetLobbyMemberCount() noexcept {
 void GameClient::CreateLobby() noexcept {
 	if (!m_steamCallResultLobbyCreated.IsActive())
 	{
-		SteamAPICall_t hSteamAPICall = SteamMatchmaking()->CreateLobby(m_lobby.m_isPublic ? k_ELobbyTypePublic : k_ELobbyTypeFriendsOnly, MAX_LOBBY_MEMBERS);
+		SteamAPICall_t hSteamAPICall = SteamMatchmaking()->CreateLobby(k_ELobbyTypePublic, MAX_LOBBY_MEMBERS);
 		m_steamCallResultLobbyCreated.Set(hSteamAPICall, this, &GameClient::OnLobbyCreated);
 	}
 	SteamFriends()->SetRichPresence("status", "Creating a lobby");
@@ -59,7 +59,7 @@ void GameClient::OnLobbyCreated(LobbyCreated_t* pCallback, bool bIOFailure) {
 		is_client_owns_lobby = true;
 
 		SteamMatchmaking()->SetLobbyData(pCallback->m_ulSteamIDLobby, "name", m_lobby.m_name);
-		SteamMatchmaking()->SetLobbyData(pCallback->m_ulSteamIDLobby, "isPrivate", m_lobby.m_isPublic ? "1" : "0");
+		//SteamMatchmaking()->SetLobbyData(pCallback->m_ulSteamIDLobby, "isPrivate", m_lobby.m_isPublic ? "1" : "0");
 		SteamMatchmaking()->SetLobbyData(pCallback->m_ulSteamIDLobby, "isDDM", "1");
 		SetReadyOrNotStatus(false);
 	}
