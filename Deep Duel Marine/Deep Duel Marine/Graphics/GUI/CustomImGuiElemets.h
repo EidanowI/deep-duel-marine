@@ -22,6 +22,10 @@ namespace CustomMainMenu {
 
 bool ConfBackButton(const char* label, const ImColor color_hovered, const ImColor color_active);
 
+namespace CustomReadyOrNot {
+	bool BackButton(const char* label, ImGuiButtonFlags flags = 0);
+	bool ReadyButton(const char* label, bool isReady);
+}
 
 namespace CustomLobbyBrowser {
 	bool RefreshButton(int side, ImVec2 img_pos, ImGuiButtonFlags flags = 0);

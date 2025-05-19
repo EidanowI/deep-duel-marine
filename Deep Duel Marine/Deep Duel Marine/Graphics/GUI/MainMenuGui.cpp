@@ -112,7 +112,6 @@ void MainMenuGui::DrawMainMenu() noexcept {
 	}
 
 	ImGui::PopFont();
-
 	
 	ImGui::SetCursorPos(ImVec2(7, MainWindow::GetWindowHeight() - MainWindow::GetWindowHeight() / 16.62f - 7));
 	if (CustomMainMenu::MainMenuGitHubButton()) {
@@ -226,7 +225,126 @@ void MainMenuGui::DrawLobbyLoading() noexcept {
 	EndImGuiTranspWindow();
 }
 void MainMenuGui::DrawReadyOrNotMenu() noexcept {
-	ImGui::SetNextWindowPos(ImVec2(0,0));
+	static Texture ready_avatar_blend_tex = Texture("AvatarReady.png");
+	static Texture leader_icon_tex = Texture("LeaderIcon.png"); 
+	BeginImGuiTranspWindow("ReadyOrNot");
+	ImFont* pFont = ImGui::GetFont();
+
+	static bool is_self_ready = false;
+	bool is_aponent_ready = false;
+	if (DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->GetLobby()->GetLobbyMemberCount() == 2) {
+		is_aponent_ready = DDMSteamWorksLib::SWNetworkingManager::GetAponentReadyOrNotStatus();
+	}
+
+	ImGui::SetCursorPos(ImVec2(7, 7));
+	ImGui::Image(DDMSteamWorksLib::SWNetworkingManager::GetSelfAvatarResView(), ImVec2((int)(MainWindow::GetWindowWidth() / 14.77f), (int)(MainWindow::GetWindowHeight() / 8.31f)));
+
+	if (is_self_ready) {
+		ImGui::SetCursorPos(ImVec2(7, 7));
+		ImGui::Image(ready_avatar_blend_tex.GetShaderResView(), ImVec2((int)(MainWindow::GetWindowWidth() / 14.77f), (int)(MainWindow::GetWindowHeight() / 8.31f)));
+	}
+
+	pFont->Scale = (float)MainWindow::GetWindowWidth() / 1920.0f;
+	ImGui::PushFont(pFont);
+	if (DDMSteamWorksLib::SWNetworkingManager::GetSelfNickname()) {
+		ImVec2 self_nickname_size = ImGui::CalcTextSize(DDMSteamWorksLib::SWNetworkingManager::GetSelfNickname());
+		ImGui::SetCursorPos(ImVec2(7 + (int)(MainWindow::GetWindowWidth() / 14.77f) + 15, 7 + (int)(MainWindow::GetWindowHeight() / 8.31f / 2.0f) - 40 * (float)MainWindow::GetWindowWidth() / 1920.0f));
+		ImGui::Text(DDMSteamWorksLib::SWNetworkingManager::GetSelfNickname());
+
+		if (DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->IsOwnsLobby()) {
+			ImGui::SetCursorPos(ImVec2(7 + (int)(MainWindow::GetWindowWidth() / 14.77f) + 15
+				+ self_nickname_size.x + 5,
+				7 + MainWindow::GetWindowHeight() / 8.31f / 2.0f - MainWindow::GetWindowHeight() / 8.31f / 2.2f / 2.0f));
+			ImGui::Image(leader_icon_tex.GetShaderResView(), ImVec2((int)(MainWindow::GetWindowWidth() / 14.77f / 2.2f), (int)(MainWindow::GetWindowHeight() / 8.31f / 2.2f)));
+		}
+	}
+	ImGui::PopFont();
+
+	///FOR APONENT
+	ImVec2 iter_pos = ImVec2(MainWindow::GetWindowWidth() - 7 - MainWindow::GetWindowWidth() / 14.77f, 7);
+	ImGui::SetCursorPos(iter_pos);
+	ImGui::Image(DDMSteamWorksLib::SWNetworkingManager::GetAponentAvatarResView(), ImVec2((int)(MainWindow::GetWindowWidth() / 14.77f), (int)(MainWindow::GetWindowHeight() / 8.31f)));
+	
+	if (is_aponent_ready) {
+		ImGui::SetCursorPos(ImVec2(iter_pos));
+		ImGui::Image(ready_avatar_blend_tex.GetShaderResView(), ImVec2((int)(MainWindow::GetWindowWidth() / 14.77f), (int)(MainWindow::GetWindowHeight() / 8.31f)));
+	}
+
+	pFont->Scale = (float)MainWindow::GetWindowWidth() / 1920.0f;
+	ImGui::PushFont(pFont);
+
+	if (DDMSteamWorksLib::SWNetworkingManager::GetAponentNickname()) {
+		ImVec2 aponent_nickname_size = ImGui::CalcTextSize(DDMSteamWorksLib::SWNetworkingManager::GetAponentNickname());
+
+		iter_pos.x -= aponent_nickname_size.x + 15;
+
+		ImGui::SetCursorPos(ImVec2(iter_pos.x, 7 + (int)(MainWindow::GetWindowHeight() / 8.31f / 2.0f) - 40 * (float)MainWindow::GetWindowWidth() / 1920.0f));
+		ImGui::Text(DDMSteamWorksLib::SWNetworkingManager::GetAponentNickname());
+
+		if (!DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->IsOwnsLobby()) {
+			iter_pos.x -= 5 + MainWindow::GetWindowWidth() / 14.77f / 2.2f;
+			ImGui::SetCursorPos(ImVec2(iter_pos.x,
+				7 + MainWindow::GetWindowHeight() / 8.31f / 2.0f - MainWindow::GetWindowHeight() / 8.31f / 2.2f / 2.0f));
+			ImGui::Image(leader_icon_tex.GetShaderResView(), ImVec2((int)(MainWindow::GetWindowWidth() / 14.77f / 2.2f), (int)(MainWindow::GetWindowHeight() / 8.31f / 2.2f)));
+		}
+	}
+	ImGui::PopFont();
+
+	pFont->Scale = (float)MainWindow::GetWindowWidth() / 3600.0f;
+	ImGui::PushFont(pFont);
+	if (DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->GetLobby()->GetLobbyMemberCount() != 2) {
+		ImVec2 text_size = ImGui::CalcTextSize("Waiting player =(");
+
+		ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 2 - text_size.x / 2, MainWindow::GetWindowHeight() - 10 - text_size.y));
+
+		ImGui::Text("Waiting player =(");
+	}
+	else {
+		if (is_aponent_ready) {
+			if (is_self_ready) {
+				m_gui_state = STARTING_SERVER;
+			}
+			else {
+				ImVec2 text_size = ImGui::CalcTextSize("Your opponent is ready to play!");
+
+				ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 2 - text_size.x / 2, MainWindow::GetWindowHeight() - 10 - text_size.y));
+
+				ImGui::Text("Your opponent is ready to play!");
+			}
+		}
+		else {
+			if (is_self_ready) {
+				ImVec2 text_size = ImGui::CalcTextSize("Waiting for your opponent ready to play");
+
+				ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 2 - text_size.x / 2, MainWindow::GetWindowHeight() - 10 - text_size.y));
+
+				ImGui::Text("Waiting for your opponent ready to play");
+			}
+			else {
+				ImVec2 text_size = ImGui::CalcTextSize("Waiting for both players ready to play");
+
+				ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 2 - text_size.x / 2, MainWindow::GetWindowHeight() - 10 - text_size.y));
+
+				ImGui::Text("Waiting for both players ready to play");
+			}
+		}
+	}
+	ImGui::PopFont();
+
+	ImGui::SetCursorScreenPos(ImVec2(MainWindow::GetWindowWidth() - 7 - MainWindow::GetWindowWidth() / 7.68f, MainWindow::GetWindowHeight() - 7 - MainWindow::GetWindowHeight() / 14.4f));
+	if (CustomReadyOrNot::ReadyButton("Ready", is_self_ready)) {
+		is_self_ready = is_self_ready ? false : true;
+		DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->SetReadyOrNotStatus(is_self_ready);
+	}
+
+	ImGui::SetCursorScreenPos(ImVec2(7, MainWindow::GetWindowHeight() - 7 - MainWindow::GetWindowHeight() / 14.4f));
+	if (CustomReadyOrNot::BackButton("Leave")) {
+		DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->LeaveLobby();
+		m_gui_state = MAIN_MENU;
+	}
+
+	EndImGuiTranspWindow();
+	/*ImGui::SetNextWindowPos(ImVec2(0,0));
 	ImGui::SetNextWindowBgAlpha(0.0f);
 	ImGui::Begin("Lobby Browser", 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
 	ImGuiStyle& style = ImGui::GetStyle();
@@ -309,7 +427,7 @@ void MainMenuGui::DrawReadyOrNotMenu() noexcept {
 		DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->LeaveLobby();
 		m_gui_state = MAIN_MENU;
 	}
-	ImGui::End();
+	ImGui::End();*/
 }
 void MainMenuGui::DrawStartingServer() noexcept {
 	///TODO starting

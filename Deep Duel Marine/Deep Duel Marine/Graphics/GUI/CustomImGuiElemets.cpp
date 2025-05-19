@@ -222,3 +222,97 @@ bool CustomLobbyBrowser::RefreshButton(int side, ImVec2 img_pos, ImGuiButtonFlag
 
 	return pressed;
 }
+
+
+bool CustomReadyOrNot::BackButton(const char* label, ImGuiButtonFlags flags) {
+	ImVec2 size_arg = ImVec2(MainWindow::GetWindowWidth() / 7.68f, MainWindow::GetWindowHeight() / 14.4f);
+
+	using namespace ImGui;
+	ImGuiWindow* window = GetCurrentWindow();
+	if (window->SkipItems)
+		return false;
+
+	ImGuiContext& g = *GImGui;
+	const ImGuiStyle& style = g.Style;
+	const ImGuiID id = window->GetID(label);
+	const ImVec2 label_size = CalcTextSize(label, NULL, true);
+
+	ImVec2 pos = window->DC.CursorPos;
+	if ((flags & ImGuiButtonFlags_AlignTextBaseLine) && style.FramePadding.y < window->DC.CurrLineTextBaseOffset) // Try to vertically align buttons that are smaller/have no padding so that text baseline matches (bit hacky, since it shouldn't be a flag)
+		pos.y += window->DC.CurrLineTextBaseOffset - style.FramePadding.y;
+	ImVec2 size = CalcItemSize(size_arg, label_size.x + style.FramePadding.x * 2.0f, label_size.y + style.FramePadding.y * 2.0f);
+
+	const ImRect bb(pos, pos + size);
+	ItemSize(size, style.FramePadding.y);
+	if (!ItemAdd(bb, id))
+		return false;
+
+	bool hovered, held;
+	bool pressed = ButtonBehavior(bb, id, &hovered, &held, flags);
+
+	// Render
+	ImColor buton_active_color = ImColor(100, 100, 100, 255 - 100);
+	ImColor buton_hovered_color = ImColor(180, 180, 180, 255 - 120);
+	ImColor buton_color = ImColor(0, 0, 0, 0);
+
+	const ImU32 col = ((held && hovered) ? buton_active_color : hovered ? buton_hovered_color : buton_color);
+	RenderNavHighlight(bb, id);
+	RenderFrame(bb.Min, bb.Max, col, true, style.FrameRounding);
+
+	if (g.LogEnabled)
+		LogSetNextTextDecoration("[", "]");
+	RenderTextClipped(bb.Min + style.FramePadding, bb.Max - style.FramePadding, label, NULL, &label_size, style.ButtonTextAlign, &bb);
+
+	IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags);
+
+	return pressed;
+}
+bool CustomReadyOrNot::ReadyButton(const char* label, bool isReady) {
+	ImVec2 size_arg = ImVec2(MainWindow::GetWindowWidth() / 7.68f, MainWindow::GetWindowHeight() / 14.4f);
+	ImGuiButtonFlags flags = 0;
+	using namespace ImGui;
+	ImGuiWindow* window = GetCurrentWindow();
+	if (window->SkipItems)
+		return false;
+
+	ImGuiContext& g = *GImGui;
+	const ImGuiStyle& style = g.Style;
+	const ImGuiID id = window->GetID(label);
+	const ImVec2 label_size = CalcTextSize(label, NULL, true);
+
+	ImVec2 pos = window->DC.CursorPos;
+	if ((flags & ImGuiButtonFlags_AlignTextBaseLine) && style.FramePadding.y < window->DC.CurrLineTextBaseOffset) // Try to vertically align buttons that are smaller/have no padding so that text baseline matches (bit hacky, since it shouldn't be a flag)
+		pos.y += window->DC.CurrLineTextBaseOffset - style.FramePadding.y;
+	ImVec2 size = CalcItemSize(size_arg, label_size.x + style.FramePadding.x * 2.0f, label_size.y + style.FramePadding.y * 2.0f);
+
+	const ImRect bb(pos, pos + size);
+	ItemSize(size, style.FramePadding.y);
+	if (!ItemAdd(bb, id))
+		return false;
+
+	bool hovered, held;
+	bool pressed = ButtonBehavior(bb, id, &hovered, &held, flags);
+
+	// Render
+	ImColor buton_active_color = ImColor(100, 100, 100, 255 - 100);
+	ImColor buton_hovered_color = ImColor(180, 180, 180, 255 - 120);
+	ImColor buton_color = ImColor(0, 0, 0, 0);
+
+	ImColor ready_buton_active_color = ImColor(60, 230, 10, 100);
+	ImColor ready_buton_hovered_color = ImColor(70, 220, 20, 100);
+	ImColor ready_buton_color = ImColor(70, 190, 20, 100);
+
+	const ImU32 col = ((held && hovered) ? buton_active_color : hovered ? buton_hovered_color : buton_color);
+	const ImU32 ready_col = ((held && hovered) ? ready_buton_active_color : hovered ? ready_buton_hovered_color : ready_buton_color);
+
+	RenderNavHighlight(bb, id);
+	RenderFrame(bb.Min, bb.Max, isReady ? ready_col : col, true, style.FrameRounding);
+
+	if (g.LogEnabled)
+		LogSetNextTextDecoration("[", "]");
+	RenderTextClipped(bb.Min + style.FramePadding, bb.Max - style.FramePadding, label, NULL, &label_size, style.ButtonTextAlign, &bb);
+
+	IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags);
+
+	return pressed;
+}
