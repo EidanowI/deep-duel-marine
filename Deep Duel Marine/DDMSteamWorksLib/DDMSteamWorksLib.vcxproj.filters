@@ -150,12 +150,43 @@
     <ClInclude Include="Dependencies\steam\public\steam\steamuniverse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DDMSteamWorksLib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DDMClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DDMLobbyBrowser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DDMAvatarTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DDMImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\lodepng\lodepng.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\steam\public\steam\steam_api.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <Library Include="Dependencies\steam\bin\steam_api.lib" />
+    <Library Include="Dependencies\steam\bin\steam_api64.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DDMSteamWorksLib.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DDMAvatarTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DDMImage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\lodepng\lodepng.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

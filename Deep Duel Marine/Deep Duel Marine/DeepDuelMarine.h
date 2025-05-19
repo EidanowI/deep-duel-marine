@@ -2,10 +2,11 @@
 #include "Graphics/MainWindow/MainWindow.h"
 #include "Graphics/Renderer/Renderer.h"
 #include "Graphics/ImGuiRender/ImGuiRender.h"
-#include "SteamNetworking/SteamNetworking.h"
 #include "Graphics/GUI/DisplayHubManager.h"
 #include "Graphics/Shader/Shader.h"
 #include "Graphics/Utils/Timer.h"
+
+#include "SteamNetworking/include/DDMSteamWorksLib.h"
 
 bool G_isShould_close_window = false;
 
@@ -21,13 +22,13 @@ public:
 		Renderer::Initialize();
 		ShaderManager::Initialize();
 
-		SteamNetworkingManager::TryToConnect();
+		DDMSteamWorksLib::SWNetworkingManager::TryToConnect(Renderer::GetDevice());
 		DisplayHubManager::Initialize();
 
 		MainLoop();
 
 		DisplayHubManager::Terminate();
-		SteamNetworkingManager::Terminate();
+		DDMSteamWorksLib::SWNetworkingManager::Terminate();
 
 		ShaderManager::Terminate();
 		Renderer::Terminate();
@@ -42,7 +43,7 @@ private:
 			const std::optional<int> proc = MainWindow::ProcessMsg();
 			if (proc.has_value()) return proc.value();
 
-			SteamNetworkingManager::Update();
+			DDMSteamWorksLib::SWNetworkingManager::Update();
 
 			Renderer::ClearFrame();
 			InvalidateRect(MainWindow::GetHinstnce(), 0, 1);

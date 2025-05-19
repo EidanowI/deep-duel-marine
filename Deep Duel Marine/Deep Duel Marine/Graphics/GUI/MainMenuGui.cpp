@@ -7,25 +7,11 @@ Lobby G_lobby;
 
 
 MainMenuGui::MainMenuGui() noexcept {
-	//m_pAponent_avatar = (char*)SteamNetworkingManager::LoadAponentAvatar();
 }
 MainMenuGui::~MainMenuGui() noexcept {
-
 }
 
 void MainMenuGui::Draw() noexcept {
-	/*if (m_pSelf_avatar == 0) {
-		m_pSelf_avatar = (char*)SteamNetworkingManager::LoadSelfAvatar();
-	}
-
-	static int tick_counter = 0;
-	if (tick_counter > 60) {
-		tick_counter = 0;
-
-		UpdateAponentAvatar();
-	}
-	tick_counter++;*/
-
 	switch (m_gui_state)
 	{
 	case MAIN_MENU:
@@ -84,13 +70,13 @@ void MainMenuGui::DrawMainMenu() noexcept {
 	ImFont* pFont = ImGui::GetFont();
 
 	ImGui::SetCursorPos(ImVec2(7, 7));
-	ImGui::Image(SteamNetworkingManager::GetSelfAvatarTex()->GetShaderResView(), ImVec2((int)(MainWindow::GetWindowWidth() / 14.77f), (int)(MainWindow::GetWindowHeight() / 8.31f)));
+	ImGui::Image(DDMSteamWorksLib::SWNetworkingManager::GetSelfAvatarResView(), ImVec2((int)(MainWindow::GetWindowWidth() / 14.77f), (int)(MainWindow::GetWindowHeight() / 8.31f)));
 
 	pFont->Scale = (float)MainWindow::GetWindowWidth() / 1920.0f;
 	ImGui::PushFont(pFont);
 	if (SteamNetworkingManager::GetSelfUserNickName()) {
 		ImGui::SetCursorPos(ImVec2(7 + (int)(MainWindow::GetWindowWidth() / 14.77f) + 15, 7 + (int)(MainWindow::GetWindowHeight() / 8.31f / 2.0f) - 40 * (float)MainWindow::GetWindowWidth() / 1920.0f));
-		ImGui::Text(SteamNetworkingManager::GetSelfUserNickName());
+		ImGui::Text(DDMSteamWorksLib::SWNetworkingManager::GetSelfNickname());
 	}
 	ImGui::PopFont();
 	

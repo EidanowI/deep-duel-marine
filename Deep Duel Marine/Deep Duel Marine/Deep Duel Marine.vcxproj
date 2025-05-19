@@ -254,11 +254,17 @@
     <ClInclude Include="Graphics\Utils\GraphicsMath.h" />
     <ClInclude Include="Graphics\Utils\Timer.h" />
     <ClInclude Include="SteamNetworking\GameClient.h" />
+    <ClInclude Include="SteamNetworking\include\DDMAvatarTexture.h" />
+    <ClInclude Include="SteamNetworking\include\DDMClient.h" />
+    <ClInclude Include="SteamNetworking\include\DDMImage.h" />
+    <ClInclude Include="SteamNetworking\include\DDMLobbyBrowser.h" />
+    <ClInclude Include="SteamNetworking\include\DDMSteamWorksLib.h" />
     <ClInclude Include="SteamNetworking\Lobby.h" />
     <ClInclude Include="SteamNetworking\LobbyBrowser.h" />
     <ClInclude Include="SteamNetworking\SteamNetworking.h" />
   </ItemGroup>
   <ItemGroup>
+    <Library Include="DDMSteamWorksLib.lib" />
     <Library Include="Dependencies\steam\bin\steam_api.lib" />
     <Library Include="Dependencies\steam\bin\steam_api64.lib" />
   </ItemGroup>

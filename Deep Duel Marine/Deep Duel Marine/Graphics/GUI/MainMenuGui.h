@@ -7,6 +7,7 @@
 //#include "../Dependencies/imGUI/"
 
 #include "../MainWindow/MainWindow.h"
+#include "../../SteamNetworking/include/DDMSteamWorksLib.h"
 #include "../../SteamNetworking/SteamNetworking.h"
 #include "IGUI.h"
 #include "CustomImGuiElemets.h"
