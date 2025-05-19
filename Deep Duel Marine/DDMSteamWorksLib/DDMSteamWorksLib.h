@@ -29,6 +29,10 @@ namespace DDMSteamWorksLib {
 		static __declspec(dllexport) AvatarTexture* GetAponentAvatarTex();
 		static __declspec(dllexport) ID3D11ShaderResourceView* GetAponentAvatarResView();
 
+	public:
+		static __declspec(dllexport) bool GetSelfReadyOrNotStatus();
+		static __declspec(dllexport) bool GetAponentReadyOrNotStatus();
+
 	private:
 		static __declspec(dllexport) AvatarTexture* LoadAvatar(CSteamID id);
 

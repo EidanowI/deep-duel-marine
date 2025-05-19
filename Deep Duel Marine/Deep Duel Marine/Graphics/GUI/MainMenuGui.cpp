@@ -26,7 +26,7 @@ void MainMenuGui::Draw() noexcept {
 	case LOBBY_LOADING:
 		DrawLobbyLoading();
 		{
-			if (SteamNetworkingManager::GetLobbyStruct()->m_id)
+			if (DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->GetLobby()->GetID())
 			{
 				m_gui_state = IN_LOBBY;
 			}
@@ -87,9 +87,8 @@ void MainMenuGui::DrawMainMenu() noexcept {
 
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 17, MainWindow::GetWindowHeight() / 2.8 + 0 * button_size_and_spacing));
 	if (CustomMainMenu::MainMenuButton("Create a match")){
-		if (SteamNetworkingManager::IsSteamConnected()) {
+		if (DDMSteamWorksLib::SWNetworkingManager::IsConnectedToSteam()) {
 			m_gui_state = CREATE_LOBBY;
-			SteamNetworkingManager::ClearLobbyStructData();
 		}
 	}
 
@@ -139,7 +138,7 @@ void MainMenuGui::DrawCreateLobby() noexcept {
 	ImGui::Text("Lobby name:");
 
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() * 5 / 14, ImGui::GetCursorPosY() + 7));
-	ImGui::InputTextEx("##", 0, SteamNetworkingManager::GetLobbyStruct()->m_name, 63, ImVec2(MainWindow::GetWindowWidth() / 3.5, lobby_name_text_size.y), 0);
+	ImGui::InputTextEx("##", 0, DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->GetLobby()->GetName(), 63, ImVec2(MainWindow::GetWindowWidth() / 3.5, lobby_name_text_size.y), 0);
 	
 
 	auto pos_y_forconf = ImGui::GetCursorPosY() + 20;
@@ -151,9 +150,7 @@ void MainMenuGui::DrawCreateLobby() noexcept {
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() * 5 / 14 + MainWindow::GetWindowWidth() / 7, pos_y_forconf));
 	if (ConfBackButton("Confirm", ImColor(115, 160, 115, 255 - 115), ImColor(100, 160, 100, 255 - 100))) {
 		m_gui_state = LOBBY_LOADING;
-		SteamNetworkingManager::GetLobbyStruct()->m_id = 0;
-		SteamNetworkingManager::GetLobbyStruct()->m_isPublic = true;
-		SteamNetworkingManager::CreateLobby();
+		DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->CreateLobby();
 	}
 
 	ImGui::PopFont();
@@ -237,12 +234,12 @@ void MainMenuGui::DrawReadyOrNotMenu() noexcept {
 
 	static bool is_self_ready = false;
 
-	bool is_aponent_ready = SteamNetworkingManager::GetAponentReadyOrNotStatus();
-	ImGui::Image(SteamNetworkingManager::GetSelfAvatarTex()->GetShaderResView(), ImVec2(128, 128));
+	bool is_aponent_ready = DDMSteamWorksLib::SWNetworkingManager::GetAponentReadyOrNotStatus();
+	ImGui::Image(DDMSteamWorksLib::SWNetworkingManager::GetSelfAvatarResView(), ImVec2(128, 128));
 	ImGui::SameLine();
 	ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
-	ImGui::Text(SteamNetworkingManager::GetSelfUserNickName());
-	if (SteamNetworkingManager::IsThisClientLobbyOwner()) {
+	ImGui::Text(DDMSteamWorksLib::SWNetworkingManager::GetSelfNickname());
+	if (DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->IsOwnsLobby()) {
 		ImGui::SameLine();
 		ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
 		ImGui::Text("OWNER---");
@@ -254,13 +251,13 @@ void MainMenuGui::DrawReadyOrNotMenu() noexcept {
 	}
 
 
-	if (SteamNetworkingManager::GetLobbyMemberCount() == 2) {
+	if (DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->GetLobby()->GetLobbyMemberCount() == 2) {
 		///TODO He can get 0
-		ImGui::Image(SteamNetworkingManager::GetAponentAvatarTex()->GetShaderResView(), ImVec2(128, 128));
+		ImGui::Image(DDMSteamWorksLib::SWNetworkingManager::GetAponentAvatarResView(), ImVec2(128, 128));
 		ImGui::SameLine();
 		ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
-		ImGui::Text(SteamNetworkingManager::GetAponentUserNickName());
-		if (!SteamNetworkingManager::IsThisClientLobbyOwner()) {
+		ImGui::Text(DDMSteamWorksLib::SWNetworkingManager::GetAponentNickname());
+		if (!DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->IsOwnsLobby()) {
 			ImGui::SameLine();
 			ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
 			ImGui::Text("OWNER---");
@@ -275,18 +272,15 @@ void MainMenuGui::DrawReadyOrNotMenu() noexcept {
 
 	ImGui::SameLine();
 	ImGui::SetCursorScreenPos(ImVec2(MainWindow::GetWindowWidth() / 2, MainWindow::GetWindowHeight() / 3));
-	if (SteamNetworkingManager::GetLobbyMemberCount() != 2) {
+	if (DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->GetLobby()->GetLobbyMemberCount() != 2) {
 		ImGui::Text("Waiting player");
 	}
 	else{
-		int sec_rem = 0;
-		bool is_should_start_server = SteamNetworkingManager::StartServerRetarder(is_aponent_ready && is_self_ready, sec_rem);
 		if (is_aponent_ready) {
 			if (is_self_ready) {
-				if (is_should_start_server) {
-					m_gui_state = STARTING_SERVER;///---------------- TODO SERVER LOADING GUI_STATE
-				}
-				ImGui::Text(("Server starts after " + std::to_string(sec_rem) + " seconds").c_str());
+				///TODO starting
+
+				m_gui_state = STARTING_SERVER;
 			}
 			else {
 				ImGui::Text("Your aponent is ready to play");
@@ -303,17 +297,15 @@ void MainMenuGui::DrawReadyOrNotMenu() noexcept {
 	}
 	
 	
-	if (SteamNetworkingManager::GetLobbyStruct() && SteamNetworkingManager::GetLobbyStruct()->m_id != 0) {
-		ImGui::SetCursorScreenPos(ImVec2(MainWindow::GetWindowWidth() - 135 - MainWindow::GetWindowWidth() / 50, MainWindow::GetWindowHeight() - MainWindow::GetWindowHeight() / 10));
-		if (TestButton("Ready", ImVec2(135, 75), ImGuiButtonFlags_None, is_self_ready)) {
-			is_self_ready = is_self_ready ? false : true;
-			SteamNetworkingManager::SetReadyOrNotStatus(is_self_ready);
-		}
-	}	
+	ImGui::SetCursorScreenPos(ImVec2(MainWindow::GetWindowWidth() - 135 - MainWindow::GetWindowWidth() / 50, MainWindow::GetWindowHeight() - MainWindow::GetWindowHeight() / 10));
+	if (TestButton("Ready", ImVec2(135, 75), ImGuiButtonFlags_None, is_self_ready)) {
+		is_self_ready = is_self_ready ? false : true;
+		DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->SetReadyOrNotStatus(is_self_ready);
+	}
 
 	ImGui::SetCursorScreenPos(ImVec2(MainWindow::GetWindowWidth() / 50, MainWindow::GetWindowHeight() - MainWindow::GetWindowHeight() / 10));
 	if (ImGui::Button("Back", ImVec2(135, 75))) {
-		SteamNetworkingManager::LeaveLobby();
+		DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->LeaveLobby();
 		m_gui_state = MAIN_MENU;
 	}
 	ImGui::End();

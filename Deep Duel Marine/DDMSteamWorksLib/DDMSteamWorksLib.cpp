@@ -88,19 +88,14 @@ namespace DDMSteamWorksLib {
 		return nullptr;
 	}
 	AvatarTexture* SWNetworkingManager::GetAponentAvatarTex() {
-		MessageBoxA(0, "aponent avatar DDM 86", "TODO", 0);
-		return nullptr;
-
-		/*if (!s_pGame_client || s_pGame_client->m_lobby.m_id == 0) return nullptr;
-
-		for (int i = 0; i < SteamMatchmaking()->GetNumLobbyMembers(s_pGame_client->m_lobby.m_id); i++) {
-			auto sID = SteamMatchmaking()->GetLobbyMemberByIndex(s_pGame_client->m_lobby.m_id, i);
+		for (int i = 0; i < SteamMatchmaking()->GetNumLobbyMembers(GetDDMClient()->GetLobby()->GetID()); i++) {
+			auto sID = SteamMatchmaking()->GetLobbyMemberByIndex(GetDDMClient()->GetLobby()->GetID(), i);
 			if (sID != SteamUser()->GetSteamID()) {
 				return LoadAvatar(sID);
 			}
 		}
 
-		return nullptr;*/
+		return nullptr;
 	}
 	ID3D11ShaderResourceView* SWNetworkingManager::GetAponentAvatarResView() {
 		auto pTex = GetAponentAvatarTex();
@@ -169,22 +164,36 @@ namespace DDMSteamWorksLib {
 		return "";
 	}
 	const char* SWNetworkingManager::GetAponentNickname() {
-		return "TODO APONENT NICK";
-
-		/*if (!s_pGame_client || s_pGame_client->m_lobby.m_id == 0) return "";
-
-		for (int i = 0; i < SteamMatchmaking()->GetNumLobbyMembers(s_pGame_client->m_lobby.m_id); i++) {
-			auto sID = SteamMatchmaking()->GetLobbyMemberByIndex(s_pGame_client->m_lobby.m_id, i);
+		for (int i = 0; i < SteamMatchmaking()->GetNumLobbyMembers(GetDDMClient()->GetLobby()->GetID()); i++) {
+			auto sID = SteamMatchmaking()->GetLobbyMemberByIndex(GetDDMClient()->GetLobby()->GetID(), i);
 			if (sID != SteamUser()->GetSteamID()) {
-				return GetUserNickName(sID);
+				return GetUserNickname(sID);
 			}
 		}
 
-		return "";*/
+		return "";
 	}
 
 	const char* SWNetworkingManager::GetUserNickname(CSteamID id) {
 		if (s_isConnected_to_steam) return SteamFriends()->GetFriendPersonaName(id);
 		return "";
+	}
+
+	bool SWNetworkingManager::GetSelfReadyOrNotStatus() {
+		if (!s_isConnected_to_steam) return false;
+
+		return SteamMatchmaking()->GetLobbyMemberData(GetDDMClient()->GetLobby()->GetID(), SteamUser()->GetSteamID(), "ready")[0] == '1';
+	}
+	bool SWNetworkingManager::GetAponentReadyOrNotStatus() {
+		if (!s_isConnected_to_steam) return false;
+
+		for (int i = 0; i < SteamMatchmaking()->GetNumLobbyMembers(GetDDMClient()->GetLobby()->GetID()); i++) {
+			auto sID = SteamMatchmaking()->GetLobbyMemberByIndex(GetDDMClient()->GetLobby()->GetID(), i);
+			if (sID != SteamUser()->GetSteamID()) {
+				return SteamMatchmaking()->GetLobbyMemberData(GetDDMClient()->GetLobby()->GetID(), sID, "ready")[0] == '1';
+			}
+		}
+
+		return false;
 	}
 }

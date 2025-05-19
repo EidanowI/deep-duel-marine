@@ -189,6 +189,7 @@
     <Library Include="Dependencies\steam\bin\steam_api64.lib" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DDMClient.cpp" />
     <ClCompile Include="DDMSteamWorksLib.cpp" />
     <ClCompile Include="DDMAvatarTexture.cpp" />
     <ClCompile Include="Dependencies\lodepng\lodepng.cpp" />
