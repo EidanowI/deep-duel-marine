@@ -51,15 +51,6 @@
     <ClCompile Include="Graphics\GUI\CustomImGuiElemets.h">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SteamNetworking\SteamNetworking.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SteamNetworking\GameClient.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SteamNetworking\LobbyBrowser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Graphics\GUI\MainMenuGui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -150,9 +141,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\GUI\MainMenuGui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SteamNetworking\SteamNetworking.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Dependencies\steam\public\steam\isteamapps.h">
@@ -290,12 +278,6 @@
     <ClInclude Include="Dependencies\steam\public\steam\steamuniverse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SteamNetworking\GameClient.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SteamNetworking\Lobby.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GlobalParams.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -348,9 +330,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\Utils\Timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SteamNetworking\LobbyBrowser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SteamNetworking\include\DDMAvatarTexture.h">

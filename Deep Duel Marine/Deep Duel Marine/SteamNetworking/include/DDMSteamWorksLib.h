@@ -21,7 +21,7 @@ namespace DDMSteamWorksLib {
 		static __declspec(dllexport) bool IsConnectedToSteam();
 
 		static __declspec(dllexport) DDMClient* GetDDMClient();
-		static __declspec(dllexport) LobbyBrowser* GetLobbyBrowser();
+		static __declspec(dllexport) DDMLobbyBrowser* GetLobbyBrowser();
 
 	public:
 		static __declspec(dllexport) AvatarTexture* GetSelfAvatarTex();
@@ -48,7 +48,7 @@ namespace DDMSteamWorksLib {
 
 	private:
 		static __declspec(dllexport) DDMClient* s_pDDMClient;
-		static __declspec(dllexport) LobbyBrowser* s_pLobbyBrowser;
+		static __declspec(dllexport) DDMLobbyBrowser* s_pLobbyBrowser;
 
 	private:
 		/*Need this shit cause my colostomy bag is domestic violent

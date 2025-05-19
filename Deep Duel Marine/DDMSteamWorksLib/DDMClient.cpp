@@ -108,6 +108,8 @@ namespace DDMSteamWorksLib {
 		SetReadyOrNotStatus(false);
 	}
 	void DDMClient::LeaveLobby() {
+		m_gameState = GAME_STATE_IN_MENU;
+
 		m_lobby.ClearLobbyData();
 	}
 

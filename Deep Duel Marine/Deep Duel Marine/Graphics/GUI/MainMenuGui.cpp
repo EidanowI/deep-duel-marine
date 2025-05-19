@@ -3,7 +3,6 @@
 
 
 extern bool G_isShould_close_window;
-Lobby G_lobby;
 
 
 MainMenuGui::MainMenuGui() noexcept {
@@ -74,7 +73,7 @@ void MainMenuGui::DrawMainMenu() noexcept {
 
 	pFont->Scale = (float)MainWindow::GetWindowWidth() / 1920.0f;
 	ImGui::PushFont(pFont);
-	if (SteamNetworkingManager::GetSelfUserNickName()) {
+	if (DDMSteamWorksLib::SWNetworkingManager::GetSelfNickname()) {
 		ImGui::SetCursorPos(ImVec2(7 + (int)(MainWindow::GetWindowWidth() / 14.77f) + 15, 7 + (int)(MainWindow::GetWindowHeight() / 8.31f / 2.0f) - 40 * (float)MainWindow::GetWindowWidth() / 1920.0f));
 		ImGui::Text(DDMSteamWorksLib::SWNetworkingManager::GetSelfNickname());
 	}
@@ -88,15 +87,16 @@ void MainMenuGui::DrawMainMenu() noexcept {
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 17, MainWindow::GetWindowHeight() / 2.8 + 0 * button_size_and_spacing));
 	if (CustomMainMenu::MainMenuButton("Create a match")){
 		if (DDMSteamWorksLib::SWNetworkingManager::IsConnectedToSteam()) {
+			DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->GetLobby()->ClearLobbyData();
 			m_gui_state = CREATE_LOBBY;
 		}
 	}
 
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 17, MainWindow::GetWindowHeight() / 2.8 + 1 * button_size_and_spacing));
 	if (CustomMainMenu::MainMenuButton("Join a match")) {
-		if (SteamNetworkingManager::IsSteamConnected()) {
-			SteamNetworkingManager::ClearLobbyStructData();
-			SteamNetworkingManager::GetLobbyBrowser()->Refresh();
+		if (DDMSteamWorksLib::SWNetworkingManager::IsConnectedToSteam()) {
+			DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->GetLobby()->ClearLobbyData();
+			DDMSteamWorksLib::SWNetworkingManager::GetLobbyBrowser()->Refresh();
 			m_gui_state = LOBBY_BROWSER;
 		}
 	}
@@ -144,13 +144,14 @@ void MainMenuGui::DrawCreateLobby() noexcept {
 	auto pos_y_forconf = ImGui::GetCursorPosY() + 20;
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() * 5 / 14, pos_y_forconf));
 	if (ConfBackButton("Back", ImColor(160, 115, 115, 255 - 115), ImColor(160, 100, 100, 255 - 100))) {
+		DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->GetLobby()->ClearLobbyData();
 		m_gui_state = MAIN_MENU;
 	}
 
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() * 5 / 14 + MainWindow::GetWindowWidth() / 7, pos_y_forconf));
 	if (ConfBackButton("Confirm", ImColor(115, 160, 115, 255 - 115), ImColor(100, 160, 100, 255 - 100))) {
-		m_gui_state = LOBBY_LOADING;
 		DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->CreateLobby();
+		m_gui_state = LOBBY_LOADING;
 	}
 
 	ImGui::PopFont();
@@ -165,11 +166,11 @@ void MainMenuGui::DrawLobbyBrowser() noexcept {
 
 	ImVec2 filter_text_size = ImGui::CalcTextSize("Lobby name filter");
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 8, MainWindow::GetWindowHeight()/4));
-	ImGui::InputTextEx("##", "Lobby name filter", SteamNetworkingManager::GetLobbyBrowser()->GetFilterName(), 63, ImVec2(MainWindow::GetWindowWidth() / 3, filter_text_size.y), ImGuiInputTextFlags_CallbackEdit, InputFilterTextCalback);
+	ImGui::InputTextEx("##", "Lobby name filter", DDMSteamWorksLib::SWNetworkingManager::GetLobbyBrowser()->GetFilterName(), 63, ImVec2(MainWindow::GetWindowWidth() / 3, filter_text_size.y), ImGuiInputTextFlags_CallbackEdit, InputFilterTextCalback);
 	
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 8 + MainWindow::GetWindowWidth() / 3 + 10, MainWindow::GetWindowHeight() / 4));
 	if (CustomLobbyBrowser::RefreshButton(filter_text_size.y, ImGui::GetCursorPos())) {
-		SteamNetworkingManager::GetLobbyBrowser()->Refresh();
+		DDMSteamWorksLib::SWNetworkingManager::GetLobbyBrowser()->Refresh();
 	}
 
 	static int item_current_idx = -1;
@@ -177,16 +178,16 @@ void MainMenuGui::DrawLobbyBrowser() noexcept {
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 8, ImGui::GetCursorPosY() + 10));
 	if (ImGui::BeginListBox("##listbox 2", ImVec2(MainWindow::GetWindowWidth() / 3 + filter_text_size.y + 10, 10 * ImGui::GetTextLineHeightWithSpacing())))
 	{
-		for (int i = 0; i < SteamNetworkingManager::GetLobbyBrowser()->GetlobbyCount(); i++)
+		for (int i = 0; i < DDMSteamWorksLib::SWNetworkingManager::GetLobbyBrowser()->GetlobbyCount(); i++)
 		{
 
 			const bool is_selected = (item_current_idx == i);
 
-			std::string a = SteamNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_name;
-			if (ImGui::Selectable(SteamNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_name, false, 0, ImVec2(MainWindow::GetWindowWidth() / 3 + filter_text_size.y + 10, filter_text_size.y)))
+			std::string a = DDMSteamWorksLib::SWNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_name;
+			if (ImGui::Selectable(DDMSteamWorksLib::SWNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_name, false, 0, ImVec2(MainWindow::GetWindowWidth() / 3 + filter_text_size.y + 10, filter_text_size.y)))
 			{
 				m_gui_state = LOBBY_LOADING;
-				SteamNetworkingManager::JoinLobby(SteamNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_id);
+				DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->JoinLobby(DDMSteamWorksLib::SWNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_id);
 				item_current_idx = i;
 			}
 
@@ -233,8 +234,10 @@ void MainMenuGui::DrawReadyOrNotMenu() noexcept {
 	style.ItemSpacing = ImVec2(25, MainWindow::GetWindowHeight() / 40);
 
 	static bool is_self_ready = false;
-
-	bool is_aponent_ready = DDMSteamWorksLib::SWNetworkingManager::GetAponentReadyOrNotStatus();
+	bool is_aponent_ready = false;
+	if (DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->GetLobby()->GetLobbyMemberCount() == 2) {
+		is_aponent_ready = DDMSteamWorksLib::SWNetworkingManager::GetAponentReadyOrNotStatus();
+	}
 	ImGui::Image(DDMSteamWorksLib::SWNetworkingManager::GetSelfAvatarResView(), ImVec2(128, 128));
 	ImGui::SameLine();
 	ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
@@ -278,8 +281,6 @@ void MainMenuGui::DrawReadyOrNotMenu() noexcept {
 	else{
 		if (is_aponent_ready) {
 			if (is_self_ready) {
-				///TODO starting
-
 				m_gui_state = STARTING_SERVER;
 			}
 			else {
@@ -311,13 +312,15 @@ void MainMenuGui::DrawReadyOrNotMenu() noexcept {
 	ImGui::End();
 }
 void MainMenuGui::DrawStartingServer() noexcept {
+	///TODO starting
+	//DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->GetLobby()->ClearLobbyData();
 	ImGui::SetNextWindowPos(ImVec2(MainWindow::GetWindowWidth() / 2, MainWindow::GetWindowHeight() / 2));
 	ImGui::SetNextWindowBgAlpha(0.0f);
 	ImGui::Begin("DrawLobbyLoading", 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
 	ImGuiStyle& style = ImGui::GetStyle();
 	style.WindowBorderSize = 0.0f;
 	style.ItemSpacing = ImVec2(25, MainWindow::GetWindowHeight() / 40);
-	if (SteamNetworkingManager::IsThisClientLobbyOwner()) {
+	if (DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->IsOwnsLobby()) {
 		ImGui::Text("Creating server...");
 	}
 	else {
@@ -431,6 +434,6 @@ bool TestButton(const char* label, const ImVec2& size_arg, ImGuiButtonFlags flag
 }
 
 int InputFilterTextCalback(ImGuiInputTextCallbackData* data) {
-	SteamNetworkingManager::GetLobbyBrowser()->Refresh();
+	DDMSteamWorksLib::SWNetworkingManager::GetLobbyBrowser()->Refresh();
 	return 0;
 }

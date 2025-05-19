@@ -8,7 +8,7 @@ namespace DDMSteamWorksLib {
 	bool SWNetworkingManager::s_isConnected_to_steam = false;
 
 	DDMClient* SWNetworkingManager::s_pDDMClient = nullptr;
-	LobbyBrowser* SWNetworkingManager::s_pLobbyBrowser = nullptr;
+	DDMLobbyBrowser* SWNetworkingManager::s_pLobbyBrowser = nullptr;
 
 	ID3D11Device* SWNetworkingManager::s_pDevice = nullptr;
 	std::map<CSteamID, AvatarTexture*> SWNetworkingManager::s_avatarTextures_map{};
@@ -41,7 +41,7 @@ namespace DDMSteamWorksLib {
 		s_isConnected_to_steam = true;
 
 		s_pDDMClient = new DDMClient();
-		s_pLobbyBrowser = new LobbyBrowser();
+		s_pLobbyBrowser = new DDMLobbyBrowser();
 	}
 	void SWNetworkingManager::Terminate() {
 		delete s_pLobbyBrowser;
@@ -70,7 +70,7 @@ namespace DDMSteamWorksLib {
 	DDMClient* SWNetworkingManager::GetDDMClient() {
 		return s_pDDMClient;
 	}
-	LobbyBrowser* SWNetworkingManager::GetLobbyBrowser() {
+	DDMLobbyBrowser* SWNetworkingManager::GetLobbyBrowser() {
 		return s_pLobbyBrowser;
 	}
 
@@ -190,6 +190,8 @@ namespace DDMSteamWorksLib {
 		for (int i = 0; i < SteamMatchmaking()->GetNumLobbyMembers(GetDDMClient()->GetLobby()->GetID()); i++) {
 			auto sID = SteamMatchmaking()->GetLobbyMemberByIndex(GetDDMClient()->GetLobby()->GetID(), i);
 			if (sID != SteamUser()->GetSteamID()) {
+				auto b = SteamMatchmaking()->GetLobbyMemberData(GetDDMClient()->GetLobby()->GetID(), sID, "ready");
+				if (!b) return false;
 				return SteamMatchmaking()->GetLobbyMemberData(GetDDMClient()->GetLobby()->GetID(), sID, "ready")[0] == '1';
 			}
 		}

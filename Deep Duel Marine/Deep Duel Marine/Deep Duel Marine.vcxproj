@@ -171,9 +171,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Graphics\MainWindow\MainWindow.cpp" />
     <ClCompile Include="Graphics\Renderer\Renderer.cpp" />
-    <ClCompile Include="SteamNetworking\GameClient.cpp" />
-    <ClCompile Include="SteamNetworking\LobbyBrowser.cpp" />
-    <ClCompile Include="SteamNetworking\SteamNetworking.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeepDuelMarine.h" />
@@ -253,15 +250,11 @@
     <ClInclude Include="Graphics\Textures\Texture.h" />
     <ClInclude Include="Graphics\Utils\GraphicsMath.h" />
     <ClInclude Include="Graphics\Utils\Timer.h" />
-    <ClInclude Include="SteamNetworking\GameClient.h" />
     <ClInclude Include="SteamNetworking\include\DDMAvatarTexture.h" />
     <ClInclude Include="SteamNetworking\include\DDMClient.h" />
     <ClInclude Include="SteamNetworking\include\DDMImage.h" />
     <ClInclude Include="SteamNetworking\include\DDMLobbyBrowser.h" />
     <ClInclude Include="SteamNetworking\include\DDMSteamWorksLib.h" />
-    <ClInclude Include="SteamNetworking\Lobby.h" />
-    <ClInclude Include="SteamNetworking\LobbyBrowser.h" />
-    <ClInclude Include="SteamNetworking\SteamNetworking.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="DDMSteamWorksLib.lib" />
