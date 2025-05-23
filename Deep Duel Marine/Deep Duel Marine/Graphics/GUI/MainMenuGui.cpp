@@ -102,11 +102,11 @@ void MainMenuGui::DrawMainMenu() noexcept {
 	}
 
 	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 17, MainWindow::GetWindowHeight() / 2.8 + 2 * button_size_and_spacing));
-	if (CustomMainMenu::MainMenuButton("Settings")) {
+	/*if (CustomMainMenu::MainMenuButton("Settings")) {
 		m_gui_state = SETTINGS;
-	}
+	}*/
 
-	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 17, MainWindow::GetWindowHeight() / 2.8 + 3 * button_size_and_spacing));
+	//ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() / 17, MainWindow::GetWindowHeight() / 2.8 + 3 * button_size_and_spacing));
 	if (CustomMainMenu::MainMenuButton("Quit")) {
 		m_gui_state = QUIT_DIALOG;
 	}
@@ -344,90 +344,6 @@ void MainMenuGui::DrawReadyOrNotMenu() noexcept {
 	}
 
 	EndImGuiTranspWindow();
-	/*ImGui::SetNextWindowPos(ImVec2(0,0));
-	ImGui::SetNextWindowBgAlpha(0.0f);
-	ImGui::Begin("Lobby Browser", 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
-	ImGuiStyle& style = ImGui::GetStyle();
-	style.WindowBorderSize = 0.0f;
-	style.ItemSpacing = ImVec2(25, MainWindow::GetWindowHeight() / 40);
-
-	static bool is_self_ready = false;
-	bool is_aponent_ready = false;
-	if (DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->GetLobby()->GetLobbyMemberCount() == 2) {
-		is_aponent_ready = DDMSteamWorksLib::SWNetworkingManager::GetAponentReadyOrNotStatus();
-	}
-	ImGui::Image(DDMSteamWorksLib::SWNetworkingManager::GetSelfAvatarResView(), ImVec2(128, 128));
-	ImGui::SameLine();
-	ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
-	ImGui::Text(DDMSteamWorksLib::SWNetworkingManager::GetSelfNickname());
-	if (DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->IsOwnsLobby()) {
-		ImGui::SameLine();
-		ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
-		ImGui::Text("OWNER---");
-	}
-	if (is_self_ready) {
-		ImGui::SameLine();
-		ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
-		ImGui::Text("READY");
-	}
-
-
-	if (DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->GetLobby()->GetLobbyMemberCount() == 2) {
-		///TODO He can get 0
-		ImGui::Image(DDMSteamWorksLib::SWNetworkingManager::GetAponentAvatarResView(), ImVec2(128, 128));
-		ImGui::SameLine();
-		ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
-		ImGui::Text(DDMSteamWorksLib::SWNetworkingManager::GetAponentNickname());
-		if (!DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->IsOwnsLobby()) {
-			ImGui::SameLine();
-			ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
-			ImGui::Text("OWNER---");
-					
-		}
-		if (is_aponent_ready) {
-			ImGui::SameLine();
-			ImGui::SetCursorScreenPos(ImVec2(ImGui::GetCursorScreenPos().x, ImGui::GetCursorScreenPos().y + 64));
-			ImGui::Text("READY");
-		}
-	}
-
-	ImGui::SameLine();
-	ImGui::SetCursorScreenPos(ImVec2(MainWindow::GetWindowWidth() / 2, MainWindow::GetWindowHeight() / 3));
-	if (DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->GetLobby()->GetLobbyMemberCount() != 2) {
-		ImGui::Text("Waiting player");
-	}
-	else{
-		if (is_aponent_ready) {
-			if (is_self_ready) {
-				m_gui_state = STARTING_SERVER;
-			}
-			else {
-				ImGui::Text("Your aponent is ready to play");
-			}
-		}
-		else {
-			if (is_self_ready) {
-				ImGui::Text("Waiting for your aponent ready to play");
-			}
-			else {
-				ImGui::Text("Waitin for both players ready");
-			}
-		}
-	}
-	
-	
-	ImGui::SetCursorScreenPos(ImVec2(MainWindow::GetWindowWidth() - 135 - MainWindow::GetWindowWidth() / 50, MainWindow::GetWindowHeight() - MainWindow::GetWindowHeight() / 10));
-	if (TestButton("Ready", ImVec2(135, 75), ImGuiButtonFlags_None, is_self_ready)) {
-		is_self_ready = is_self_ready ? false : true;
-		DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->SetReadyOrNotStatus(is_self_ready);
-	}
-
-	ImGui::SetCursorScreenPos(ImVec2(MainWindow::GetWindowWidth() / 50, MainWindow::GetWindowHeight() - MainWindow::GetWindowHeight() / 10));
-	if (ImGui::Button("Back", ImVec2(135, 75))) {
-		DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->LeaveLobby();
-		m_gui_state = MAIN_MENU;
-	}
-	ImGui::End();*/
 }
 void MainMenuGui::DrawStartingServer() noexcept {
 	///TODO starting
