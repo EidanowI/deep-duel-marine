@@ -106,6 +106,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)Deep Duel Marine/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,6 +132,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DDMMessages.h" />
+    <ClInclude Include="DDMServer.h" />
     <ClInclude Include="DDMSteamWorksLib.h" />
     <ClInclude Include="Dependencies\lodepng\lodepng.h" />
     <ClInclude Include="Dependencies\steam\public\steam\isteamapps.h" />
@@ -193,6 +196,7 @@
   <ItemGroup>
     <ClCompile Include="DDMClient.cpp" />
     <ClCompile Include="DDMLobbyBrowser.cpp" />
+    <ClCompile Include="DDMServer.cpp" />
     <ClCompile Include="DDMSteamWorksLib.cpp" />
     <ClCompile Include="DDMAvatarTexture.cpp" />
     <ClCompile Include="Dependencies\lodepng\lodepng.cpp" />

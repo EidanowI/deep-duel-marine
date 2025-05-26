@@ -3,7 +3,7 @@
 #include <string>
 #include <algorithm>
 
-#include "../../Dependencies/steam/public/steam/steam_api.h"
+#include "Dependencies/steam/public/steam/steam_api.h"
 
 
 

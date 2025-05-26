@@ -9,6 +9,7 @@ namespace DDMSteamWorksLib {
 
 	DDMClient* SWNetworkingManager::s_pDDMClient = nullptr;
 	DDMLobbyBrowser* SWNetworkingManager::s_pLobbyBrowser = nullptr;
+	DDMServer* SWNetworkingManager::s_pServer = nullptr;
 
 	ID3D11Device* SWNetworkingManager::s_pDevice = nullptr;
 	std::map<CSteamID, AvatarTexture*> SWNetworkingManager::s_avatarTextures_map{};
@@ -47,6 +48,10 @@ namespace DDMSteamWorksLib {
 		delete s_pLobbyBrowser;
 		delete s_pDDMClient;
 
+		if (s_pServer) {
+			delete s_pServer;
+		}
+
 		for (const auto& [id, pTex] : s_avatarTextures_map) {
 			delete pTex;
 		}
@@ -61,6 +66,24 @@ namespace DDMSteamWorksLib {
 		SteamAPI_RunCallbacks();
 
 		s_pDDMClient->Update();
+
+		if (s_pServer) {
+			s_pServer->Update();
+
+			if (s_pServer->IsServerReadyToShut()) {
+				SWNetworkingManager::TerminateServer();
+			}
+		}
+	}
+
+	void SWNetworkingManager::InitServer() {
+		s_pServer = new DDMServer();
+	}
+	void SWNetworkingManager::TerminateServer() {
+		if (s_pServer) {
+			delete s_pServer;
+			s_pServer = nullptr;
+		}
 	}
 
 	bool SWNetworkingManager::IsConnectedToSteam() {
@@ -72,6 +95,9 @@ namespace DDMSteamWorksLib {
 	}
 	DDMLobbyBrowser* SWNetworkingManager::GetLobbyBrowser() {
 		return s_pLobbyBrowser;
+	}
+	DDMServer* SWNetworkingManager::GetServer() {
+		return s_pServer;
 	}
 
 	AvatarTexture* SWNetworkingManager::GetSelfAvatarTex() {

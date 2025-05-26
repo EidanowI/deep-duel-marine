@@ -114,6 +114,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)Deep Duel Marine/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -132,6 +133,7 @@
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)Deep Duel Marine/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -155,6 +157,8 @@
     <ClCompile Include="Graphics\GUI\CustomImGuiElemets.cpp" />
     <ClCompile Include="Graphics\GUI\DisplayHubManager.cpp" />
     <ClCompile Include="Graphics\GUI\CustomImGuiElemets.h" />
+    <ClCompile Include="Graphics\GUI\InGameGui.cpp" />
+    <ClCompile Include="Graphics\GUI\ResultScreenGui.cpp" />
     <ClCompile Include="Graphics\GUI\MainMenuGui.cpp" />
     <ClCompile Include="Graphics\ImGuiRender\ImGuiRender.cpp" />
     <ClCompile Include="Graphics\Mesh\Mesh.cpp" />
@@ -162,6 +166,7 @@
     <ClCompile Include="Graphics\Model\Model.cpp" />
     <ClCompile Include="Graphics\Model\WaterSurfaceObject.cpp" />
     <ClCompile Include="Graphics\Modules\Transform.cpp" />
+    <ClCompile Include="Graphics\Scene\InGameScene.cpp" />
     <ClCompile Include="Graphics\Scene\MainMenuScene.cpp" />
     <ClCompile Include="Graphics\Shader\Shader.cpp" />
     <ClCompile Include="Graphics\Textures\Image.cpp" />
@@ -232,8 +237,11 @@
     <ClInclude Include="Graphics\Camera\Camera.h" />
     <ClInclude Include="Graphics\GUI\DisplayHubManager.h" />
     <ClInclude Include="GlobalParams.h" />
+    <ClInclude Include="Graphics\GUI\InGameGui.h" />
+    <ClInclude Include="Graphics\GUI\LoseScreenGui.h" />
     <ClInclude Include="Graphics\GUI\MainMenuGui.h" />
     <ClInclude Include="Graphics\GUI\IGui.h" />
+    <ClInclude Include="Graphics\GUI\WinScreenGui.h" />
     <ClInclude Include="Graphics\IBindable.h" />
     <ClInclude Include="Graphics\ImGuiRender\ImGuiRender.h" />
     <ClInclude Include="Graphics\MainWindow\MainWindow.h" />
@@ -243,6 +251,7 @@
     <ClInclude Include="Graphics\Model\WaterSurfaceObject.h" />
     <ClInclude Include="Graphics\Modules\Transform.h" />
     <ClInclude Include="Graphics\Renderer\Renderer.h" />
+    <ClInclude Include="Graphics\Scene\InGameScene.h" />
     <ClInclude Include="Graphics\Scene\IScene.h" />
     <ClInclude Include="Graphics\Scene\MainMenuScene.h" />
     <ClInclude Include="Graphics\Shader\Shader.h" />
@@ -254,6 +263,8 @@
     <ClInclude Include="SteamNetworking\include\DDMClient.h" />
     <ClInclude Include="SteamNetworking\include\DDMImage.h" />
     <ClInclude Include="SteamNetworking\include\DDMLobbyBrowser.h" />
+    <ClInclude Include="SteamNetworking\include\DDMMessages.h" />
+    <ClInclude Include="SteamNetworking\include\DDMServer.h" />
     <ClInclude Include="SteamNetworking\include\DDMSteamWorksLib.h" />
   </ItemGroup>
   <ItemGroup>

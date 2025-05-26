@@ -182,13 +182,15 @@ void MainMenuGui::DrawLobbyBrowser() noexcept {
 
 			const bool is_selected = (item_current_idx == i);
 
-			std::string a = DDMSteamWorksLib::SWNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_name;
-			if (ImGui::Selectable(DDMSteamWorksLib::SWNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_name, false, 0, ImVec2(MainWindow::GetWindowWidth() / 3 + filter_text_size.y + 10, filter_text_size.y)))
-			{
-				m_gui_state = LOBBY_LOADING;
-				DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->JoinLobby(DDMSteamWorksLib::SWNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_id);
-				item_current_idx = i;
+			if (DDMSteamWorksLib::SWNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_name) {
+				if (ImGui::Selectable(DDMSteamWorksLib::SWNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_name, false, 0, ImVec2(MainWindow::GetWindowWidth() / 3 + filter_text_size.y + 10, filter_text_size.y)))
+				{
+					m_gui_state = LOBBY_LOADING;
+					DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->JoinLobby(DDMSteamWorksLib::SWNetworkingManager::GetLobbyBrowser()->GetLobbyByIndex(i).m_id);
+					item_current_idx = i;
+				}
 			}
+			
 
 			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
 			if (is_selected)
@@ -302,6 +304,11 @@ void MainMenuGui::DrawReadyOrNotMenu() noexcept {
 	else {
 		if (is_aponent_ready) {
 			if (is_self_ready) {
+				if (DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->IsOwnsLobby()) {
+					if (!DDMSteamWorksLib::SWNetworkingManager::GetServer()) {
+						DDMSteamWorksLib::SWNetworkingManager::InitServer();
+					}
+				}
 				m_gui_state = STARTING_SERVER;
 			}
 			else {
@@ -346,21 +353,25 @@ void MainMenuGui::DrawReadyOrNotMenu() noexcept {
 	EndImGuiTranspWindow();
 }
 void MainMenuGui::DrawStartingServer() noexcept {
-	///TODO starting
-	//DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->GetLobby()->ClearLobbyData();
-	ImGui::SetNextWindowPos(ImVec2(MainWindow::GetWindowWidth() / 2, MainWindow::GetWindowHeight() / 2));
-	ImGui::SetNextWindowBgAlpha(0.0f);
-	ImGui::Begin("DrawLobbyLoading", 0, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
-	ImGuiStyle& style = ImGui::GetStyle();
-	style.WindowBorderSize = 0.0f;
-	style.ItemSpacing = ImVec2(25, MainWindow::GetWindowHeight() / 40);
-	if (DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->IsOwnsLobby()) {
-		ImGui::Text("Creating server...");
+	BeginImGuiTranspWindow("LoadingServer");
+	ImFont* pFont = ImGui::GetFont();
+
+	pFont->Scale = (float)MainWindow::GetWindowWidth() / 3200.0f;
+	ImGui::PushFont(pFont);
+
+	if (DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->GetGameState() == DDMSteamWorksLib::GAME_STATE_CONNECTED) {
+		m_gui_state = MAIN_MENU;///I do it because after we finished game ang go to main menu all being in right state
+
+		DisplayHubManager::ChangeState(DISPLAYHUB_MANAGER_STATE::DHM_IN_GAME);
 	}
-	else {
-		ImGui::Text("Connecting to server..");
-	}	
-	ImGui::End();
+
+	ImVec2 loading_text_size = ImGui::CalcTextSize("Connecting to server..");
+	ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() - loading_text_size.x - 30, MainWindow::GetWindowHeight() - loading_text_size.y - 20));
+	ImGui::Text("Connecting to server...");
+
+	ImGui::PopFont();
+
+	EndImGuiTranspWindow();
 }
 void MainMenuGui::DrawSetting() noexcept {
 #define SETTINGS_WIDTH 1920 / 3

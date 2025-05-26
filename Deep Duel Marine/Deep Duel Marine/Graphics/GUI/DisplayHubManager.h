@@ -20,7 +20,9 @@ private:
 
 enum DISPLAYHUB_MANAGER_STATE{
 	DHM_MAIN_MENU,
-	DHM_IN_GAME
+	DHM_IN_GAME,
+	DHM_WIN_SCREEN,
+	DHM_LOSE_SCREEN
 };
 
 class DisplayHubManager

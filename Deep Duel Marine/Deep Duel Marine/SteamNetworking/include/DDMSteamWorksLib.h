@@ -2,11 +2,12 @@
 #include <map>
 #include <d3d11.h>
 
-#include "../../Dependencies/steam/public/steam/steam_api.h"
+#include "Dependencies/steam/public/steam/steam_api.h"
 
 #include "DDMClient.h"
 #include "DDMLobbyBrowser.h"
 #include "DDMAvatarTexture.h"
+#include "DDMServer.h"
 
 
 
@@ -18,10 +19,15 @@ namespace DDMSteamWorksLib {
 		static __declspec(dllexport) void Terminate();
 
 	public:
+		static __declspec(dllexport) void InitServer();
+		static __declspec(dllexport) void TerminateServer();
+
+	public:
 		static __declspec(dllexport) bool IsConnectedToSteam();
 
 		static __declspec(dllexport) DDMClient* GetDDMClient();
 		static __declspec(dllexport) DDMLobbyBrowser* GetLobbyBrowser();
+		static __declspec(dllexport) DDMServer* GetServer();
 
 	public:
 		static __declspec(dllexport) AvatarTexture* GetSelfAvatarTex();
@@ -49,6 +55,7 @@ namespace DDMSteamWorksLib {
 	private:
 		static __declspec(dllexport) DDMClient* s_pDDMClient;
 		static __declspec(dllexport) DDMLobbyBrowser* s_pLobbyBrowser;
+		static __declspec(dllexport) DDMServer* s_pServer;
 
 	private:
 		/*Need this shit cause my colostomy bag is domestic violent

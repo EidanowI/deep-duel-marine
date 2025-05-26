@@ -168,6 +168,12 @@
     <ClInclude Include="Dependencies\lodepng\lodepng.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DDMServer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DDMMessages.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\steam\public\steam\steam_api.json" />
@@ -193,6 +199,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DDMLobbyBrowser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DDMServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Dependencies/steam/public/steam/steam_api.h"
+#include "Dependencies/steam/public/steam/steam_api.h"
 
 
 
@@ -26,16 +26,9 @@ namespace DDMSteamWorksLib {
 	};
 
 
-	enum EClientConnectionState
-	{
-		k_EClientNotConnected,
-		k_EClientConnected
-	};
-
 	enum GAME_STATE {
 		GAME_STATE_IN_MENU,
 		GAME_STATE_IN_LOBBY,
-		GAME_STATE_CONNECTING,
 		GAME_STATE_CONNECTED
 	};
 
@@ -46,6 +39,8 @@ namespace DDMSteamWorksLib {
 		
 		void Update();
 
+		__declspec(dllexport) GAME_STATE GetGameState();
+
 		__declspec(dllexport) void CreateLobby();
 		__declspec(dllexport) void JoinLobby(CSteamID id);
 		__declspec(dllexport) void LeaveLobby();
@@ -55,6 +50,23 @@ namespace DDMSteamWorksLib {
 		__declspec(dllexport) bool IsOwnsLobby();
 
 		__declspec(dllexport) DDMLobby* GetLobby();
+		__declspec(dllexport) CSteamID GetID();
+
+	public:
+		__declspec(dllexport) void SetGameResultCalbacks(void (*pWin_func_calback)(), void (*pLose_func_claback)());
+
+	public:
+		__declspec(dllexport) bool SendNetworkData(const void* pData, unsigned int nSizeOfData, int nSendFlags);
+	
+	private:
+		void ReceiveNetworkData();
+		void OnReceiveServerInfo(CSteamID steamIDGameServer, bool bVACSecure, const char* pchServerName);
+		void OnReceiveServerAuthenticationResponse(bool bSuccess);
+
+	private:
+		void InitiateServerConnection(CSteamID steamIDGameServer);
+
+		void DisconnectFromServer();
 
 	private:
 		void OnLobbyCreated(LobbyCreated_t* pCallback, bool bIOFailure);
@@ -63,11 +75,21 @@ namespace DDMSteamWorksLib {
 		void OnLobbyEntered(LobbyEnter_t* pCallback, bool bIOFailure);
 		CCallResult<DDMClient, LobbyEnter_t> m_SteamCallResultLobbyEntered;
 
+		STEAM_CALLBACK(DDMClient, OnLobbyGameCreated, LobbyGameCreated_t);
+
 	private:
 		CSteamID m_steamID;
-		EClientConnectionState m_connectionState;
 		GAME_STATE m_gameState;
 
 		DDMLobby m_lobby;
+
+		HSteamNetConnection m_hConnServer = 0;
+
+		void (*m_pWin_func_calback)() = 0;
+		void (*m_pLose_func_claback)() = 0;
+
+		CSteamID m_steamIDGameServer = CSteamID();
+		uint32 m_unServerIP = 0;
+		uint16 m_usServerPort = 0;
 	};
 }

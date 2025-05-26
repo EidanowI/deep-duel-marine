@@ -99,6 +99,15 @@
     <ClCompile Include="Graphics\Utils\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\GUI\InGameGui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Scene\InGameScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\GUI\ResultScreenGui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeepDuelMarine.h">
@@ -332,6 +341,18 @@
     <ClInclude Include="Graphics\Utils\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics\GUI\InGameGui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Scene\InGameScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\GUI\WinScreenGui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\GUI\LoseScreenGui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="SteamNetworking\include\DDMAvatarTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -342,6 +363,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SteamNetworking\include\DDMLobbyBrowser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SteamNetworking\include\DDMMessages.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SteamNetworking\include\DDMServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SteamNetworking\include\DDMSteamWorksLib.h">

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "IScene.h"
 #include "../Model/Model.h"
 #include "../Camera/Camera.h"
