@@ -53,10 +53,10 @@ Mesh::Mesh(std::string path, VertexShader* pVertexShader, aiMesh* pAssimp_mesh) 
 			m_pVertexes[i].UV = Vector2D(0.0f);
 		}
 		if (is_mesh_have_vertColor) {
-			m_pVertexes[i].color = Vector4D(pAssimp_mesh->mColors[i]->r, pAssimp_mesh->mColors[i]->g, pAssimp_mesh->mColors[i]->b, pAssimp_mesh->mColors[i]->a);
+			///m_pVertexes[i].color = Vector4D(pAssimp_mesh->mColors[i]->r, pAssimp_mesh->mColors[i]->g, pAssimp_mesh->mColors[i]->b, pAssimp_mesh->mColors[i]->a);
 		}
 		else {
-			m_pVertexes[i].color = Vector4D(0.0f);
+			//m_pVertexes[i].color = Vector4D(0.0f);
 		}
 	}
 

@@ -5,5 +5,5 @@ float4 main(float3 p_normal : Normal, float2 p_UV : UV, float4 p_color : Colory)
     //return facesColors[FaceID / 2];
     //return p_color;
     //return lightColorBUF0;
-    return float4(0.0f, 0.8f, 1.0f, 1.0f);
+    return float4(0.2f, 0.2f, 0.2f, 1.0f);
 }

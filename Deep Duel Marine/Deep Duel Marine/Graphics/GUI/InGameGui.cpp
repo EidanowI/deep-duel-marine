@@ -12,7 +12,7 @@ InGameGui::~InGameGui() noexcept {
 }
 
 void InGameGui::Draw() noexcept {
-	ImGui::Begin("Something");
+	/*ImGui::Begin("Something");
 	ImVec2 loading_text_size = ImGui::CalcTextSize("We are in game");
 	//ImGui::SetCursorPos(ImVec2(MainWindow::GetWindowWidth() - loading_text_size.x - 30, MainWindow::GetWindowHeight() - loading_text_size.y - 20));
 	ImGui::Text("We are in game");
@@ -29,4 +29,6 @@ void InGameGui::Draw() noexcept {
 	}
 
 	ImGui::End();
+	*/
+
 }

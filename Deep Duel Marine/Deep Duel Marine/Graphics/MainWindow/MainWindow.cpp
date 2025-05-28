@@ -7,7 +7,7 @@
 
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
+bool G_is_vertical_ship_position = false;
 
 
 MainWindow::WindowClass MainWindow::WindowClass::s_wndClass = MainWindow::WindowClass();
@@ -166,6 +166,10 @@ LRESULT WindowProcess(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	case WM_KEYDOWN:
 	case WM_SYSKEYDOWN:
 	{
+		if ((unsigned char)wParam == 'R') {
+			G_is_vertical_ship_position = G_is_vertical_ship_position ? false : true;
+		}
+			
 		/*if ((unsigned char)wParam == 'W') {
 			MainWindow::FixateCursor(true);
 		}

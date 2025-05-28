@@ -23,6 +23,23 @@ WaterSurfaceObject::WaterSurfaceObject() noexcept {
 	}
 	Renderer::GetDevice()->CreateSamplerState(&samplerDesc, &m_pSamplerState);
 }
+WaterSurfaceObject::WaterSurfaceObject(const std::string& pixel_shader_name) noexcept {
+	m_pModel = new Model("WaterSurfaceMainMenu.dae", "WaterSurfaceVertShader.cso", pixel_shader_name);
+
+	m_constBuff1.time[0] = Timer::GetMsFromLastFrame() * WATER_SURFACE_TIME_MULTIPLIER;
+	m_pConstBuff1 = Renderer::CreateConstBuffer((char*)&m_constBuff1, sizeof(ConstBuf1));
+
+	m_pWaterSurface_texture = new Texture("WaterSurface.png");
+
+	D3D11_SAMPLER_DESC samplerDesc{};
+	{
+		samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	}
+	Renderer::GetDevice()->CreateSamplerState(&samplerDesc, &m_pSamplerState);
+}
 WaterSurfaceObject::~WaterSurfaceObject() noexcept {
 	delete m_pWaterSurface_texture;
 
@@ -33,6 +50,7 @@ WaterSurfaceObject::~WaterSurfaceObject() noexcept {
 
 	delete m_pModel;
 }
+
 
 void WaterSurfaceObject::Render() noexcept {
 	m_constBuff1.time[0] += Timer::GetMsFromLastFrame() * WATER_SURFACE_TIME_MULTIPLIER;

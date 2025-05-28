@@ -20,6 +20,7 @@ public:
 
 public:
 	WaterSurfaceObject() noexcept;
+	WaterSurfaceObject(const std::string& pixel_shader_name) noexcept;
 	~WaterSurfaceObject() noexcept;
 
 	void Render() noexcept;

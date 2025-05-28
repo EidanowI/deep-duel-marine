@@ -108,6 +108,12 @@
     <ClCompile Include="Graphics\GUI\ResultScreenGui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\Model\InGameObjects.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Model\ShipObjects.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeepDuelMarine.h">
@@ -374,6 +380,12 @@
     <ClInclude Include="SteamNetworking\include\DDMSteamWorksLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics\Model\InGameObjects.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Model\ShipObjects.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="Dependencies\steam\bin\steam_api.lib" />
@@ -392,5 +404,9 @@
     <FxCompile Include="Graphics\Shader\ShaderSourceCode\WaterSurfacePixelShader.hlsl" />
     <FxCompile Include="Graphics\Shader\ShaderSourceCode\BeaconLogoVertShader.hlsl" />
     <FxCompile Include="Graphics\Shader\ShaderSourceCode\BeaconLogoPixelShader.hlsl" />
+    <FxCompile Include="Graphics\Shader\ShaderSourceCode\FieldHintPixelShader.hlsl" />
+    <FxCompile Include="Graphics\Shader\ShaderSourceCode\FieldHintVertShader.hlsl" />
+    <FxCompile Include="Graphics\Shader\ShaderSourceCode\WaterSurfacePixelShaderInGame.hlsl" />
+    <FxCompile Include="Graphics\Shader\ShaderSourceCode\SelectShipPixelShader.hlsl" />
   </ItemGroup>
 </Project>
