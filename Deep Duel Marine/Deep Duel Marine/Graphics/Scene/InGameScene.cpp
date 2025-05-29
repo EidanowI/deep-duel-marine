@@ -27,6 +27,7 @@ ShipPlacings G_placings{};
 bool G_isReady_to_start = false;
 bool G_isYour_turn = false;
 
+TARGET_CELL_STATE m_target_cells[100];
 
 
 ShipCellPos::ShipCellPos() {
@@ -300,6 +301,8 @@ int ShipPlacings::AlliweShipsCount() {
 
 InGameScene::InGameScene() noexcept {
 	DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->SetSessionStartCallback(RecieveStartCallback);
+	DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->SetTurnCallback(RecieveTurnCallback);
+	DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->SetShotCalback(RecieveShotResponce);
 
 	m_pCamera = new Camera(Vector3D(0, 24, 0), Vector3D(-1.57, 0, 0));
 
@@ -478,6 +481,73 @@ bool FourShipSelectButton(int ship_size)
 	return pressed;
 }
 
+bool AimTargetButton(int x, int y)
+{
+	static Texture exp_icon_tex = Texture("TargExp.png");
+	std::string label = "Ship exp" + std::to_string(x) + std::to_string(y);
+	ImGuiButtonFlags flags = 0;
+	ImVec2 size_arg = ImVec2(60, 60);
+	ImVec2 pos_vec = ImGui::GetCursorScreenPos();
+
+	using namespace ImGui;
+	ImGuiWindow* window = GetCurrentWindow();
+	if (window->SkipItems)
+		return false;
+
+	ImGuiContext& g = *GImGui;
+	const ImGuiStyle& style = g.Style;
+	const ImGuiID id = window->GetID(label.c_str());
+	const ImVec2 label_size = CalcTextSize(label.c_str(), NULL, true);
+
+	ImVec2 pos = window->DC.CursorPos;
+	if ((flags & ImGuiButtonFlags_AlignTextBaseLine) && style.FramePadding.y < window->DC.CurrLineTextBaseOffset) // Try to vertically align buttons that are smaller/have no padding so that text baseline matches (bit hacky, since it shouldn't be a flag)
+		pos.y += window->DC.CurrLineTextBaseOffset - style.FramePadding.y;
+	ImVec2 size = CalcItemSize(size_arg, label_size.x + style.FramePadding.x * 2.0f, label_size.y + style.FramePadding.y * 2.0f);
+
+	const ImRect bb(pos, pos + size);
+
+	ItemSize(size, style.FramePadding.y);
+	if (!ItemAdd(bb, id))
+		return false;
+
+	bool hovered, held;
+	bool pressed = ButtonBehavior(bb, id, &hovered, &held, flags);
+
+
+	if (m_target_cells[y * 10 + x] == DEAD) {
+		ImGui::SetCursorScreenPos(pos_vec);
+
+		ImGui::Image(exp_icon_tex.GetShaderResView(), size_arg);
+
+		return false;
+	}
+	else if(m_target_cells[y * 10 + x] == MISS){
+		const ImU32 col = ImColor(30, 30, 30, 255);
+		RenderNavHighlight(bb, id);
+		RenderFrame(bb.Min, bb.Max, col, true, style.FrameRounding);
+
+		return false;
+	}
+	else {
+		if (!G_isYour_turn) {
+			const ImU32 col = ImColor(130, 130, 130, 255 - 95);
+			RenderNavHighlight(bb, id);
+			RenderFrame(bb.Min, bb.Max, col, true, style.FrameRounding);
+			return false;
+		}
+		ImColor buton_active_color = ImColor(100, 100, 100, 255 - 100);
+		ImColor buton_hovered_color = ImColor(115, 115, 115, 255 - 115);
+		ImColor buton_color = ImColor(130, 130, 130, 255 - 95);
+
+		const ImU32 col = (held && hovered) ? buton_active_color : hovered ? buton_hovered_color : buton_color;
+		RenderNavHighlight(bb, id);
+		RenderFrame(bb.Min, bb.Max, col, true, style.FrameRounding);
+	}
+	
+
+	return pressed;
+}
+
 void PlaceShipLogic(InGameScene* pInGameScene) {
 	BeginImGuiTranspWindow("fields buttons");
 	ImFont* pFont = ImGui::GetFont();
@@ -619,8 +689,16 @@ void PlayGameLogic(InGameScene* pInGameScene) {
 			float x_pos = 900 + 30;
 			for (int x = 0; x < 10; x++) {
 				ImGui::SetCursorScreenPos(ImVec2(x_pos, y_pos));
-				if (ImGui::Button(("##bt" + std::to_string(x) + std::to_string(y)).c_str(), ImVec2(60, 60))) {
+				if (AimTargetButton(x, y)) {
+					if (G_isYour_turn) {
+						G_isYour_turn = false;
 
+						MsgShot_t shot_msg = MsgShot_t();
+						
+						shot_msg.SetPos(x, y);
+
+						DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->SendNetworkData(&shot_msg, sizeof(MsgShot_t), k_nSteamNetworkingSend_Unreliable);
+					}
 
 				}
 				x_pos += 60 + 16;
@@ -641,4 +719,10 @@ void RecieveStartCallback() {
 }
 void RecieveTurnCallback() {
 	G_isYour_turn = true;
+}
+
+void RecieveShotResponce(int x, int y, bool is_dead) {
+	G_isYour_turn = is_dead;
+
+	m_target_cells[y * 10 + x] = is_dead ? DEAD : MISS;
 }

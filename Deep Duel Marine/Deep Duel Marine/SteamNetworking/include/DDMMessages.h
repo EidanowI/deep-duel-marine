@@ -20,31 +20,12 @@ enum EMessage
 
 	k_EMsgClientReadyAndGiveShips = k_EMsgServerBegin + 9,
 	k_EMsgTwoClientsReadySoStart = k_EMsgServerBegin + 10,
-	//k_EMsgServerSendInfo = k_EMsgServerBegin + 1,
-	//k_EMsgServerFailAuthentication = k_EMsgServerBegin + 2,
-	//k_EMsgServerPassAuthentication = k_EMsgServerBegin + 3,
-	//k_EMsgServerUpdateWorld = k_EMsgServerBegin + 4,
-	//k_EMsgServerExiting = k_EMsgServerBegin + 5,
-	//k_EMsgServerPingResponse = k_EMsgServerBegin + 6,
-	//k_EMsgServerPlayerHitSun = k_EMsgServerBegin + 7,
 
-	//// Client messages
-	//k_EMsgClientBegin = 500,
-	//k_EMsgClientBeginAuthentication = k_EMsgClientBegin + 2,
-	//k_EMsgClientSendLocalUpdate = k_EMsgClientBegin + 3,
+	k_EMsgTurn = k_EMsgServerBegin + 11,
+	k_EMsgShot = k_EMsgServerBegin + 12,
+	k_EMsgShotResult = k_EMsgServerBegin + 13,
+	
 
-	//// P2P authentication messages
-	//k_EMsgP2PBegin = 600,
-	//k_EMsgP2PSendingTicket = k_EMsgP2PBegin + 1,
-
-	//// voice chat messages
-	//k_EMsgVoiceChatBegin = 700,
-	////k_EMsgVoiceChatPing = k_EMsgVoiceChatBegin+1,	// deprecated keep alive message
-	//k_EMsgVoiceChatData = k_EMsgVoiceChatBegin + 2,	// voice data from another player
-
-
-
-	// force 32-bit size enum so the wire protocol doesn't get outgrown later
 	k_EForceDWORD = 0x7fffffff,
 };
 
@@ -86,8 +67,8 @@ struct MsgServerSendInfo_t : public BaseMessage
 {
 	__declspec(dllexport) MsgServerSendInfo_t() : BaseMessage(k_EMsgServerSendInfo), m_ulSteamIDServer(0), m_bIsVACSecure(false) {}
 
-	__declspec(dllexport) void SetSteamIDServer(unsigned int SteamID) { m_ulSteamIDServer = SteamID; }
-	__declspec(dllexport) unsigned int GetSteamIDServer() { return m_ulSteamIDServer; }
+	__declspec(dllexport) void SetSteamIDServer(unsigned long long SteamID) { m_ulSteamIDServer = SteamID; }
+	__declspec(dllexport) unsigned long long GetSteamIDServer() { return m_ulSteamIDServer; }
 
 	__declspec(dllexport) void SetSecure(bool bSecure) { m_bIsVACSecure = bSecure; }
 	__declspec(dllexport) bool GetSecure() { return m_bIsVACSecure; }
@@ -96,7 +77,7 @@ struct MsgServerSendInfo_t : public BaseMessage
 	__declspec(dllexport) const char* GetServerName() { return m_rgchServerName; }
 
 private:
-	unsigned int m_ulSteamIDServer;
+	unsigned long long m_ulSteamIDServer;
 	bool m_bIsVACSecure;
 	char m_rgchServerName[128]{};
 };
@@ -106,11 +87,11 @@ struct MsgClientBeginAuthentication_t : public BaseMessage
 {
 	__declspec(dllexport) MsgClientBeginAuthentication_t() : BaseMessage(k_EMsgClientBeginAuth) {}
 
-	__declspec(dllexport) void SetSteamID(unsigned int ulSteamID) { m_ulSteamID = ulSteamID; }
-	__declspec(dllexport) unsigned int GetSteamID() { return m_ulSteamID; }
+	__declspec(dllexport) void SetSteamID(unsigned long long ulSteamID) { m_ulSteamID = ulSteamID; }
+	__declspec(dllexport) unsigned long long GetSteamID() { return m_ulSteamID; }
 
 private:
-	unsigned int m_ulSteamID;
+	unsigned long long m_ulSteamID;
 };
 
 // Msg from the server to the client when refusing a connection
@@ -168,4 +149,31 @@ struct MsgClientReadyAndGiveShips_t : public BaseMessage
 struct MsgTwoClientsAreReadySoStart_t : public BaseMessage
 {
 	__declspec(dllexport) MsgTwoClientsAreReadySoStart_t() : BaseMessage(k_EMsgTwoClientsReadySoStart) {}
+};
+
+struct MsgTurn_t : public BaseMessage
+{
+	__declspec(dllexport) MsgTurn_t() : BaseMessage(k_EMsgTurn) {}
+};
+
+struct MsgShot_t : public BaseMessage
+{
+	__declspec(dllexport) MsgShot_t() : BaseMessage(k_EMsgShot) {}
+
+	__declspec(dllexport) void SetPos(int x, int y) {
+		m_x = x;
+		m_y = y;
+	}
+
+	int m_x;
+	int m_y;
+};
+
+struct MsgShotResult_t : public BaseMessage
+{
+	__declspec(dllexport) MsgShotResult_t() : BaseMessage(k_EMsgShotResult) {}
+
+	int m_x;
+	int m_y;
+	bool is_dead;
 };

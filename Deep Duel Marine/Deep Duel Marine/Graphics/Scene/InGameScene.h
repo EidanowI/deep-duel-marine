@@ -10,8 +10,14 @@
 
 void RecieveStartCallback();
 void RecieveTurnCallback();
+void RecieveShotResponce(int x, int y, bool is_dead);
 
 
+enum TARGET_CELL_STATE {
+	NO_INFO,
+	MISS,
+	DEAD
+};
 enum SELECT_STATE {
 	REMOVE,
 	SHIP1,

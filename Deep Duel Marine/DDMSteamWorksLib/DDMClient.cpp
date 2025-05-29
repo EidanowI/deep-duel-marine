@@ -149,6 +149,12 @@ namespace DDMSteamWorksLib {
 	void DDMClient::SetSessionStartCallback(void (*pSession_start)()) {
 		m_pSession_start = pSession_start;
 	}
+	void DDMClient::SetTurnCallback(void (*pTurn_calback)()) {
+		m_pTurn_callback = pTurn_calback;
+	}
+	void DDMClient::SetShotCalback(void (*pShot_calback)(int x, int y, bool is_dead)) {
+		m_pShot_calback = pShot_calback;
+	}
 
 	void DDMClient::ReceiveNetworkData() {
 		if (!SteamNetworkingSockets())
@@ -237,6 +243,7 @@ namespace DDMSteamWorksLib {
 
 				m_pLose_func_claback();
 			}
+			break;
 			case k_EMsgTwoClientsReadySoStart:
 			{
 				if (cubMsgSize != sizeof(MsgTwoClientsAreReadySoStart_t))
@@ -248,6 +255,30 @@ namespace DDMSteamWorksLib {
 
 				m_pSession_start();
 
+			}
+			break;
+			case k_EMsgTurn:
+			{
+				if (cubMsgSize != sizeof(MsgTurn_t))
+				{
+					//OutputDebugString("Bad server info msg\n");
+					break;
+				}
+				MsgTurn_t* pMsg = (MsgTurn_t*)message->GetData();
+
+				m_pTurn_callback();
+			}
+			break;
+			case k_EMsgShotResult:
+			{
+				if (cubMsgSize != sizeof(MsgShotResult_t))
+				{
+					//OutputDebugString("Bad server info msg\n");
+					break;
+				}
+				MsgShotResult_t* pMsg = (MsgShotResult_t*)message->GetData();
+
+				m_pShot_calback(pMsg->m_x, pMsg->m_y, pMsg->is_dead);
 			}
 			break;
 

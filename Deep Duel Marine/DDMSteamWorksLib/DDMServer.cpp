@@ -1,6 +1,7 @@
 #include "DDMServer.h"
 #include "DDMMessages.h"
 #include <assert.h>
+#include <ctime>
 
 
 
@@ -179,6 +180,9 @@ namespace DDMSteamWorksLib {
 
 	DDMServer::DDMServer() : m_isConnected_to_steam(false), m_connectedPlayers_count(0), m_first_player_set_ships(false), m_second_player_set_ships(false){
 		UnitTest();
+
+		srand(std::time(0));
+		turn_counter = rand() % 100;
 
 		SteamErrMsg errMsg = { 0 };
 
@@ -433,10 +437,92 @@ namespace DDMSteamWorksLib {
 						MsgTwoClientsAreReadySoStart_t msg = MsgTwoClientsAreReadySoStart_t();
 						BSendDataToClient(1, (char*)&msg, sizeof(MsgTwoClientsAreReadySoStart_t));
 						BSendDataToClient(0, (char*)&msg, sizeof(MsgTwoClientsAreReadySoStart_t));
+						
+						
+
+						MsgTurn_t turn_msg = MsgTurn_t();
+						if (turn_counter % 2 == 1) {
+							BSendDataToClient(1, (char*)&turn_msg, sizeof(MsgTurn_t));
+						}
+						else {
+							BSendDataToClient(0, (char*)&turn_msg, sizeof(MsgTurn_t));
+						}
 					}
 				}
 			}
 			break;
+			case k_EMsgShot:
+			{
+				if (message->GetSize() != sizeof(MsgShot_t))
+				{
+					message->Release();
+					message = nullptr;
+					continue;
+				}
+				MsgShot_t* pMsg = (MsgShot_t*)message->GetData();
+
+				for (int i = 0; i < 2; i++) {///TODO add turn validation
+					if (steamIDRemote == m_rgClientData[i].m_SteamIDUser) {
+						if (i == 1) {	
+							if (m_first_player_cells[pMsg->m_y * 10 + pMsg->m_x] == ALIVE) {
+								m_first_player_cells[pMsg->m_y * 10 + pMsg->m_x] = DEAD;
+
+								MsgShotResult_t msg_res_shot = MsgShotResult_t();
+								msg_res_shot.m_x = pMsg->m_x;
+								msg_res_shot.m_y = pMsg->m_y;
+								msg_res_shot.is_dead = true;
+
+								BSendDataToClient(1, (char*)&msg_res_shot, sizeof(MsgShotResult_t));
+
+								///TODO for seccond shit
+							}
+							else {
+								turn_counter++;
+
+								MsgShotResult_t msg_res_shot = MsgShotResult_t();
+								msg_res_shot.m_x = pMsg->m_x;
+								msg_res_shot.m_y = pMsg->m_y;
+								msg_res_shot.is_dead = false;
+
+								BSendDataToClient(1, (char*)&msg_res_shot, sizeof(MsgShotResult_t));
+
+								MsgTurn_t turn_msg = MsgTurn_t();
+								BSendDataToClient(0, (char*)&turn_msg, sizeof(MsgTurn_t));
+							}
+						}
+						else {
+							if (m_seccond_player_cells[pMsg->m_y * 10 + pMsg->m_x] == ALIVE) {
+								m_seccond_player_cells[pMsg->m_y * 10 + pMsg->m_x] = DEAD;
+
+								MsgShotResult_t msg_res_shot = MsgShotResult_t();
+								msg_res_shot.m_x = pMsg->m_x;
+								msg_res_shot.m_y = pMsg->m_y;
+								msg_res_shot.is_dead = true;
+
+								BSendDataToClient(0, (char*)&msg_res_shot, sizeof(MsgShotResult_t));
+
+								///TODO for seccond shit
+							}
+							else {
+								turn_counter++;
+
+								MsgShotResult_t msg_res_shot = MsgShotResult_t();
+								msg_res_shot.m_x = pMsg->m_x;
+								msg_res_shot.m_y = pMsg->m_y;
+								msg_res_shot.is_dead = false;
+
+								BSendDataToClient(0, (char*)&msg_res_shot, sizeof(MsgShotResult_t));
+
+								MsgTurn_t turn_msg = MsgTurn_t();
+								BSendDataToClient(1, (char*)&turn_msg, sizeof(MsgTurn_t));
+							}
+						}
+					}
+				}
+
+			}
+			break;
+
 
 			default:
 				break;

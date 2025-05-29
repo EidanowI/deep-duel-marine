@@ -109,5 +109,7 @@ namespace DDMSteamWorksLib {
 
 		SHIP_CELL_STATE m_seccond_player_cells[100]{};
 		bool m_second_player_set_ships = false;
+
+		unsigned int turn_counter;
 	};
 }
