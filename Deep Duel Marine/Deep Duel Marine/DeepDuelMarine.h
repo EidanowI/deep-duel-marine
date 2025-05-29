@@ -30,7 +30,8 @@ public:
 		ShaderManager::Initialize();
 
 		DDMSteamWorksLib::SWNetworkingManager::TryToConnect(Renderer::GetDevice());
-		DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->SetGameResultCalbacks(WinFuncCalback, LoseFuncCalback);
+		if(DDMSteamWorksLib::SWNetworkingManager::IsConnectedToSteam()) 
+			DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->SetGameResultCalbacks(WinFuncCalback, LoseFuncCalback);
 
 		DisplayHubManager::Initialize();
 

@@ -1,10 +1,185 @@
 #include "DDMServer.h"
 #include "DDMMessages.h"
+#include <assert.h>
 
 
 
 namespace DDMSteamWorksLib {
-	DDMServer::DDMServer() : m_isConnected_to_steam(false), m_connectedPlayers_count(0){
+	bool ValidateShipPositing(MsgShip* ships) {
+		for (int i = 0; i < 10; i++) {
+			for(int j = 0; j < 10; j++) {
+				if (j == i) continue;
+
+
+				for (int k = 0; k < 4; k++) {
+					int x = ships[j].cells[k].x;
+					int y = ships[j].cells[k].y;
+
+					if (ships[i].cells[k].x == -1 || ships[i].cells[k].y == -1 ||
+						ships[j].cells[k].x == -1 || ships[j].cells[k].y == -1) continue;
+
+					/*
+						#0 #1 #2
+						#3 #4 #5
+						#6 #7 #8
+					*/
+
+					if (ships[i].cells[k].x - 1 == x && ships[i].cells[k].y - 1 == y) return false;//#0
+					if (ships[i].cells[k].x == x && ships[i].cells[k].y - 1 == y) return false;//#1
+					if (ships[i].cells[k].x + 1 == x && ships[i].cells[k].y - 1 == y) return false;//#2
+					if (ships[i].cells[k].x - 1 == x && ships[i].cells[k].y == y) return false;//#3
+					if (ships[i].cells[k].x == x && ships[i].cells[k].y == y) return false;//#4
+					if (ships[i].cells[k].x + 1 == x && ships[i].cells[k].y == y) return false;//#5
+					if (ships[i].cells[k].x - 1 == x && ships[i].cells[k].y + 1 == y) return false;//#6
+					if (ships[i].cells[k].x == x && ships[i].cells[k].y + 1 == y) return false;//#7
+					if (ships[i].cells[k].x + 1 == x && ships[i].cells[k].y + 1 == y) return false;//#8
+				}
+			}
+		}
+		
+		return true;
+	}
+
+
+	void UnitTest() {
+		/*
+		0 0 1 1 0 0 0 0 0 0
+		0 1 0 0 0 0 0 0 0 0
+		0 1 0 0 0 0 0 0 0 0
+		0 1 0 0 0 0 0 0 0 0
+		0 1 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0 --- bad
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0
+		*/
+
+		MsgShip test1[10];
+		test1[0].cells[0].x = 1;
+		test1[0].cells[0].y = 1;
+		test1[0].cells[1].x = 1;
+		test1[0].cells[1].y = 2;
+		test1[0].cells[2].x = 1;
+		test1[0].cells[2].y = 3;
+		test1[0].cells[3].x = 1;
+		test1[0].cells[3].y = 4;
+
+		test1[1].cells[0].x = 2;
+		test1[1].cells[0].y = 0;
+		test1[1].cells[1].x = 3;
+		test1[1].cells[1].y = 0;
+
+		assert(ValidateShipPositing(test1) == false);
+
+		/*
+		0 0 0 1 1 0 0 0 0 0
+		0 1 0 0 0 0 0 0 0 0
+		0 1 0 0 0 0 0 0 0 0
+		0 1 0 0 0 0 0 0 0 0
+		0 1 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0 --- good
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0
+		*/
+
+		MsgShip test2[10];
+		test2[0].cells[0].x = 1;
+		test2[0].cells[0].y = 1;
+		test2[0].cells[1].x = 1;
+		test2[0].cells[1].y = 2;
+		test2[0].cells[2].x = 1;
+		test2[0].cells[2].y = 3;
+		test2[0].cells[3].x = 1;
+		test2[0].cells[3].y = 4;
+
+		test2[1].cells[0].x = 3;
+		test2[1].cells[0].y = 0;
+		test2[1].cells[1].x = 4;
+		test2[1].cells[1].y = 0;
+
+		assert(ValidateShipPositing(test2) == true);
+
+		/*
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0 --- bad
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 1 0
+		0 0 0 0 0 0 0 0 0 1
+		*/
+
+		MsgShip test3[10];
+		test3[0].cells[0].x = 8;
+		test3[0].cells[0].y = 8;
+		
+
+		test3[1].cells[0].x = 9;
+		test3[1].cells[0].y = 9;
+
+
+		assert(ValidateShipPositing(test3) == false);
+
+		/*
+		0 0 0 0 0 0 0 0 0 1
+		0 0 0 0 0 0 0 0 1 0
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0 --- bad
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0
+		*/
+
+		MsgShip test4[10];
+		test4[0].cells[0].x = 9;
+		test4[0].cells[0].y = 0;
+
+
+		test4[1].cells[0].x = 8;
+		test4[1].cells[0].y = 1;
+
+
+		assert(ValidateShipPositing(test4) == false);
+
+		/*
+		0 0 0 0 0 0 0 0 0 1
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 1 0
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0 --- good
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0
+		0 0 0 0 0 0 0 0 0 0
+		*/
+
+		MsgShip test5[10];
+		test5[0].cells[0].x = 9;
+		test5[0].cells[0].y = 0;
+
+
+		test5[1].cells[0].x = 8;
+		test5[1].cells[0].y = 2;
+
+
+		assert(ValidateShipPositing(test5) == true);
+
+	}
+
+
+	DDMServer::DDMServer() : m_isConnected_to_steam(false), m_connectedPlayers_count(0), m_first_player_set_ships(false), m_second_player_set_ships(false){
+		UnitTest();
+
 		SteamErrMsg errMsg = { 0 };
 
 		if (SteamGameServer_InitEx(INADDR_ANY, SERVER_PORT, MASTER_SERVER_UPDATER_PORT, SERVER_MODE, SERVER_VERSION, &errMsg) != k_ESteamAPIInitResult_OK)
@@ -215,6 +390,50 @@ namespace DDMSteamWorksLib {
 				else {
 					BSendDataToClient(1, (char*)&winMsg, sizeof(MsgServerSendWinToClient_t));
 					BSendDataToClient(0, (char*)&loseMsg, sizeof(MsgServerSendLoseToClient_t));
+				}
+			}
+			break;
+			case k_EMsgClientReadyAndGiveShips:
+			{
+				if (message->GetSize() != sizeof(MsgClientReadyAndGiveShips_t))
+				{
+					message->Release();
+					message = nullptr;
+					continue;
+				}
+				MsgClientReadyAndGiveShips_t* pMsg = (MsgClientReadyAndGiveShips_t*)message->GetData();
+
+				if (ValidateShipPositing(pMsg->ships)) {
+					for (int i = 0; i < 2; i++) {
+						if (steamIDRemote == m_rgClientData[i].m_SteamIDUser) {
+							if (i == 0) {
+								m_first_player_set_ships = true;
+
+								for (int ship = 0; ship < 10; ship++) {
+									for (int k = 0; k < 4; k++) {
+										if(pMsg->ships[ship].cells[k].y != -1 && pMsg->ships[ship].cells[k].x != -1)
+											m_first_player_cells[10 * pMsg->ships[ship].cells[k].y + pMsg->ships[ship].cells[k].x] = ALIVE;
+									}
+								}
+							}
+							else {
+								m_second_player_set_ships = true;
+
+								for (int ship = 0; ship < 10; ship++) {
+									for (int k = 0; k < 4; k++) {
+										if (pMsg->ships[ship].cells[k].y != -1 && pMsg->ships[ship].cells[k].x != -1)
+											m_seccond_player_cells[10 * pMsg->ships[ship].cells[k].y + pMsg->ships[ship].cells[k].x] = ALIVE;
+									}
+								}
+							}
+						}			
+					}
+
+					if (m_first_player_set_ships && m_second_player_set_ships) {
+						MsgTwoClientsAreReadySoStart_t msg = MsgTwoClientsAreReadySoStart_t();
+						BSendDataToClient(1, (char*)&msg, sizeof(MsgTwoClientsAreReadySoStart_t));
+						BSendDataToClient(0, (char*)&msg, sizeof(MsgTwoClientsAreReadySoStart_t));
+					}
 				}
 			}
 			break;

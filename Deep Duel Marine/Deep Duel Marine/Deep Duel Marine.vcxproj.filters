@@ -114,6 +114,9 @@
     <ClCompile Include="Graphics\Model\ShipObjects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\Model\ExplosionObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeepDuelMarine.h">
@@ -359,6 +362,15 @@
     <ClInclude Include="Graphics\GUI\LoseScreenGui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics\Model\InGameObjects.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Model\ShipObjects.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Model\ExplosionObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="SteamNetworking\include\DDMAvatarTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -378,12 +390,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SteamNetworking\include\DDMSteamWorksLib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Model\InGameObjects.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Model\ShipObjects.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -408,5 +414,7 @@
     <FxCompile Include="Graphics\Shader\ShaderSourceCode\FieldHintVertShader.hlsl" />
     <FxCompile Include="Graphics\Shader\ShaderSourceCode\WaterSurfacePixelShaderInGame.hlsl" />
     <FxCompile Include="Graphics\Shader\ShaderSourceCode\SelectShipPixelShader.hlsl" />
+    <FxCompile Include="Graphics\Shader\ShaderSourceCode\ExplosionPixelShader.hlsl" />
+    <FxCompile Include="Graphics\Shader\ShaderSourceCode\ExplosionVertexShader.hlsl" />
   </ItemGroup>
 </Project>

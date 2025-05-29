@@ -18,6 +18,8 @@ enum EMessage
 	k_EMsgClientPassAuth = k_EMsgServerBegin + 7,
 	k_EMsgClientFailAuth = k_EMsgServerBegin + 8,
 
+	k_EMsgClientReadyAndGiveShips = k_EMsgServerBegin + 9,
+	k_EMsgTwoClientsReadySoStart = k_EMsgServerBegin + 10,
 	//k_EMsgServerSendInfo = k_EMsgServerBegin + 1,
 	//k_EMsgServerFailAuthentication = k_EMsgServerBegin + 2,
 	//k_EMsgServerPassAuthentication = k_EMsgServerBegin + 3,
@@ -121,4 +123,49 @@ struct MsgServerFailAuthentication_t : public BaseMessage
 struct MsgServerPassAuthentication_t : public BaseMessage
 {
 	__declspec(dllexport) MsgServerPassAuthentication_t() : BaseMessage(k_EMsgClientPassAuth) {}
+};
+
+
+
+struct MsgShipPos {
+	MsgShipPos() {
+		x = -1;
+		y = -1;
+	}
+	int x = -1;
+	int y = -1;
+};
+struct MsgShip {
+	MsgShip() {
+
+	}
+
+	MsgShipPos cells[4]{ MsgShipPos(), MsgShipPos(), MsgShipPos(), MsgShipPos() };
+};
+
+
+struct MsgClientReadyAndGiveShips_t : public BaseMessage
+{
+	__declspec(dllexport) MsgClientReadyAndGiveShips_t() : BaseMessage(k_EMsgClientReadyAndGiveShips) {}
+
+	__declspec(dllexport) void SetShip(int index, int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
+		ships[index].cells[0].x = x1;
+		ships[index].cells[0].y = y1;
+
+		ships[index].cells[1].x = x2;
+		ships[index].cells[1].y = y2;
+
+		ships[index].cells[2].x = x3;
+		ships[index].cells[2].y = y3;
+
+		ships[index].cells[3].x = x4;
+		ships[index].cells[3].y = y4;
+	}
+
+	MsgShip ships[10];
+};
+
+struct MsgTwoClientsAreReadySoStart_t : public BaseMessage
+{
+	__declspec(dllexport) MsgTwoClientsAreReadySoStart_t() : BaseMessage(k_EMsgTwoClientsReadySoStart) {}
 };

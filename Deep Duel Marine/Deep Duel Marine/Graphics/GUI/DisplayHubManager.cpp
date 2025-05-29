@@ -34,7 +34,7 @@ void DisplayHubManager::Initialize() noexcept {
 	s_displayHubs.push_back(new DisplayHub(new WinScreenGui(), new MainMenuScene()));/// WIN_SCREEN state
 	s_displayHubs.push_back(new DisplayHub(new LoseScreenGui(), new MainMenuScene()));/// LOSE_SCREEN state
 
-	ChangeState(DHM_IN_GAME);
+	ChangeState(DHM_MAIN_MENU);
 }
 void DisplayHubManager::Terminate() noexcept {
 	for (int i = 0; i < s_displayHubs.size(); i++) {

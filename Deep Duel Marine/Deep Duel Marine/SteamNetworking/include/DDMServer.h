@@ -3,6 +3,7 @@
 
 #include "Dependencies/steam/public/steam/steam_api.h"
 #include "Dependencies/steam/public/steam/steam_gameserver.h"
+#include "DDMMessages.h"
 
 
 
@@ -51,6 +52,15 @@ namespace DDMSteamWorksLib {
 		k_EDRClientKicked = k_ESteamNetConnectionEnd_App_Min + 5
 	};
 
+	bool ValidateShipPositing(MsgShip* ships);
+	void UnitTest();
+
+	enum SHIP_CELL_STATE {
+		EMPTY,
+		ALIVE,
+		DEAD
+	};
+
 	class DDMServer {
 	public:
 		DDMServer();
@@ -93,5 +103,11 @@ namespace DDMSteamWorksLib {
 
 		//Poll group used to receive messages from all clients at once
 		HSteamNetPollGroup m_hNetPollGroup;
+
+		SHIP_CELL_STATE m_first_player_cells[100]{};
+		bool m_first_player_set_ships = false;
+
+		SHIP_CELL_STATE m_seccond_player_cells[100]{};
+		bool m_second_player_set_ships = false;
 	};
 }

@@ -54,6 +54,7 @@ namespace DDMSteamWorksLib {
 
 	public:
 		__declspec(dllexport) void SetGameResultCalbacks(void (*pWin_func_calback)(), void (*pLose_func_claback)());
+		__declspec(dllexport) void SetSessionStartCallback(void (*pSession_start)());
 
 	public:
 		__declspec(dllexport) bool SendNetworkData(const void* pData, unsigned int nSizeOfData, int nSendFlags);
@@ -87,6 +88,8 @@ namespace DDMSteamWorksLib {
 
 		void (*m_pWin_func_calback)() = 0;
 		void (*m_pLose_func_claback)() = 0;
+
+		void (*m_pSession_start)() = 0;
 
 		CSteamID m_steamIDGameServer = CSteamID();
 		uint32 m_unServerIP = 0;

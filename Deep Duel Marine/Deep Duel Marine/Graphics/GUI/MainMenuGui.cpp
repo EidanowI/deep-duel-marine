@@ -310,6 +310,8 @@ void MainMenuGui::DrawReadyOrNotMenu() noexcept {
 					}
 				}
 				m_gui_state = STARTING_SERVER;
+				is_self_ready = false;
+				//is_self_ready = false;
 			}
 			else {
 				ImVec2 text_size = ImGui::CalcTextSize("Your opponent is ready to play!");
@@ -348,6 +350,7 @@ void MainMenuGui::DrawReadyOrNotMenu() noexcept {
 	if (CustomReadyOrNot::BackButton("Leave")) {
 		DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->LeaveLobby();
 		m_gui_state = MAIN_MENU;
+		is_self_ready = false;
 	}
 
 	EndImGuiTranspWindow();

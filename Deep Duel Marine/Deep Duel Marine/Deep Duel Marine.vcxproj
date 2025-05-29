@@ -163,6 +163,7 @@
     <ClCompile Include="Graphics\ImGuiRender\ImGuiRender.cpp" />
     <ClCompile Include="Graphics\Mesh\Mesh.cpp" />
     <ClCompile Include="Graphics\Model\BeaconLogoObject.cpp" />
+    <ClCompile Include="Graphics\Model\ExplosionObject.cpp" />
     <ClCompile Include="Graphics\Model\InGameObjects.cpp" />
     <ClCompile Include="Graphics\Model\Model.cpp" />
     <ClCompile Include="Graphics\Model\ShipObjects.cpp" />
@@ -249,6 +250,7 @@
     <ClInclude Include="Graphics\MainWindow\MainWindow.h" />
     <ClInclude Include="Graphics\Mesh\Mesh.h" />
     <ClInclude Include="Graphics\Model\BeaconLogoObject.h" />
+    <ClInclude Include="Graphics\Model\ExplosionObject.h" />
     <ClInclude Include="Graphics\Model\InGameObjects.h" />
     <ClInclude Include="Graphics\Model\Model.h" />
     <ClInclude Include="Graphics\Model\ShipObjects.h" />
@@ -280,6 +282,24 @@
     <None Include="Dependencies\steam\public\steam\steam_api.json" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Graphics\Shader\ShaderSourceCode\ExplosionPixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <EnableDebuggingInformation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</EnableDebuggingInformation>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Deep Duel Marine\Shaders\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Graphics\Shader\ShaderSourceCode\ExplosionVertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <DisableOptimizations Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DisableOptimizations>
+      <EnableDebuggingInformation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</EnableDebuggingInformation>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Deep Duel Marine\Shaders\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
     <FxCompile Include="Graphics\Shader\ShaderSourceCode\FieldHintPixelShader.hlsl">
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Deep Duel Marine\Shaders\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)Deep Duel Marine\Shaders\%(Filename).cso</ObjectFileOutput>

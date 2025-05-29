@@ -146,6 +146,9 @@ namespace DDMSteamWorksLib {
 		m_pWin_func_calback = pWin_func_calback;
 		m_pLose_func_claback = pLose_func_claback;
 	}
+	void DDMClient::SetSessionStartCallback(void (*pSession_start)()) {
+		m_pSession_start = pSession_start;
+	}
 
 	void DDMClient::ReceiveNetworkData() {
 		if (!SteamNetworkingSockets())
@@ -233,6 +236,18 @@ namespace DDMSteamWorksLib {
 				DisconnectFromServer();
 
 				m_pLose_func_claback();
+			}
+			case k_EMsgTwoClientsReadySoStart:
+			{
+				if (cubMsgSize != sizeof(MsgTwoClientsAreReadySoStart_t))
+				{
+					//OutputDebugString("Bad server info msg\n");
+					break;
+				}
+				MsgTwoClientsAreReadySoStart_t* pMsg = (MsgTwoClientsAreReadySoStart_t*)message->GetData();
+
+				m_pSession_start();
+
 			}
 			break;
 
