@@ -674,6 +674,18 @@ void PlayGameLogic(InGameScene* pInGameScene) {
 		is_show_aim_target = is_show_aim_target ? false : true;
 	}
 	ImGui::PopFont();
+
+	pFont->Scale = (float)MainWindow::GetWindowWidth() / 5000;
+	ImGui::PushFont(pFont);
+	ImVec2 tsz = ImGui::CalcTextSize("Sunder");
+	ImGui::SetCursorScreenPos(ImVec2(7, 1080 - 7 - tsz.y - 8));
+	if (ImGui::Button("Sunder")) {
+		MsgClientRequestLose_t loseReq = MsgClientRequestLose_t();
+
+		DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->SendNetworkData(&loseReq, sizeof(MsgClientRequestLose_t), k_nSteamNetworkingSend_Unreliable);
+	}
+	ImGui::PopFont();
+
 	EndImGuiTranspWindow();
 
 	if (is_show_aim_target) {
