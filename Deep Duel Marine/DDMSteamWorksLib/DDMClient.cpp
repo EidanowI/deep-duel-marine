@@ -155,6 +155,9 @@ namespace DDMSteamWorksLib {
 	void DDMClient::SetShotCalback(void (*pShot_calback)(int x, int y, bool is_dead)) {
 		m_pShot_calback = pShot_calback;
 	}
+	void DDMClient::SetGotDeadCalback(void (*pGotDead_calback)(int x, int y)) {
+		m_pGotDead = pGotDead_calback;
+	}
 
 	void DDMClient::ReceiveNetworkData() {
 		if (!SteamNetworkingSockets())
@@ -281,6 +284,19 @@ namespace DDMSteamWorksLib {
 				m_pShot_calback(pMsg->m_x, pMsg->m_y, pMsg->is_dead);
 			}
 			break;
+			case k_EMsgGotDead:
+			{
+				if (cubMsgSize != sizeof(MsgGotDead_t))
+				{
+					//OutputDebugString("Bad server info msg\n");
+					break;
+				}
+				MsgGotDead_t* pMsg = (MsgGotDead_t*)message->GetData();
+
+				m_pGotDead(pMsg->m_x, pMsg->m_y);
+			}
+			break;
+
 
 			default:
 

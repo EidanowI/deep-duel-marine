@@ -24,6 +24,8 @@ enum EMessage
 	k_EMsgTurn = k_EMsgServerBegin + 11,
 	k_EMsgShot = k_EMsgServerBegin + 12,
 	k_EMsgShotResult = k_EMsgServerBegin + 13,
+
+	k_EMsgGotDead = k_EMsgServerBegin + 14,
 	
 
 	k_EForceDWORD = 0x7fffffff,
@@ -176,4 +178,12 @@ struct MsgShotResult_t : public BaseMessage
 	int m_x;
 	int m_y;
 	bool is_dead;
+};
+
+struct MsgGotDead_t : public BaseMessage
+{
+	__declspec(dllexport) MsgGotDead_t() : BaseMessage(k_EMsgGotDead) {}
+
+	int m_x;
+	int m_y;
 };

@@ -57,6 +57,8 @@ namespace DDMSteamWorksLib {
 		__declspec(dllexport) void SetSessionStartCallback(void (*pSession_start)());
 		__declspec(dllexport) void SetTurnCallback(void (*pTurn_calback)());
 		__declspec(dllexport) void SetShotCalback(void (*pShot_calback)(int x, int y, bool is_dead));
+		__declspec(dllexport) void SetGotDeadCalback(void (*pGotDead_calback)(int x, int y));
+
 
 	public:
 		__declspec(dllexport) bool SendNetworkData(const void* pData, unsigned int nSizeOfData, int nSendFlags);
@@ -94,6 +96,7 @@ namespace DDMSteamWorksLib {
 		void (*m_pSession_start)() = 0;
 		void (*m_pTurn_callback)() = 0;
 		void (*m_pShot_calback)(int x, int y, bool is_dead) = 0;
+		void (*m_pGotDead)(int x, int y) = 0;
 
 		CSteamID m_steamIDGameServer = CSteamID();
 		uint32 m_unServerIP = 0;

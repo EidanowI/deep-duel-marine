@@ -11,6 +11,7 @@
 void RecieveStartCallback();
 void RecieveTurnCallback();
 void RecieveShotResponce(int x, int y, bool is_dead);
+void RecieveGotDeadCallback(int x, int y);
 
 
 enum TARGET_CELL_STATE {

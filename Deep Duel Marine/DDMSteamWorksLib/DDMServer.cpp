@@ -474,7 +474,12 @@ namespace DDMSteamWorksLib {
 
 								BSendDataToClient(1, (char*)&msg_res_shot, sizeof(MsgShotResult_t));
 
-								///TODO for seccond shit
+
+								MsgGotDead_t dead_msg = MsgGotDead_t();
+								dead_msg.m_x = pMsg->m_x;
+								dead_msg.m_y = pMsg->m_y;
+
+								BSendDataToClient(0, (char*)&dead_msg, sizeof(MsgGotDead_t));
 							}
 							else {
 								turn_counter++;
@@ -501,7 +506,11 @@ namespace DDMSteamWorksLib {
 
 								BSendDataToClient(0, (char*)&msg_res_shot, sizeof(MsgShotResult_t));
 
-								///TODO for seccond shit
+								MsgGotDead_t dead_msg = MsgGotDead_t();
+								dead_msg.m_x = pMsg->m_x;
+								dead_msg.m_y = pMsg->m_y;
+
+								BSendDataToClient(1, (char*)&dead_msg, sizeof(MsgGotDead_t));
 							}
 							else {
 								turn_counter++;

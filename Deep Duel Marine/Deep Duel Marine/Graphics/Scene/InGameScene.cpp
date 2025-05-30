@@ -303,6 +303,7 @@ InGameScene::InGameScene() noexcept {
 	DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->SetSessionStartCallback(RecieveStartCallback);
 	DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->SetTurnCallback(RecieveTurnCallback);
 	DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->SetShotCalback(RecieveShotResponce);
+	DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->SetGotDeadCalback(RecieveGotDeadCallback);
 
 	m_pCamera = new Camera(Vector3D(0, 24, 0), Vector3D(-1.57, 0, 0));
 
@@ -725,4 +726,19 @@ void RecieveShotResponce(int x, int y, bool is_dead) {
 	G_isYour_turn = is_dead;
 
 	m_target_cells[y * 10 + x] = is_dead ? DEAD : MISS;
+}
+void RecieveGotDeadCallback(int x, int y) {
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 4; j++) {
+			if (G_placings.m_places[i]->m_cells[j].x == x && G_placings.m_places[i]->m_cells[j].y == y) {
+				G_placings.m_places[i]->m_cells[j].is_dead = true;
+			}
+		}
+	}
+
+	if (G_placings.AlliweShipsCount() == 0) {
+		MsgClientRequestLose_t loseReq = MsgClientRequestLose_t();
+
+		DDMSteamWorksLib::SWNetworkingManager::GetDDMClient()->SendNetworkData(&loseReq, sizeof(MsgClientRequestLose_t), k_nSteamNetworkingSend_Unreliable);
+	}
 }
